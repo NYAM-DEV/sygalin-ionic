@@ -1,0 +1,304 @@
+.menu0 {
+	background-color: rgb(28, 141, 185);
+}
+
+
+
+side-menu-content {
+
+	$active-color: map-get($colors, primary);
+	$side-active-color: yellow;
+
+	// In this example, we have used the following name
+	// for the selected option in the settings object:
+	// selectedOptionClass: 'active-side-menu-option'
+
+	// Single option
+	// ------------------
+	ion-item.item.item-block.option {
+		background-color: #fff;
+		color: #222;
+
+		&.active-side-menu-option {
+			/*color: $active-color;*/
+			background-color: yellow;
+			font-weight: 700;
+		}
+	}
+
+	// Header
+	// ------------------
+	ion-item.item.item-block.header {
+		background-color: rgb(184, 182, 182);
+		color: #222;
+
+		&.active-side-menu-option {
+			/*color: $active-color;*/
+			background-color: yellow;
+			font-weight: 700;
+		}
+	}
+
+	// Sub option
+	// ------------------
+	ion-item.item.item-block.sub-option {
+		background-color: #fff;
+		color: #222;
+		padding-left: 25px;
+
+		&.active-side-menu-option {
+			border-left: 7px solid $side-active-color;
+			background-color: $active-color;
+			color: $side-active-color;
+			font-weight: 700;
+		}
+	}
+}
+
+.user-avatar {
+	width: 68px;
+	height: 68px;
+	display: inline-block;
+	border-radius: 50%;
+	background-color: white;
+	padding-top: 2px;
+	/*box-shadow: inset 0 0 10rem rgba(0, 0, 0, .25), 0 0 4rem rgba(255, 255, 255, .45);*/
+}
+
+img.u-avatar {
+	border-radius: 50%;
+}
+
+.login_center {
+	text-align: center;
+}
+
+.valid {
+	background: valid;
+}
+
+.toast-success {
+	.toast-wrapper {
+		background-color: #118801;
+		color: #ffffff;
+		font-weight: bold;
+		border: 2px solid #0c4001;
+		font-size: 10px;
+	}
+}
+
+.toast-info {
+	.toast-wrapper {
+		background-color: #2c57e4;
+		color: #ffffff;
+		font-weight: bold;
+		border: 2px solid #142969;
+		font-size: 10px;
+	}
+}
+
+.toast-warning {
+	.toast-wrapper {
+		background-color: #da9007;
+		color: #ffffff;
+		font-weight: bold;
+		border: 2px solid #9f6405;
+		font-size: 10px;
+	}
+}
+
+.toast-danger {
+	.toast-wrapper {
+		background-color: #ec4131;
+		color: #ffffff;
+		font-weight: bold;
+		border: 2px solid #7a211f;
+		font-size: 10px;
+	}
+}
+
+.rounded{
+	border-radius: 50px !important;
+	box-shadow: 0 0 0 0 !important;
+}
+
+.btn-outline{
+	color: map-get($colors , primary);
+	background-color: #ffffff;
+}
+
+.large{
+	padding: 26px !important;
+}
+
+.medium{
+	padding: 15px !important;
+}
+
+.thiny{
+	padding: 7px !important;
+}
+
+.button-group {
+	.col {
+		&:first-child:not(:last-child) {
+			padding-right: 0;
+			.button {
+				border-top-left-radius: 50px;
+				border-bottom-left-radius: 50px;
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+			}
+		}
+		&:not(:first-child):not(:last-child) {
+			padding-right: 0;
+			padding-left: 0;
+			.button {
+				border-radius: 0;
+			}
+		}
+		&:last-child:not(:first-child) {
+			padding-left: 0;
+			.button {
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+				border-top-right-radius: 50px;
+				border-bottom-right-radius: 50px;
+			}
+		}
+	}
+
+	/**
+* COLORS
+*/
+
+	.red{
+		background-color: #ec4131;
+	}
+
+	.blue{
+		background-color: #1f2deb;
+	}
+
+	.green{
+		background-color: #129901;
+	}
+
+	.yellow{
+		background-color: #ffd900f8;
+	}
+
+	.text-red{
+		color: #ec4131;
+	}
+
+	.text-blue{
+		color: #1f2deb;
+	}
+
+	.text-green{
+		color: #129901;
+	}
+
+	.text-yellow{
+		color: #ffd900f8;
+	}
+
+	.bold{
+		font-weight: bold;
+	}
+
+	button.fab{
+		padding: 17px !important;
+		box-shadow: 0 0 4px -1px !important;
+	}
+
+	.greyer{
+		background: rgb(225, 227, 248) !important;
+	}
+
+	.header-text{
+		font-size: 3.0rem;
+		color: grey;
+		font-weight: 100;
+	}
+
+	.text-error-msg{
+		color: rgb(102, 101, 98);
+		font-size: 1.7rem;
+	}
+
+}
+
+/**
+* COLORS
+*/
+
+.red{
+	background-color: #ec4131;
+}
+
+.blue{
+	background-color: #1f2deb;
+}
+
+.green{
+	background-color: #129901;
+}
+
+.yellow{
+	background-color: #ffd900f8;
+}
+
+.text-red{
+	color: #ec4131;
+}
+
+.text-blue{
+	color: #1f2deb;
+}
+
+.text-green{
+	color: #129901;
+}
+
+.text-yellow{
+	color: #ffd900f8;
+}
+
+.bold{
+	font-weight: bold;
+}
+
+button.fab{
+	padding: 17px !important;
+	box-shadow: 0 0 4px -1px !important;
+}
+
+.greyer{
+	background: rgb(225, 227, 248) !important;
+}
+
+.header-text{
+	font-size: 3.0rem;
+	color: grey;
+	font-weight: 100;
+}
+
+.text-error-msg{
+	color: rgb(102, 101, 98);
+	font-size: 1.7rem;
+}
+
+
+.mymodal{
+	position: absolute !important;
+	width: 90% !important;
+	height: 65% !important;
+	top: 20% !important;
+	left: 5% !important;
+}
+
+.item-divider-ios {
+	text-align: center;
+}

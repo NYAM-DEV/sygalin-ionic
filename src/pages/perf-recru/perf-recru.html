@@ -1,0 +1,109 @@
+<!--
+  Generated template for the PerfrecrutementsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Performances recrutements</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent" padding>
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Glisser pour rafraîchir"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<br>
+	<ion-card>
+		<ion-card-title style="text-align: center">
+			<strong>Performances journali&egrave;res en recrutements</strong><br>
+			<span style="font-size: 0.8em" *ngIf="_SYGALIN.isEmptyVal(_SYGALIN.viewPeriod.start) && !_SYGALIN.isEmptyVal(_SYGALIN.viewPeriod.end)">
+				Jusqu'au {{ _SYGALIN.momentjs(_SYGALIN.viewPeriod.end).format("DD/MM/YYYY")}}
+			</span>
+			<span style="font-size: 0.8em" *ngIf="!_SYGALIN.isEmptyVal(_SYGALIN.viewPeriod.start) && !_SYGALIN.isEmptyVal(_SYGALIN.viewPeriod.end)">
+				Du {{ _SYGALIN.momentjs(_SYGALIN.viewPeriod.start).format("DD/MM/YYYY")}} au {{ _SYGALIN.momentjs(_SYGALIN.viewPeriod.end).format("DD/MM/YYYY")}}
+			</span>
+			<span style="font-size: 0.8em" *ngIf="!_SYGALIN.isEmptyVal(_SYGALIN.viewPeriod.start) && _SYGALIN.isEmptyVal(_SYGALIN.viewPeriod.end)">
+				À partir du {{ _SYGALIN.momentjs(_SYGALIN.viewPeriod.start).format("DD/MM/YYYY")}}
+			</span>
+			<p><b>P</b>=Parc; <b>C.A</b>=Chiffre d'Affaire ;  <b>R&Eacute;AL</b>=Réalisations</p>
+		</ion-card-title>
+		<ion-card-content style="overflow-x: auto">
+			<table>
+				<caption colspan="2" rowspan="3"><br></caption>
+
+
+				<thead>
+				<!-- En-tÃªte du tableau -->
+				<tr>
+					<th>Date</th>
+<!--					<th class="couleurs">Obj.</th>-->
+					<th class="">R&eacute;al.</th>
+					<th>C.A. (XAF)</th>
+				</tr>
+				</thead>
+
+				<tfoot>
+				<!-- Pied de tableau -->
+				<tr>
+					<th>TOTAL</th>
+<!--					<th>{{ obj | number :"1.0-0"}} </th>-->
+					<th>{{ real | number :"1.0-0"}}</th>
+					<th>{{ montant | number :"1.0-0"}} </th>
+				</tr>
+				</tfoot>
+
+				<tbody>
+				<!-- Corps du tableau -->
+				<ng-container  *ngFor="let item of performs; let ind=index">
+					<tr *ngIf="ind>0 && (_SYGALIN.momentjs(item.fullDate).format('MM')!==_SYGALIN.momentjs(performs[ind-1].fullDate).format('MM'))">
+						<td colspan="4" style="text-align: center">{{ _SYGALIN.momentjs(item.fullDate).format('MMMM YYYY') |uppercase}}</td>
+					</tr>
+					<tr [ngClass]="{
+						'is-today': (item.fullDate) == _SYGALIN.momentjs().format('YYYY-MM-DD'),
+						'is-yesterday': (item.fullDate) > _SYGALIN.momentjs().format('YYYY-MM-DD')
+					      }">
+						<td>{{ item.date }}</td>
+<!--						<td class="couleurs">{{ item.objectif | number :"1.0-0" }}</td>-->
+						<td class="">{{ item.realisation | number :"1.0-0" }}</td>
+						<td>{{ item.montant | number :"1.0-0" }}</td>
+					</tr>
+				</ng-container>
+				</tbody>
+			</table>
+			<table>
+				<caption colspan="2" rowspan="3"><br></caption>
+				<thead>
+				<!-- En-tÃªte du tableau -->
+				<tr>
+					<th  style="width: 33.33%">OBJ.</th>
+<!--					<th class="couleurs">Obj.</th>-->
+					<th style="width: 33.33%">R&eacute;al.</th>
+					<th style="width: 33.33%">PERF (%)</th>
+				</tr>
+				</thead>
+
+				<tbody id="total">
+				<!-- Pied de tableau -->
+					<tr >
+						<td style="font-weight: bolder">{{ obj | number :"1.0-0"}} </td>
+						<td style="font-weight: bolder">{{ real | number :"1.0-0"}}</td>
+						<td [ngClass]="{
+							'couleurreal': globalPerf>=90,
+							'couleurfail': globalPerf<90
+						      }" style="font-weight: bolder">{{ globalPerf}} </td>
+					</tr>
+				</tbody>
+			</table>
+		</ion-card-content>
+	</ion-card>
+</ion-content>

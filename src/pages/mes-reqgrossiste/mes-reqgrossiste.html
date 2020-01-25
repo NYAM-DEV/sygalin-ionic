@@ -1,0 +1,97 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>{{ title }}</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Glissez pour rafraîchir"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<ion-card [@listItemState]="'in'" *ngFor="let r  of reqs">
+		<ion-card-content>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4>Ticket</ion-col>
+					<ion-col col-8>{{ r.numTicket }} </ion-col>
+					<ion-col col-4>Ouverture</ion-col>
+					<ion-col
+						col-8> {{_SYGALIN.momentjs(r.open_date).add(1, 'h').format("DD MMMM YYYY à HH:mm:ss") }} </ion-col>
+					<ion-col col-4 *ngIf="r.type">Type</ion-col>
+					<ion-col col-8 *ngIf="r.type==3"> Suspension</ion-col>
+					<ion-col col-8 *ngIf="r.type==2"> Modification</ion-col>
+					<ion-col col-8 *ngIf="r.type==1"> Annulation</ion-col>
+					<ion-col col-8 *ngIf="r.type==4"> Levée de Suspension</ion-col>
+					<ion-col col-8 *ngIf="r.type==5"> CGA bloqué</ion-col>
+					<ion-col col-8 *ngIf="r.type==6"> Transfert de droit</ion-col>
+					<ion-col col-8 *ngIf="r.type==7"> Transfert de parc</ion-col>
+					<ion-col col-8 *ngIf="r.type==8"> Levée prel.</ion-col>
+					<ion-col col-4 *ngIf="r.carte">Carte</ion-col>
+					<ion-col ion-text color='primary' col-8 *ngIf="r.carte"> {{ r.carte }} </ion-col>
+					<ion-col col-4 *ngIf="r.formule">Formule 1</ion-col>
+					<ion-col col-8 *ngIf="r.formule"> {{ r.form1}} </ion-col>
+					<ion-col col-4 *ngIf="r.option">Option 1</ion-col>
+					<ion-col col-8 *ngIf="r.option"> {{ r.opt1 }} </ion-col>
+					<ion-col col-4 *ngIf="r.formule1">Formule 2</ion-col>
+					<ion-col col-8 *ngIf="r.formule1"> {{ r.form2}} </ion-col>
+					<ion-col col-4 *ngIf="r.option1">Option 2</ion-col>
+					<ion-col col-8 *ngIf="r.option1"> {{ r.opt2 }} </ion-col>
+					<ion-col col-4 *ngIf="r.commentaire">Commentaire</ion-col>
+					<ion-col ion-text color='primary' col-8 *ngIf="r.commentaire"> {{ r.commentaire }} </ion-col>
+					<ion-col col-4 *ngIf="r.decodeur ">Decodeur</ion-col>
+					<ion-col ion-text color='primary' col-8 *ngIf="r.decodeur "> {{ r.decodeur }} </ion-col>
+					<ion-col col-4 *ngIf="r.abonne ">Abonné</ion-col>
+					<ion-col ion-text color='primary' col-8 *ngIf=" r.abonne"> {{ r.abonne }} </ion-col>
+					<ion-col col-4 *ngIf="r.btqNom">Nom PDV</ion-col>
+					<ion-col ion-text color='primary' col-8 *ngIf="r.btqNom"> {{ r.btqNom | uppercase }} </ion-col>
+					<ion-col col-4>Cuser</ion-col>
+					<ion-col ion-text color='primary' col-8> {{ r.cuser }} </ion-col>
+					<ion-col col-4>Etat</ion-col>
+					<ion-col col-8 *ngIf="r.state==0" ion-text color="warning" class=" bold">EN COURS...</ion-col>
+					<ion-col col-4 *ngIf="r.state==0">Chez</ion-col>
+					<ion-col col-8 *ngIf="r.state==0" ion-text color="warning" class=" bold">{{ r.role}}</ion-col>
+					<ion-col col-8 *ngIf="r.state==1" ion-text color="secondary" class="bold">TRAIT&Eacute;</ion-col>
+					<ion-col col-8 *ngIf="r.state==-1" ion-text color="danger" class="bold">REJET&Eacute;</ion-col>
+					<ion-col col-4 *ngIf="r.motif">Motif</ion-col>
+					<ion-col col-8 *ngIf="r.motif" ion-text color='danger'> {{r.motif}} </ion-col>
+					<ion-col col-4 *ngIf="r.state!=0">Fermeture</ion-col>
+					<ion-col col-8
+							 *ngIf="r.state!=0"> {{_SYGALIN.momentjs(r.close_date).add(1, 'h').format("DD MMMM YYYY à HH:mm:ss") }} </ion-col>
+				</ion-row>
+				<ion-col col-12 *ngIf="(_SYGALIN.isRAA() || _SYGALIN.isRFVI()) && r.state==0">
+					<ion-grid class="button-group">
+						<ion-row>
+							<ion-col>
+								<button ion-button block (click)="presentConfirm(r, 'validate')" color="secondary"
+										class="large">
+									<ion-icon name="thumbs-up" start></ion-icon> &nbsp; Valider
+								</button>
+							</ion-col>
+							<ion-col>
+								<button ion-button block (click)="presentConfirm(r, 'reject')" color="danger"
+										class="large"> Rejeter
+									&nbsp;
+									<ion-icon name="thumbs-down" end></ion-icon>
+								</button>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</ion-col>
+			</ion-grid>
+
+		</ion-card-content>
+	</ion-card>
+	<ion-card *ngIf="!(reqs && reqs.length)">
+		<ion-card-content class="text-error-msg">
+			Aucune requête vers grossiste trouv&eacute;e...
+		</ion-card-content>
+	</ion-card>
+</ion-content>

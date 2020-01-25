@@ -1,0 +1,157 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Nouveau réabonnement SVOD</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<div center class="cent" [formGroup]="formgroup">
+		<ion-grid class="button-group">
+			<ion-row>
+				<ion-col>
+					<button ion-button block (click)="listReabo()" class="large"><ion-icon name="list" start></ion-icon>&nbsp;Liste</button>
+				</ion-col>
+				<ion-col>
+					<button ion-button block (click)="performReabo()" color="secondary" class="large"><ion-icon name="trending-up" start></ion-icon>&nbsp;Performances
+					</button>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+		<ion-card center>
+			<ion-card-header>
+				Informations sur le client
+			</ion-card-header>
+			<ion-card-content>
+				<ion-item>
+					<ion-label color="primary" floating>Nom du client <span>*</span></ion-label>
+					<ion-input type="text" formControlName="nom" clearInput  autocapitalize="on" [ngClass]="{
+						'has-danger': invalidField('nom'),
+						'has-success': validField('nom')
+					      }"></ion-input>
+					<span *ngIf="invalidField('nom')" style="color: red">Ce champ est obligatoire</span>
+				</ion-item>
+				<div *ngIf="invalidField('nom')"  class="validator-error validation-summary-errors">
+					Le champ Nom est obligatoire
+				</div>
+				<ion-item>
+					<ion-label color="primary" floating>Téléphone 1 <span>*</span></ion-label>
+					<ion-input type="text" formControlName="tel1" clearInput  autocapitalize="on" [ngClass]="{
+						'has-danger': invalidField('tel1'),
+						'has-success': validField('tel1')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('tel1')"
+					 class="validator-error validation-summary-errors">
+					Le champ Téléphone est obligatoire
+				</div>
+				<ion-item>
+					<ion-label color="primary" floating>Téléphone 2</ion-label>
+					<ion-input type="text" formControlName="tel2" clearInput  autocapitalize="on"[ngClass]="{
+						'has-danger': invalidField('tel2'),
+						'has-success': validField('tel2')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('tel2')"
+					 class="validator-error validation-summary-errors">
+					Entrez un numero de téléphone valide
+				</div>
+			</ion-card-content>
+		</ion-card>
+
+		<ion-card center>
+			<ion-card-header>
+				Informations sur le réabonnement
+			</ion-card-header>
+			<ion-card-content>
+				<ion-item>
+					<ion-label color="primary" floating>N° Décodeur/Carte <span>*</span></ion-label>
+					<ion-input type="number" formControlName="decodeur" clearInput  autocapitalize="on" [ngClass]="{
+						'has-danger': invalidField('decodeur'),
+						'has-success': validField('decodeur')
+					      }"></ion-input>
+					<!--<div *ngIf="isFieldValid('decodeur')" style="color: rgb(43, 23, 23)">Ce champ est obligatoire
+					</div>-->
+				</ion-item>
+				<div *ngIf="invalidField('decodeur')"
+					 class="validator-error validation-summary-errors">
+					Bien vouloir entrez un numéro de décodeur valide
+				</div>
+
+				<ion-item>
+					<ion-label color="primary" floating class="item item-input item-select">
+						<div class="input-label">
+							Durée <span>*</span>
+						</div>
+					</ion-label>
+					<ion-select formControlName="duree" (ionChange)="hideButton()" [ngClass]="{
+						'has-danger': invalidField('duree'),
+						'has-success': validField('duree')
+					      }">
+						<ion-option selected value="1">1 mois</ion-option>
+						<ion-option value="2">2 mois</ion-option>
+						<ion-option value="3">3 mois</ion-option>
+						<ion-option value="6">6 mois</ion-option>
+						<ion-option value="12">12 mois</ion-option>
+						<ion-option value="24">24 mois</ion-option>
+					</ion-select>
+<!--
+					<div *ngIf="isFieldValid('duree')" style="color: red">Ce champ est obligatoire</div>
+-->
+				</ion-item>
+				<div *ngIf="invalidField('duree')"
+					 class="validator-error validation-summary-errors">
+					Le champ Durée est obligatoire
+				</div>
+				<ion-item>
+					<ion-label floating color="primary" class="item item-input item-select">
+						<div class="input-label">
+							Moyen de paiement <span>*</span>
+						</div>
+					</ion-label>
+					<ion-select formControlName="pay_option" (ionChange)="selectChangeMopay($event)" [ngClass]="{
+						'has-danger': invalidField('pay_option'),
+						'has-success': validField('pay_option')
+					      }">
+						<ion-option [selected]="true" value="0">CASH</ion-option>
+						<ion-option *ngFor="let p of _SYGALIN.pay_options" value="{{p.id}}">{{p.label}}</ion-option>
+					</ion-select>
+				</ion-item>
+				<div *ngIf="invalidField('pay_option')"
+				     class="validator-error validation-summary-errors">
+					Le champ Moyen de paiement est obligatoire
+				</div>
+
+				<ion-item *ngIf="showRef">
+					<ion-label floating color="primary">ID Transaction <span>*</span></ion-label>
+					<ion-input type="text" formControlName="id_trans" clearInput  autocapitalize="on" [ngClass]="{
+						'has-danger': invalidField('id_trans'),
+						'has-success': validField('id_trans')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('id_trans') && showRef"
+				     class="validator-error validation-summary-errors">
+					Le champ ID Transaction est obligatoire
+				</div>
+			</ion-card-content>
+		</ion-card>
+		<ion-card center>
+			<ion-card-header>
+				Montant total
+			</ion-card-header>
+			<ion-card-content>
+				<div padding >
+					<button ion-button block  (click)="simuler()" class="rounded">&nbsp;Evaluer</button>
+				</div>
+				<span
+					style="color: #da9007; font-size: large; font-weight: bold;">{{ amount ? (amount| number :"1.0-0") + ' XAF' : "..." }}</span>
+			</ion-card-content>
+		</ion-card>
+		<div padding *ngIf="showItem">
+			<button ion-button block (click)="onSubmit()" class="rounded"><ion-icon name="cloud-upload"></ion-icon>&nbsp;Enregistrer</button>
+		</div>
+
+	</div>
+</ion-content>

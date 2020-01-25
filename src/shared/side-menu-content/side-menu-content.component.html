@@ -1,0 +1,57 @@
+<ion-list no-margin no-lines>
+    <ng-template ngFor let-option [ngForOf]="collapsableItems" let-i="index">
+
+        <!-- It is a simple option -->
+        <ng-template [ngIf]="!option.suboptionsCount">
+            <ion-item class="option" [ngClass]="menuSettings?.showSelectedOption && option.selected ? menuSettings.selectedOptionClass : null" (tap)="select(option)" tappable>
+                <ion-icon *ngIf="option.iconName" [name]="option.iconName" item-left [color]="option.iconColor"></ion-icon>
+                {{ option.displayText }} <ion-badge item-right *ngIf="option.badge && option.badge!=0">{{ option.badge }}</ion-badge>
+            </ion-item>
+        </ng-template>
+
+        <!-- It has nested options -->
+        <ng-template [ngIf]="option.suboptionsCount">
+
+            <ion-list no-margin class="accordion-menu">
+
+                <!-- Header -->
+                <ion-item class="header" [ngClass]="menuSettings?.showSelectedOption && option.selected ? menuSettings.selectedOptionClass : null" (tap)="toggleItemOptions(option)" tappable>
+                    <ion-icon [class.rotate]="option.expanded" class="header-icon" [name]="option.iconName || menuSettings.arrowIcon" [color]="option.iconColor" item-left></ion-icon>
+                    {{ option.displayText }}
+                </ion-item>
+
+                <!-- Sub items -->
+                <div [style.height]="option.expanded ? ((optionHeight + 1) * option.suboptionsCount) + 'px' : '0px'" class="options">
+                    <ng-template ngFor let-item [ngForOf]="option.subOptions">
+						<ng-template [ngIf]="!item.suboptionsCount">
+							<ion-item  class="sub-option" [style.padding-left]="subOptionIndentation + 'px'" [class.no-icon]="menuSettings?.indentSubOptionsWithoutIcons && !item.iconName" [ngClass]="menuSettings?.showSelectedOption && item.selected ? menuSettings.selectedOptionClass : null" tappable (tap)="select(item)">
+								<ion-icon *ngIf="item.iconName" [name]="item.iconName" [color]="item.iconColor" item-left></ion-icon>
+								{{ item.displayText }}  <ion-badge item-right *ngIf="item.badge && item.badge!=0">{{ item.badge }}</ion-badge>
+							</ion-item>
+						</ng-template>
+
+						<ng-template [ngIf]="item.suboptionsCount">
+							<ion-list no-margin class="accordion-menu">
+								<ion-item class="header-l2" [style.padding-left]="subOptionIndentation + 'px'" [ngClass]="menuSettings?.showSelectedOption && item.selected ? menuSettings.selectedOptionClass : null" (tap)="toggleItemOptions(item)" tappable>
+									<ion-icon [class.rotate]="item.expanded" class="header-icon" [name]="item.iconName || menuSettings.arrowIcon" [color]="item.iconColor" item-left></ion-icon>
+									{{ item.displayText }}  <ion-badge item-right *ngIf="item.badge && item.badge!=0">{{ item.badge }}</ion-badge>
+								</ion-item>
+								<div [style.height]="item.expanded ? ((optionHeight + 1) * item.suboptionsCount) + 'px' : '0px'" class="options">
+									<ng-template ngFor let-subop [ngForOf]="item.subOptions">
+											<ion-item  class="sub-option" [style.padding-left]="(subOptionIndentation*1.30) + 'px'" [class.no-icon]="menuSettings?.indentSubOptionsWithoutIcons && !subop.iconName" [ngClass]="menuSettings?.showSelectedOption && subop.selected ? menuSettings.selectedOptionClass : null" tappable (tap)="select(subop)">
+												<ion-icon *ngIf="subop.iconName" [name]="subop.iconName" [color]="subop.iconColor" item-left></ion-icon>
+												{{ subop.displayText }}  <ion-badge item-right *ngIf="subop.badge && subop.badge!=0">{{subop.badge }}</ion-badge>
+											</ion-item>
+									</ng-template>
+								</div>
+							</ion-list>
+						</ng-template>
+
+                    </ng-template>
+                </div>
+            </ion-list>
+
+        </ng-template>
+
+    </ng-template>
+</ion-list>

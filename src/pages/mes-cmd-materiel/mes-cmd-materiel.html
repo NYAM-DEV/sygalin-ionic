@@ -1,0 +1,62 @@
+<!--
+  Generated template for the MesCmdMaterielPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Mes commandes matériel</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Pull to refresh"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<ion-card [@listItemState]="'in'" *ngFor="let c of cmds">
+		<ion-card-content>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-12 class="stitle">Ticket</ion-col>
+					<ion-col col-4>Ticket</ion-col>
+					<ion-col col-8>{{ c.num}} </ion-col>
+					<ion-col col-4>Commande</ion-col>
+					<ion-col col-8>{{ c.ref}} </ion-col>
+					<ion-col col-4>Etat</ion-col>
+					<ion-col col-8>TRAITÉ</ion-col>
+					<ion-col col-4 *ngIf="c.state=='1'">Traité le</ion-col>
+					<ion-col col-8 *ngIf="c.state=='1'">{{_SYGALIN.momentjs(c.close_date).format("DD MMMM YYYY")}}</ion-col>
+					<ion-col col-12 class="stitle">Paiement</ion-col>
+					<ion-col col-4>Demande</ion-col>
+					<ion-col col-8>Prépayée</ion-col>
+					<ion-col col-4>Montant</ion-col>
+					<ion-col col-8> {{c.montant| number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4>Type</ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isEmptyVal(c.n_versement)">Solde financier</ion-col>
+					<ion-col col-8 *ngIf="!_SYGALIN.isEmptyVal(c.n_versement)"><em>Aucun</em></ion-col>
+					<ion-col col-4>Référence</ion-col>
+					<ion-col col-8> {{c.n_versement| uppercase}} </ion-col>
+					<ion-col col-12 class="stitle">Détails</ion-col>
+					<ion-col col-12><button ion-button (tap)="showDetails(c)" color="primary" class="rounded">Voir les détails</button></ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card *ngIf="!(cmds && cmds.length)">
+		<ion-card-header class="header-text">
+			Oups!
+		</ion-card-header>
+		<ion-card-content class="text-error-msg">
+			Aucune commande matériel trouvée...
+		</ion-card-content>
+	</ion-card>
+</ion-content>

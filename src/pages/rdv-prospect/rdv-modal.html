@@ -1,0 +1,50 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<ion-title>Report du rendez-vous</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<div class="cent" [formGroup]="formgroup">
+		<ion-card>
+			<ion-card-content>
+				<ion-item>
+					<ion-label floating color="primary">Date <span>*</span></ion-label>
+					<ion-datetime displayFormat="DD/MM/YYYY" formControlName="date_rdv" clearInput [ngClass]="{
+						'has-danger': invalidField('date_rdv'),
+						'has-success': validField('date_rdv')
+					      }"></ion-datetime>
+				</ion-item>
+				<div *ngIf="invalidField('date_rdv')" class="validator-error validation-summary-errors">
+					Le champ Date est obligatoire
+				</div>
+				<ion-item>
+					<ion-label floating color="primary">Lieu <span>*</span></ion-label>
+					<ion-input type="text" formControlName="lieu" clearInput [ngClass]="{
+						'has-danger': invalidField('lieu'),
+						'has-success': validField('lieu')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('lieu')" class="validator-error validation-summary-errors">
+					Le champ Lieu est obligatoire
+				</div>
+			</ion-card-content>
+		</ion-card>
+		<div padding>
+			<ion-grid class="button-group">
+				<ion-row>
+					<ion-col>
+						<button ion-button block (click)="onSubmit()">
+							OK
+						</button>
+					</ion-col>
+					<ion-col>
+						<button ion-button block (click)="dismiss()" color="danger">
+							Annuler
+						</button>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</div>
+	</div>
+</ion-content>

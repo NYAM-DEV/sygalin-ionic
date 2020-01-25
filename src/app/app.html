@@ -1,0 +1,68 @@
+<ion-menu persistent="true" [content]="content" [swipeEnabled]="_SYGALIN.isConnected" (ionClose)="collapseMenuOptions()">
+	<ion-header>
+		<ion-toolbar color="primary">
+			<ion-grid class="menu">
+				<div style="text-align: right;marging-top:0; ">
+					<img src="../../assets/imgs/canal.png" style="width: 37%">
+				</div>
+				<ion-row>
+					<ion-col col-4>
+						<div class="user-avatar">
+							<img class="u-avatar" src="../assets/images/C.png">
+							<!-- <img src="../assets/images/djabbama.png"> -->
+						</div>
+						<br>
+					</ion-col>
+					<ion-col margin-bottom col-8>
+						<h2 ion-text color="text-light" class="no-margin bold">
+							{{ uNom | uppercase }}
+						</h2>
+						<span ion-text color="text-light">{{uRole}} @{{cuser}} </span>
+						<br>
+					</ion-col>
+				</ion-row>
+
+				<ion-row no-padding class="other-data">
+					<ion-col no-padding center class="column login_center">
+						<button ion-button icon-left small (click)="editProfile()" menuClose
+								class="medium rounded btn-outline">
+							<ion-icon name="person"></ion-icon>
+							Mon profil
+						</button>
+					</ion-col>
+				</ion-row>
+				<ion-row no-padding class="other-data">
+					<ion-col no-padding center class="column login_center" style="border-top: 0.5px solid #dfdfdf">
+						<br>
+						<span *ngIf="boutiqueNom"><ion-icon name="home" style="color: #ffffff"></ion-icon>&nbsp;<b style="color: #ffffff">{{ boutiqueNom }}</b></span>
+						<span *ngIf="!boutiqueNom && _SYGALIN.isConnected"><b style="color: #ffffff">{{ _SYGALIN.grossiste.name }}</b></span>
+					</ion-col>
+				</ion-row>
+				<ion-row no-padding class="other-data" *ngIf="groupeNom">
+					<ion-col padding-top center class="column login_center">
+					<em style="color: yellow">{{ groupeNom | uppercase }}</em>
+					</ion-col>
+				</ion-row>
+
+			</ion-grid>
+		</ion-toolbar>
+	</ion-header>
+
+	<ion-content>
+		<side-menu-content [settings]="sideMenuSettings" [options]="options"
+						   (change)="onOptionSelected($event)"></side-menu-content>
+	</ion-content>
+	<ion-footer *ngIf="_SYGALIN.getCurUser() && _SYGALIN.getCurUser().MercantSIM">
+		<ion-toolbar padding>
+			<div text-center style="color: #a2a2a2">
+				Codes SIM marchandes:<br>
+				<span *ngFor="let m of _SYGALIN.getCurUser().MercantSIM">
+					{{ m }}
+				</span>
+			</div>
+		</ion-toolbar>
+	</ion-footer>
+
+</ion-menu>
+<ion-nav id="nav" [root]="rootPage" #content></ion-nav>
+<!-- <ion-nav [root]="rootPage"></ion-nav> -->

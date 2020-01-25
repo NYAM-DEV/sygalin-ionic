@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-navbar color="primary">
+	  <button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+		  <ion-icon name="menu"></ion-icon>
+	  </button>
+    <ion-title> Requêtes DSI</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content  class="cent">
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Glissez pour rafraîchir"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<div class="cent">
+		<ion-card center [@listItemState]="'in'" *ngFor="let r of reqDSI">
+			<ion-card-content style="margin: 0px;">
+				<ion-grid>
+					<ion-row>
+						<ion-col col-4>Ticket</ion-col>
+						<ion-col col-8 *ngIf="r.numTicket" >{{ r.numTicket }} </ion-col>
+						<ion-col col-4>Ouverture</ion-col>
+						<ion-col col-8 color='primary'>{{ _SYGALIN.momentjs(r.open_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss")}} </ion-col>
+						<ion-col col-4>Objet</ion-col>
+						<ion-col col-8 *ngIf="r.label" >{{ r.label }} </ion-col>
+						<ion-col col-4 *ngIf="r.btqNom">Boutique</ion-col>
+						<ion-col col-8  *ngIf="r.btqNom">{{ r.btqNom }} </ion-col>
+						<ion-col col-4>En attente de traitement par</ion-col>
+						<ion-col col-8 *ngIf="r.role" >{{ r.role }} </ion-col>
+						<ion-col col-4>Emetteur</ion-col>
+						<ion-col col-8 *ngIf="r.nom" >{{ r.nom }} {{ r.prenom}} </ion-col>
+						<ion-col col-4>Role</ion-col>
+						<ion-col col-8 *ngIf="r.roleUser" >{{ r.roleUser }}</ion-col>
+						<ion-col col-4>Nombre de reponse</ion-col>
+						<ion-col col-8 *ngIf="r.nbr_message" >{{ r.nbr_message }}</ion-col>
+						<ion-col col-4 *ngIf="r.etat==2">Etat</ion-col>
+						<ion-col col-8 *ngIf="r.etat==2" color='primary' >Suspendu</ion-col>
+						<ion-col col-12>
+							<ion-grid class="button-group">
+								<ion-row>
+									<ion-col>
+										<button ion-button block round  [disabled]="buttonClick" (click)="details(r)" color="secondary" class="medium">
+											<ion-spinner *ngIf="buttonClick" name="crescent" color="primary" style="font-size: 60px; margin-top: 9px"></ion-spinner>
+											Répondre
+										</button>
+									</ion-col>
+								</ion-row>
+							</ion-grid>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-card-content>
+		</ion-card>
+		<ion-card *ngIf="!(reqDSI && reqDSI.length)">
+			<ion-card-content class="text-error-msg">
+				Aucune requette trouv&eacute;e...
+			</ion-card-content>
+		</ion-card>
+	</div>
+
+</ion-content>

@@ -1,0 +1,62 @@
+<!--
+  Generated template for the CommissionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Mes commissions</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Glisser pour actualiser"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+
+	<!--<ion-card>
+		<ion-card-header>MONTANT</ion-card-header>
+		<ion-card-content>
+
+		</ion-card-content>
+	</ion-card>-->
+	<ion-card>
+		<ion-card-header text-wrap>COMMISSIONS DU MOIS DE {{ month | uppercase}}</ion-card-header>
+		<ion-card-content>
+			<div>
+				<ion-label><em>(Remuneration N° {{remCode}})</em>
+				</ion-label>
+
+				<button ion-button (click)="weeklyCommission('S0')" class="rounded medium" color="primary">
+					Voir
+					&nbsp;<ion-icon name="arrow-round-forward"></ion-icon>
+				</button>
+			</div>
+		</ion-card-content>
+	</ion-card>
+
+	<ng-container *ngFor="let d of data">
+		<ion-card *ngIf="d.nWeek!='S0'">
+			<ion-card-content>
+				<div>
+					<ion-label><b>Du {{ _SYGALIN.momentjs(d.debut).format('DD') }}
+						au {{ _SYGALIN.momentjs(d.fin).format('DD MMMM YYYY') }}</b><br> <em>(Semaine N° {{d.codeS}})</em>
+					</ion-label>
+					<button ion-button (click)="weeklyCommission(d.nWeek)" class="rounded medium" color="primary">
+						Voir
+						&nbsp;<ion-icon name="arrow-round-forward"></ion-icon>
+					</button>
+				</div>
+			</ion-card-content>
+		</ion-card>
+	</ng-container>
+</ion-content>

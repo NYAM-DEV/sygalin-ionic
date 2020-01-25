@@ -1,0 +1,7 @@
+{
+  "name": "sygalinTv",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

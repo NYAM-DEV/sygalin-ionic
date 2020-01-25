@@ -1,0 +1,61 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>{{ title }}</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Glissez pour rafraîchir"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<ng-container [@listItemState]="'in'" *ngFor="let r  of reqs">
+		<ion-card  [ngClass]="{
+						'today': isToday(r.date_rdv)
+					      }">
+			<ion-card-content >
+				<ion-grid>
+					<ion-row>
+						<ion-col col-4>Nom</ion-col>
+						<ion-col col-8>{{ r.nom | uppercase }} </ion-col>
+						<ion-col col-4 *ngIf="r.prenom">Pr&eacute;nom</ion-col>
+						<ion-col col-8 *ngIf="r.prenom"> {{ r.prenom | uppercase }} </ion-col>
+						<ion-col col-4>R&eacute;gion</ion-col>
+						<ion-col col-8> {{ r.rNom | uppercase }} </ion-col>
+						<ion-col col-4> Ville</ion-col>
+						<ion-col col-8> {{ r.vNom | uppercase }} </ion-col>
+						<ion-col col-4>Quartier</ion-col>
+						<ion-col col-8> {{ r.qNom | uppercase }} </ion-col>
+						<ion-col col-4>Enregistr&eacute; par</ion-col>
+						<ion-col col-8> {{ r.suiveur | uppercase}} </ion-col>
+						<ion-col col-4>Relances</ion-col>
+						<ion-col col-8> {{ r.nbr }} </ion-col>
+					</ion-row>
+					<ion-col col-12>
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button round block (click)="mesRDV(r.id)" class="large"><ion-icon name="alarm"></ion-icon>&nbsp;Rendez-vous</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+				</ion-grid>
+
+			</ion-card-content>
+		</ion-card>
+	</ng-container>
+
+	<ion-card *ngIf="!(reqs && reqs.length)">
+		<ion-card-content class="text-error-msg">
+			Aucun prospect trouv&eacute;...
+		</ion-card-content>
+	</ion-card>
+</ion-content>

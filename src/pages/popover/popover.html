@@ -1,0 +1,56 @@
+<ion-list style="margin-bottom: 5px">
+	<ion-list-header color="primary" style="font-weight: bolder; text-align: center">SYGALIN</ion-list-header>
+	<ng-container *ngIf="_SYGALIN.isFVI() || _SYGALIN.isAAD()">
+		<!--  ENCAISSEMENT -->
+		<button ion-item detail-none  class="" color="{{(_SYGALIN.unreadEncaissementObservable===undefined || _SYGALIN.unreadEncaissementObservable===null)?'text-light': (( _SYGALIN.unreadEncaissementObservable>=0)?'secondary-2':'warning')}}" style="font-weight: bold;text-align: center">
+			<span  class=" ion-text-center text-small   " *ngIf="!(_SYGALIN.unreadEncaissementObservable===undefined || _SYGALIN.unreadEncaissementObservable===null)"> Encaissement  <br>  {{(_SYGALIN.unreadEncaissementObservable|number :"1.0-0")+' XAF'}}</span>
+			<span  class=" ion-text-center text-small   " *ngIf="(_SYGALIN.unreadEncaissementObservable===undefined || _SYGALIN.unreadEncaissementObservable===null)">
+				{{ _SYGALIN.isFVI() || _SYGALIN.isAAD() }}
+			<ion-spinner name="crescent" color="primary" style="font-size: 60px;"></ion-spinner>
+		</span>
+		</button>
+
+		<!--	DETTE-->
+		<button ion-item detail-none  color="{{(_SYGALIN.unreadDetteObservable===undefined || _SYGALIN.unreadDetteObservable===null)?'text-light': (( _SYGALIN.unreadDetteObservable==0)?'secondary-2':'warning')}}" style="font-weight: bold;text-align: center; border-bottom: none !important">
+		<span class=" ion-align-self-center text-small " *ngIf="!(_SYGALIN.unreadDetteObservable===undefined || _SYGALIN.unreadDetteObservable===null)">
+			Dette    <br>  {{(_SYGALIN.unreadDetteObservable | number :"1.0-0")+' XAF'}}
+			<span *ngIf="_SYGALIN.unreadDetteObservable>0" style="font-size: 0.7em">
+				<br>
+				Du {{_SYGALIN.momentjs(_SYGALIN.debtDay).format('DD MMM YYYY')}}
+			</span>
+		</span>
+			<span class=" ion-align-self-center text-small " *ngIf="(_SYGALIN.unreadDetteObservable===undefined || _SYGALIN.unreadDetteObservable===null)">
+			<ion-spinner name="crescent" color="primary" style="font-size: 60px;"></ion-spinner>
+		</span>
+		</button>
+	</ng-container>
+
+	<!--	PERIODE DE VISU-->
+	<button ion-item detail-none (click)="viewPeriod()" color="text-light" style="font-weight: bold;text-align: center; border-bottom: none !important">
+		<ion-icon name="timer-outline" color="primary" item-start></ion-icon>&nbsp;Période de visu<br>
+		<span style="font-size: 0.7em" *ngIf="_SYGALIN.isEmptyVal(_SYGALIN.viewPeriod.start) && !_SYGALIN.isEmptyVal(_SYGALIN.viewPeriod.end)">
+				Jusqu'au {{ _SYGALIN.momentjs(_SYGALIN.viewPeriod.end).format("DD/MM/YYYY")}}
+			</span>
+		<span style="font-size: 0.5em" *ngIf="!_SYGALIN.isEmptyVal(_SYGALIN.viewPeriod.start) && !_SYGALIN.isEmptyVal(_SYGALIN.viewPeriod.end)">
+				Du {{ _SYGALIN.momentjs(_SYGALIN.viewPeriod.start).format("DD/MM/YYYY")}} <br> au {{ _SYGALIN.momentjs(_SYGALIN.viewPeriod.end).format("DD/MM/YYYY")}}
+			</span>
+		<span style="font-size: 0.5em" *ngIf="!_SYGALIN.isEmptyVal(_SYGALIN.viewPeriod.start) && _SYGALIN.isEmptyVal(_SYGALIN.viewPeriod.end)">
+				À partir du {{ _SYGALIN.momentjs(_SYGALIN.viewPeriod.start).format("DD/MM/YYYY")}}
+			</span>
+	</button>
+
+	<!--	A PROPOS-->
+	<button ion-item detail-none (click)="about()" color="text-light" style="font-weight: bold;text-align: center; border-bottom: none !important">
+		<ion-icon name="help-circle-outline" color="primary" item-start></ion-icon>&nbsp;À propos
+	</button>
+
+	<!--	CHANGEMENT DE COMPTE-->
+	<button *ngIf="_SYGALIN._MultipleAccounts.length>1" ion-item detail-none (click)="showAcounts()" style="color: #3F51B5; font-weight: bold; border-bottom: none !important">
+		<ion-icon name="swap" item-start></ion-icon>&nbsp;Autres comptes
+	</button>
+
+	<!--	DECONNEXION-->
+	<button ion-item detail-none (click)="logout()" style="color: red; font-weight: bold; border-bottom: none !important">
+		<ion-icon name="power" item-start></ion-icon>&nbsp; Déconnexion
+	</button>
+</ion-list>

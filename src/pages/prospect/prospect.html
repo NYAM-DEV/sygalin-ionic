@@ -1,0 +1,108 @@
+<ion-header>
+
+	<ion-navbar color="primary">
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Nouveau prospect</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<form class="cent" [formGroup]="formgroup">
+
+		<ion-card center>
+			<ion-card-header>
+				Informations sur le prospect
+				<hr>
+			</ion-card-header>
+			<ion-card-content>
+				<ion-item>
+					<ion-label floating color="primary" class="item item-input item-select">
+						<div class="input-label">
+							Civilité <span>*</span>
+						</div>
+					</ion-label>
+					<ion-select formControlName="civ" clearInput>
+						<ion-option selected value="Mr">M.</ion-option>
+						<ion-option value="Mme">Mme</ion-option>
+						<ion-option value="Mlle">Mlle</ion-option>
+					</ion-select>
+				</ion-item>
+				<ion-item>
+					<ion-label floating color="primary">Nom  <span>*</span></ion-label>
+					<ion-input type="text" formControlName="nom" clearInput></ion-input>
+				</ion-item>
+
+				<ion-item>
+					<ion-label floating color="primary">Prénom <span>*</span></ion-label>
+					<ion-input type="text" formControlName="prenom" clearInput></ion-input>
+				</ion-item>
+				<ion-item>
+					<ion-label floating color="primary">Téléphone <span>*</span></ion-label>
+					<ion-input type="number" formControlName="tel" clearInput></ion-input>
+				</ion-item>
+				<ion-item>
+					<ion-label color="primary" floating class="item item-input item-select">
+						Région <span>*</span>
+					</ion-label>
+					<ion-select formControlName="region">
+						<ion-option *ngFor="let r of _SYGALIN.regions" value="{{ r.id }}">{{ r.id==0?'<em>'+r.nom+'</em>':r.nom }}</ion-option>
+					</ion-select>
+				</ion-item>
+				<ion-item>
+					<ion-label color="primary" floating class="item item-input item-select">
+						Ville <span>*</span>
+					</ion-label>
+					<ion-select formControlName="ville" (ionChange)="selectChangedVille($event)">
+						<ion-option *ngFor="let v of _SYGALIN.villes" value="{{v.id}}">{{v.id==0?'<em>'+v.nom+'</em>':v.nom }}</ion-option>
+						<ion-option value="0">Autre</ion-option>
+					</ion-select>
+				</ion-item>
+				<ion-item *ngIf="!hideVille">
+					<ion-input type="text" formControlName="new_ville" placeholder="Saisir la ville ici"></ion-input>
+				</ion-item>
+				<ion-item >
+					<ion-label color="primary" floating class="item item-input item-select">
+						Quartier <span>*</span>
+					</ion-label>
+					<ion-select formControlName="quartier" (ionChange)="selectChangedQuartier($event)">
+						<ion-option *ngFor="let q of _SYGALIN.quartiers" value="{{q.id}}">{{q.nom}}</ion-option>
+						<ion-option value="0">Autre</ion-option>
+					</ion-select>
+				</ion-item>
+				<ion-item *ngIf="!hideQuartier">
+					<ion-input type="text" formControlName="new_quartier" placeholder="Saisir le quartier ici"></ion-input>
+				</ion-item>
+				<ion-item>
+					<ion-label floating color="primary">Longitude </ion-label>
+					<ion-input type="text" formControlName="longitude"></ion-input>
+				</ion-item>
+				<ion-item>
+					<ion-label floating color="primary">Latitude</ion-label>
+					<ion-input type="text" formControlName="latitude"></ion-input>
+				</ion-item>
+			</ion-card-content>
+		</ion-card>
+
+		<ion-card center>
+			<ion-card-header>
+				Informations sur le rendez-vous
+			</ion-card-header>
+			<ion-card-content>
+				<ion-item>
+					<ion-label floating color="primary">Date <span>*</span></ion-label>
+					<ion-datetime displayFormat="DD-MMMM-YYYY " formControlName="today">{{ today }}</ion-datetime>
+				</ion-item>
+				<ion-item>
+					<ion-label floating color="primary">Lieu <span>*</span></ion-label>
+					<ion-input type="text" formControlName="lieu"></ion-input>
+				</ion-item>
+				<ion-tags-input [placeholder]="'add tag'"></ion-tags-input>
+			</ion-card-content>
+		</ion-card>
+		<div padding>
+			<button ion-button block (click)="onSubmit1()" >Enregistrer</button>
+		</div>
+	</form>
+</ion-content>

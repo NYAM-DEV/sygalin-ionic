@@ -1,0 +1,122 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<ion-title>Statistiques par {{ extraTitle }}</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<ng-container *ngIf="_SYGALIN.isDG()">
+		<ion-card class="center">
+			<ion-card-title>
+				Filtre
+			</ion-card-title>
+			<ion-card-content style="border-top: 1px solid #b0b0b0">
+				<form (ngSubmit)="doNothing()">
+					<ion-grid>
+						<ion-row *ngIf="detType=='bycb'">
+							<ion-col col-6>
+								<ion-item>
+									<ion-label floating>Secteur</ion-label>
+									<ion-select [(ngModel)]="sector" name="sector" (ionChange)="selectChangedSector($event)">
+										<ion-option value="0">-- Tous --</ion-option>
+										<ion-option *ngFor="let s of _SYGALIN._GLOBAL_STATS.global.secteurs" value="{{s.id}}">{{ s.nom }}</ion-option>
+									</ion-select>
+								</ion-item>
+							</ion-col>
+							<ion-col col-6>
+								<ion-item>
+									<ion-label floating>CB</ion-label>
+									<ion-select [(ngModel)]="cb" name="cb" (ionChange)="selectChangedCB($event)">
+										<ion-option value="0">-- Tous --</ion-option>
+										<ng-container *ngIf="_SYGALIN._GLOBAL_STATS">
+											<ng-container *ngFor="let cb of this.LCBS">
+												<ng-container *ngIf="cb!==undefined">
+													<ion-option value="{{cb.id}}">{{ cb.name }}</ion-option>
+												</ng-container>
+											</ng-container>
+										</ng-container>
+										<!--<ng-container *ngIf="LCBS">
+											<ion-option *ngFor="let cb of LCBS" value="{{cb.id}}">{{ cb.name }}</ion-option>
+										</ng-container>-->
+									</ion-select>
+								</ion-item>
+							</ion-col>
+						</ion-row>
+						<ion-row *ngIf="detType=='bysec'">
+							<ion-col col-12>
+								<ion-item>
+									<ion-label floating>Secteur</ion-label>
+									<ion-select [(ngModel)]="sector" name="sector" (ionChange)="selectChangedSector($event)">
+										<ion-option value="0">-- Tous --</ion-option>
+										<ion-option *ngFor="let s of _SYGALIN._GLOBAL_STATS.global.secteurs" value="{{s.id}}">{{ s.nom }}</ion-option>
+									</ion-select>
+								</ion-item>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</form>
+			</ion-card-content>
+		</ion-card>
+
+		<ion-card>
+			<ion-card-title>
+				Réalisations par {{ extraTitle }}
+			</ion-card-title>
+			<ion-card-content>
+				<table>
+					<ng-container *ngIf="detType=='bycb'">
+						<tr>
+							<th>Nom</th>
+							<th>Recru.</th>
+							<th>Parc</th>
+							<th>Migr.</th>
+						</tr>
+						<ng-container *ngIf="_SYGALIN._GLOBAL_STATS">
+							<ng-container *ngFor="let cb of this.CBS">
+								<ng-container *ngIf="cb!==undefined">
+									<tr>
+										<th colspan="4" style="text-align: center">{{cb.name}}</th>
+									</tr>
+									<tr *ngFor="let vad of _SYGALIN._GLOBAL_STATS.vad.recrutement[cb.id]; let ind=index">
+										<td>{{vad.nom.split('(')[0]}}</td>
+										<td class="center">{{ vad. nbr}}</td>
+										<td class="center">{{_SYGALIN._GLOBAL_STATS.vad.reabonnement[cb.id][ind].parcSum}}</td>
+										<td class="center">{{_SYGALIN._GLOBAL_STATS.vad.migration[cb.id][ind].nbr}}</td>
+									</tr>
+								</ng-container>
+							</ng-container>
+						</ng-container>
+					</ng-container>
+
+					<ng-container *ngIf="detType=='bysec'">
+						<tr>
+							<th>Nom</th>
+							<th>Recru.</th>
+							<th>Parc</th>
+							<th>Migr.</th>
+							<th>Option</th>
+						</tr>
+						<ng-container *ngIf="_SYGALIN._GLOBAL_STATS">
+							<ng-container *ngFor="let s of this.SECS">
+								<ng-container *ngIf="s!==undefined">
+									<tr>
+										<th colspan="5" style="text-align: center">{{s.name}}</th>
+									</tr>
+									<ng-container *ngFor="let cb of _SYGALIN.getCBs(s.id)">
+										<tr *ngIf="cb!==undefined">
+											<td>{{cb.name}}</td>
+											<td class="center">{{ cb.recru}}</td>
+											<td class="center">{{cb.parc}}</td>
+											<td class="center">{{cb.migr}}</td>
+											<td ion-button color="text-light" (tap)="seeDetails('bycb', cb.secteur, cb.id)"><ion-icon name="more"></ion-icon></td>
+										</tr>
+									</ng-container>
+								</ng-container>
+							</ng-container>
+						</ng-container>
+					</ng-container>
+				</table>
+			</ion-card-content>
+		</ion-card>
+	</ng-container>
+</ion-content>

@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar color="primary">
+	  <button ion-button menuToggle>
+		  <ion-icon name="menu"></ion-icon>
+	  </button>
+    <ion-title>Nouveau SVOD</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <div class="cent">
+        <button ion-button  >liste</button>
+        <button ion-button color="secondary" expand="block">performance</button>
+        <ion-card center>
+            <ion-card-header>
+              Information sur le client
+            </ion-card-header>
+            <ion-card-content>
+                <ion-list>
+                    <ion-item>
+                      <ion-label color="primary" floating>Nom </ion-label>
+                      <ion-input type="text"  [(ngModel)]="nom"   ></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label color="primary" floating >Tel </ion-label>
+                        <ion-input type="number" [(ngModel)]="tel"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label floating color="primary">Carte :</ion-label>
+                        <ion-input type="text" [(ngModel)]="carte" ></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label class = "item item-input item-select">
+                               Durée
+                            <ion-select [(ngModel)]="duree"  >
+                               <ion-option value="1" selected >1 mois </ion-option>
+                               <ion-option>2 mois</ion-option>
+                               <ion-option>3 mois</ion-option>
+                               <ion-option>6 mois</ion-option>
+                               <ion-option>12 mois</ion-option>
+                               <ion-option>24 mois</ion-option>
+                            </ion-select>
+                        </ion-label>
+                    </ion-item>
+                   
+                </ion-list>
+            </ion-card-content>
+          </ion-card>
+    
+          <button ion-button center outline (click)="recruok()" >Enregistrer</button>
+      </div>
+</ion-content>

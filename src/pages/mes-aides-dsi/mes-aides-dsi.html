@@ -1,0 +1,137 @@
+<ion-header>
+  <ion-navbar color="primary">
+	  <button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+		  <ion-icon name="menu"></ion-icon>
+	  </button>
+    <ion-title>Requêtes DSI</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content  class="cent">
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Glissez pour rafraîchir"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<div class="cent" [formGroup]="formgroup">
+		<ion-card  center [@listItemState]="'in'" *ngFor="let r of helpQuery">
+			<ion-card-content style="margin: 0px;">
+				<ion-grid>
+					<ion-row>
+						<ion-col col-4>Objet</ion-col>
+						<ion-col col-8 *ngIf="r.objet" >{{ r.objet }} </ion-col>
+						<ion-col col-4>Emetteur</ion-col>
+						<ion-col col-8 *ngIf="r.nom" >{{ r.nom }} {{ r.prenom}} </ion-col>
+						<ion-col col-4>Role</ion-col>
+						<ion-col col-8 *ngIf="r.roleUser" >{{ r.roleUser }}</ion-col>
+						<ion-col col-4 *ngIf="r.btqNom">Boutique</ion-col>
+						<ion-col col-8  *ngIf="r.btqNom">{{ r.btqNom }} </ion-col>
+						<ion-col col-4 *ngIf="r.motif">Commentaire</ion-col>
+						<ion-col col-8 ion-text color="danger" *ngIf="r.motif"> {{ r.motif | lowercase }} </ion-col>
+						<ion-col col-4 >Message</ion-col>
+						<ion-col col-12 [innerHTML]="r.commentaire">
+						</ion-col>
+						<div *ngIf="r.pj">
+							<div *ngFor=" let file of _SYGALIN.jsonParse(r.pj)">
+								<ion-col col-4 *ngIf="file"> fichier</ion-col>
+								<ion-col col-8 *ngIf="file" (click)="getUrlFile(file)"> <button ion-button small round color="primary"> <ion-icon name="document" ></ion-icon> &nbsp; Piece jointe</button></ion-col>
+							</div>
+						</div>
+
+					</ion-row>
+				</ion-grid>
+			</ion-card-content>
+		</ion-card>
+		<ion-card center *ngFor="let response of responses">
+			<ion-card-header style="margin: 0px;" >
+				<ion-col col-12><h3>{{response.roleUser}} ({{ response.nom}}) <br> le  &nbsp; {{ _SYGALIN.momentjs(response.date).add(1,'h').format("DD MMMM YYYY ")}}</h3></ion-col>
+			</ion-card-header>
+			<ion-card-content>
+				<ion-col col-12 [innerHTML]="response.message" style="text-align: justify"></ion-col>
+			</ion-card-content>
+
+		</ion-card>
+		<div *ngIf="_SYGALIN.isRDSI() || _SYGALIN.isPDG()">
+			<ion-card  center [@listItemState]="'in'" *ngFor="let r of helpQuery">
+				<ion-card-header  text-center >
+					Orientation de la requête
+				</ion-card-header>
+				<ion-card-content style="margin: 0px;">
+					<ion-grid>
+						<ion-row>
+							<ion-item>
+								<ion-label color="primary"  floating class="item item-input item-select">
+									Orienter vers
+								</ion-label>
+								<ion-select  formControlName="departement" clearInput  >
+									<ion-option *ngFor="let f of dept" value="{{f.id}}">{{f.nom | uppercase}}</ion-option>
+									<div *ngIf="_SYGALIN.isRDSI()">
+										<ion-option *ngFor="let f of userDept" value="{{ f.deptId+'-'+f.uRole+'-'+f.id}}">{{f.nom + ' '+f.role | uppercase }}</ion-option>
+									</div>
+								</ion-select>
+							</ion-item>
+							<ion-col col-12 >
+								<ion-grid class="button-group">
+									<ion-row>
+										<ion-col>
+											<!--<button ion-button block (click)="orienter(r)" color="secondary"
+													class="medium">
+												Reorienter
+											</button>-->
+											<button ion-button block (click)="presentPrompt(r,'orienter')" color="secondary"
+													class="medium">
+												Réorienter
+											</button>
+										</ion-col>
+										<ion-col>
+											<button ion-button block (click)="presentPrompt(r,'reject')" color="danger"
+													class="medium">invalider &nbsp;
+											</button>
+										</ion-col>
+									</ion-row>
+								</ion-grid>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</ion-card-content>
+			</ion-card>
+		</div>
+
+		<div *ngIf="_SYGALIN.isRDSI() || _SYGALIN.isDEV() || _SYGALIN.isRT()">
+			<ion-card  center [@listItemState]="'in'" *ngFor="let r of helpQuery">
+				<ion-card-header>
+					Traitement de la requête
+				</ion-card-header>
+				<ion-card-content style="margin: 0px;">
+					<ion-grid>
+						<ion-row>
+							<ion-col col-12 >
+								<ion-grid class="button-group">
+									<ion-row>
+
+										<ion-col>
+											<button ion-button block (click)="suspendRequest(r,'close')" color="primary"
+													class="medium">Fermer &nbsp;
+											</button>
+										</ion-col>
+										<ion-col>
+
+											<button ion-button block  (click)="test(r)"  color="secondary"
+													class="medium">Répondre &nbsp;
+											</button>
+										</ion-col>
+									</ion-row>
+								</ion-grid>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</ion-card-content>
+			</ion-card>
+		</div>
+
+	</div>
+
+</ion-content>

@@ -1,0 +1,203 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button icon-only (click)="dismiss()">
+			<ion-icon name="arrow-back"></ion-icon>
+		</button>
+		<ion-title>Justif : Details </ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content  class="cent">
+	<ion-card >
+		<ion-card-content style="margin: 0px;">
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4 *ngIf="request.objetM">Motif</ion-col>
+					<ion-col col-8>{{ request.objetM }} </ion-col>
+					<ion-col col-4 *ngIf="request.montant" >Montant demandé </ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="request.montant" >{{request.montant | number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4 *ngIf="request.montant" >Montant Validé </ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="request.montantM" >{{request.montantM | number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4 *ngIf="request.pj"> fichier</ion-col>
+					<ion-col col-8 *ngIf="request.pj" (click)="getUrlFile(request.pj)"> <button ion-button small round color="primary"> <ion-icon name="document" ></ion-icon> &nbsp; Piece jointe</button></ion-col>
+					<ion-col col-4 *ngIf="_SYGALIN.isDFIN()" >Restant à justifier </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isDFIN()" >{{request.restant | number :"1.0-0"}} XAF </ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card [formGroup]="formgroup">
+		<ion-card-header  text-center >
+			Justification de la requette
+		</ion-card-header>
+		<ion-card-content style="margin: 0px;">
+			<ion-grid>
+				<ion-row>
+					<ion-item>
+						<ion-label floating color="primary" class="item item-input item-select">
+							<div class="input-label">
+								Moyen de paiement
+							</div>
+						</ion-label>
+						<ion-select formControlName="pay_option" clearInput  (ionChange)="showInput($event)" [ngClass]="{
+						'has-danger': invalidField('pay_option'),
+						'has-success': validField('pay_option')
+					      }">
+							<ion-option *ngFor="let p of _SYGALIN.all_pay_options"
+										value="{{p.id}}" >{{p.label | uppercase}}</ion-option>
+						</ion-select>
+					</ion-item>
+					<div *ngIf="invalidField('pay_option')" class="validator-error validation-summary-errors">
+						Le champ Moyen de paiement est obligatoire
+					</div>
+
+					<ion-item *ngIf="showDocFile">
+						<ion-label floating color="primary" class="item item-input item-select">
+							<div class="input-label">
+								Action
+							</div>
+						</ion-label>
+						<ion-select formControlName="action" clearInput (ionChange)="changeBanqueField($event)"  [ngClass]="{
+						'has-danger': invalidField('action'),
+						'has-success': validField('action')
+					      }">
+							<ion-option value="1" >{{'Versement' | uppercase}}</ion-option>
+							<ion-option value="2" >{{'Virement' | uppercase}}</ion-option>
+						</ion-select>
+					</ion-item>
+					<div *ngIf="showDocFile">
+						<div *ngIf="invalidField('action')" class="validator-error validation-summary-errors">
+							Le champ Action est obligatoire
+						</div>
+					</div>
+
+
+						<ion-item *ngIf="banqueFlied">
+							<ion-label floating color="primary" class="item item-input item-select">
+								<div class="input-label">
+									Banque destinatrice
+								</div>
+							</ion-label>
+							<ion-select formControlName="banque" clearInput  [ngClass]="{
+							'has-danger': invalidField('banque'),
+							'has-success': validField('banque')
+							  }">
+								<ion-option *ngFor="let p of banques"
+											value="{{p.id}}" >{{p.label | uppercase}}</ion-option>
+							</ion-select>
+						</ion-item>
+						<div *ngIf="banqueFlied">
+							<div *ngIf="invalidField('banque')" class="validator-error validation-summary-errors">
+								Le champ Banque est obligatoire
+							</div>
+						</div>
+						<ion-item *ngIf="banqueFlied">
+							<ion-label floating color="primary" class="item item-input item-select">
+								<div class="input-label">
+									N° compte débiteur
+								</div>
+							</ion-label>
+							<ion-select formControlName="cptDebiteur" clearInput  [ngClass]="{
+						'has-danger': invalidField('cptDebiteur'),
+						'has-success': validField('cptDebiteur')
+					      }">
+								<ion-option *ngFor="let p of compte_bancaire"
+											value="{{p.id}}" >{{p.numero_compte | uppercase}}</ion-option>
+							</ion-select>
+						</ion-item>
+						<div *ngIf="banqueFlied">
+							<div *ngIf="invalidField('cptDebiteur')"  class="validator-error validation-summary-errors">
+								Ce champ est obligatoire
+							</div>
+						</div>
+
+						<ion-item *ngIf="banqueFlied">
+							<ion-label floating color="primary" class="item item-input item-select">
+								N° compte créditeur
+							</ion-label>
+							<ion-input type="number" formControlName="cptcrediteur"   [ngClass]="{
+						'has-danger': invalidField('cptcrediteur'),
+						'has-success': validField('cptcrediteur')
+					      }"></ion-input>
+						</ion-item>
+						<div *ngIf="banqueFlied">
+							<div *ngIf="invalidField('cptcrediteur')"  class="validator-error validation-summary-errors">
+								Ce champ est obligatoire
+							</div>
+						</div>
+						<ion-item>
+							<ion-label color="primary" floating>Reference <span>*</span></ion-label>
+							<ion-input type="text" formControlName="ref"   [ngClass]="{
+						'has-danger': invalidField('ref'),
+						'has-success': validField('ref')
+					      }"></ion-input>
+						</ion-item>
+						<div *ngIf="invalidField('ref')"  class="validator-error validation-summary-errors">
+							Ce champ est obligatoire
+						</div>
+					<ion-item *ngIf="showDocFile">
+							<ion-col col-12 >
+								<label for="file-upload"  class="custom-file-upload" [ngClass]="{
+						'with-file': issetFile
+					        }">
+									<ion-icon name="cloud-upload"></ion-icon>&nbsp;&nbsp; <span *ngIf="issetFile" style="color: #2c57e4; font-weight: bold">{{ file.length }} {{ file.length>1?"fichiers sélectionnés":"fichier sélectionné" }}</span><span *ngIf="!issetFile">{{ labelJustif}}</span>
+								</label>
+								<div class="file-list" *ngIf="issetFile" style="padding: 0">
+									<ion-list style="padding: 0" id="files" class="file-list">
+										<ion-item [@fileItemState]="'in'"  *ngFor="let f of file; let i=index">
+											<ion-thumbnail item-start>
+												<img src="../../assets/icons/{{ issetElem(f.name.split('.').slice(-1)[0] , fileTypes)?fileTypes[f.name.split('.').slice(-1)[0]]:'file' }}-fluent.png" alt="{{ f.name.split('.').slice(-1)[0] }}">
+											</ion-thumbnail>
+											<h4>{{f.name}}</h4>
+											<button ion-button clear item-end icon-only (click)="removeFile(i)"><ion-icon name="close-circle-outline" color="danger"></ion-icon></button>
+										</ion-item>
+									</ion-list>
+								</div>
+								<input
+									type="file"
+									name="file"
+									formcontrolName="file1"
+									id="file-upload"
+									(change)="updateFile($event)"
+									class="fileInput" multiple />
+							</ion-col>
+						</ion-item>
+					<ion-item>
+						<ion-label color="primary" floating>Montant <span>*</span></ion-label>
+						<ion-input type="number" formControlName="montant"   [ngClass]="{
+						'has-danger': invalidField('montant'),
+						'has-success': validField('montant')
+					      }"></ion-input>
+					</ion-item>
+					<div *ngIf="invalidField('montant')"  class="validator-error validation-summary-errors">
+						Ce champ est obligatoire
+					</div>
+
+					<ion-col col-12 >
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<!--<button ion-button block (click)="orienter(r)" color="secondary"
+                                            class="medium">
+                                        Reorienter
+                                    </button>-->
+									<button ion-button block  round color="secondary"
+											class="medium" (click)="justifyDisbursements(request)">
+										Justifier
+									</button>
+								</ion-col>
+								<!--<ion-col>
+									<button ion-button block  color="danger"
+											class="medium">Reste en caisse &nbsp;
+									</button>
+								</ion-col>-->
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+</ion-content>
+
+

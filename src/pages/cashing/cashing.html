@@ -1,0 +1,75 @@
+
+<ion-header>
+  <ion-navbar color="primary">
+	  <button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+		  <ion-icon name="menu"></ion-icon>
+	  </button>
+    <ion-title>Versements</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Glissez pour rafraîchir"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<ion-card [@listItemState]="'in'" *ngFor="let r of cash">
+		<ion-card-content style="margin: 0px;">
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4>Ticket</ion-col>
+					<ion-col col-8 *ngIf="r.num" >{{ r.num}} </ion-col>
+					<ion-col col-4>PDV</ion-col>
+					<ion-col col-8 >{{ r.nom }} </ion-col>
+					<ion-col col-4>Numdist</ion-col>
+					<ion-col col-8> {{ r.numdist}} </ion-col>
+					<ion-col col-4 *ngIf="r.label">Service </ion-col>
+					<ion-col ion-text color='primary' col-8 *ngIf="r.label">{{r.label}} </ion-col>
+					<ion-col col-4 *ngIf="r.ref">Reference</ion-col>
+					<ion-col col-8 *ngIf="r.ref">{{r.ref}}</ion-col>
+					<ion-col col-4 *ngIf="r.type">TYPE versement</ion-col>
+					<ion-col col-8 *ngIf="r.type==1">CGA</ion-col>
+					<ion-col col-8 *ngIf="r.type==2">Matériel</ion-col>
+					<ion-col col-8 *ngIf="r.type==3">Installation/Intervention</ion-col>
+					<ion-col col-4 *ngIf="r.fichier && r.fichier!=='<' " > fichier</ion-col>
+					<ion-col col-8 *ngIf="r.fichier && r.fichier!=='<'" (click)="getUrlFile(r.fichier)"> <button ion-button round small color="primary"> <ion-icon name="document" ></ion-icon> &nbsp; Piece jointe</button></ion-col>
+					<ion-col col-4>Montant versé </ion-col>
+					<ion-col col-8 ion-text color='danger'>{{r.mtn_verse| number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4>Dette initiale </ion-col>
+					<ion-col col-8 ion-text color='danger'>{{r.mtn_dette| number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4>Ouverture</ion-col>
+					<ion-col col-8>{{ _SYGALIN.momentjs(r.open_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss")}} </ion-col>
+					<ion-col col-4>Encaisement du </ion-col>
+					<ion-col col-8>{{ _SYGALIN.momentjs(r.date_op).add(1,'h').format("DD MMMM YYYY ")}} </ion-col>
+					<ion-col col-12 *ngIf="(_SYGALIN.isDFIN() || _SYGALIN.isSUPER())  && r.state==0">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button block (click)="presentConfirm(r, 'validate')" color="secondary"
+											class="medium">
+										<ion-icon name="thumbs-up" start>&nbsp;</ion-icon>
+									</button>
+								</ion-col>
+								<ion-col>
+									<button ion-button block (click)="presentConfirm(r, 'reject')" color="danger"
+											class="medium"> &nbsp;
+										<ion-icon name="thumbs-down" end></ion-icon>
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card *ngIf="!(cash && cash.length)">
+		<ion-card-content class="text-error-msg">
+			Aucun versement trouv&eacute;...
+		</ion-card-content>
+	</ion-card>
+</ion-content>

@@ -1,0 +1,41 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<ion-title>Détails commande</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<ion-card>
+		<ion-card-content>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-12="" class="stitle">Kits complets</ion-col>
+					<ng-container *ngFor="let k of kcomplets; let ind=index">
+						<ion-col col-4="">{{ind}}</ion-col>
+						<ion-col col-8="">{{k}}</ion-col>
+					</ng-container>
+					<ion-col col-12="" class="stitle">Accessoires liées au kits</ion-col>
+					<ng-container *ngFor="let a of access_kit; let ind=index">
+						<ion-col col-4="" *ngIf="a.qte_facture==0">{{a.nom}}</ion-col>
+						<ion-col col-8="" *ngIf="a.qte_facture==0">{{a.qte}}</ion-col>
+					</ng-container>
+					<ion-col col-12="" class="stitle">Accessoires hors kit</ion-col>
+					<ng-container *ngFor="let a of access_h_kit; let ind=index">
+						<ion-col col-4="" *ngIf="a.qte_facture!=0">{{a.nom}}</ion-col>
+						<ion-col col-8="" *ngIf="a.qte_facture!=0">{{a.qte}}</ion-col>
+					</ng-container>
+					<!--<ion-col col-12="" class="stitle">Déclaration</ion-col>
+					<ng-container *ngFor="let d of declarations">
+						<ion-col col-4="" >{{decNom(d.id)}}</ion-col>
+						<ion-col col-8="" >{{_SYGALIN.isEmptyVal(d.nombre)?'0':d.nombre}}</ion-col>
+					</ng-container>-->
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<div padding>
+		<button ion-button block (click)="dismiss()" class="rounded" color="primary">
+			Fermer
+		</button>
+	</div>
+</ion-content>

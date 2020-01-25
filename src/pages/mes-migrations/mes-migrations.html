@@ -1,0 +1,88 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Mes migrations</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Glissez pour rafraîchir"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<ion-card [@listItemState]="'in'" *ngFor="let m  of migra">
+		<ion-card-content>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4>Ticket</ion-col>
+					<ion-col col-8>{{ m.numTicket }} </ion-col>
+					<ion-col col-4>Ouverture</ion-col>
+					<ion-col col-8> {{_SYGALIN.momentjs(m.open_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss") }} </ion-col>
+					<ion-col col-4>Nom</ion-col>
+					<ion-col col-8> {{ m.nom_abo | uppercase }} </ion-col>
+					<ion-col col-4>Telephone</ion-col>
+					<ion-col col-8> {{ m.tel_abo }} </ion-col>
+					<ion-col col-4>Ac. Décodeur</ion-col>
+					<ion-col ion-text color='primary' col-8> {{ m.carte_abo }} </ion-col>
+					<ion-col col-4>Nv. Décodeur</ion-col>
+					<ion-col ion-text color='primary' col-8> {{ m.num_decodeur }} </ion-col>
+					<ion-col col-4>Etat</ion-col>
+					<ion-col col-8 *ngIf="m.state==0" ion-text color="warning" class=" bold">EN COURS...</ion-col>
+					<ion-col col-8 *ngIf="m.state==1" ion-text color="secondary" class="bold">
+						TRAIT&Eacute;  /
+						<span *ngIf="m.paye=='0'" ion-text color="warning">  NON PAY&Eacute;</span>
+						<span *ngIf="m.paye=='1'" ion-text color="secondary">  PAY&Eacute;</span>
+					</ion-col>
+					<ion-col col-8 *ngIf="m.state==-1" ion-text color="danger" class="bold">REJET&Eacute;</ion-col>
+					<ion-col col-4 *ngIf="m.motif">Motif</ion-col>
+					<ion-col col-8 *ngIf="m.motif" ion-text color='danger'> {{m.motif}} </ion-col>
+					<ion-col col-4 *ngIf="m.tpNom">Moyen de payement  </ion-col>
+					<ion-col col-8 *ngIf="m.tpNom">{{ m.tpNom }}</ion-col>
+					<ion-col col-4 *ngIf=" m.mpLabel">Opérateur</ion-col>
+					<ion-col col-8 *ngIf=" m.mpLabel"><span [ngStyle]="{'color': m.couleur}">{{ m.mpLabel }}</span></ion-col>
+					<ion-col col-4 *ngIf=" m.mpLabel">ID transaction </ion-col>
+					<ion-col col-8 *ngIf="m.mpLabel">
+						<span *ngIf="!checkedID || (checkedID && !checkedID.includes(m.numTicket))">{{ m.id_trans }}</span>
+						<span *ngIf="checkedID && checkedID.includes(m.numTicket)" color="secondary">{{ m.id_trans }}&nbsp;<ion-icon name="checkmark-circle-outline" color="secondary"></ion-icon></span>
+						<button *ngIf="(!checkedID || (checkedID && !checkedID.includes(m.numTicket))) && (_SYGALIN.isRAA() || _SYGALIN.isRFVI()) && m.state==0" ion-button (click)="verifyID(m)" class="rounded thiny">Vérifier</button>
+					</ion-col>
+					<ion-col col-4>Montant</ion-col>
+					<ion-col col-8 ion-text color='danger'> {{ m.montant | number :"1.0-0" }} XAF</ion-col>
+					<ion-col col-4 *ngIf="m.state!=0">Fermeture</ion-col>
+					<ion-col col-8 *ngIf="m.state!=0" > {{_SYGALIN.momentjs(m.close_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss") }} </ion-col>
+				</ion-row>
+				<ion-col col-12 *ngIf="(_SYGALIN.isRAA() || _SYGALIN.isRFVI()) && m.state==0">
+					<ion-grid class="button-group">
+						<ion-row>
+							<ion-col>
+								<button ion-button block (click)="presentConfirm(m, 'validate')" color="secondary"
+										class="large">
+									<ion-icon name="thumbs-up" start></ion-icon> &nbsp; Valider
+								</button>
+							</ion-col>
+							<ion-col>
+								<button ion-button block (click)="presentConfirm(m, 'reject')" color="danger"
+										class="large"> Rejeter
+									&nbsp;
+									<ion-icon name="thumbs-down" end></ion-icon>
+								</button>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</ion-col>
+			</ion-grid>
+
+		</ion-card-content>
+	</ion-card>
+	<ion-card *ngIf="!(migra && migra.length)">
+		<ion-card-content class="text-error-msg">
+			Aucune migration trouv&eacute;e...
+		</ion-card-content>
+	</ion-card>
+</ion-content>

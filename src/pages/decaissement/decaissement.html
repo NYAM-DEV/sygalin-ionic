@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-navbar color="primary">
+	  <button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+		  <ion-icon name="menu"></ion-icon>
+	  </button>
+    <ion-title>Décaissement</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Pull to refresh"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<ion-card  [@listItemState]="'in'" *ngFor="let r of Decaissements">
+		<ion-card-content style="margin: 0px;">
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4 *ngIf="r.open_date">Ouverture</ion-col>
+					<ion-col col-8>{{ _SYGALIN.momentjs(r.open_date).add(1,'h').format("DD MMMM YYYY  HH:mm")}} </ion-col>
+					<ion-col col-4 *ngIf="r.num">Ticket</ion-col>
+					<ion-col col-8 *ngIf="r.num"> {{ r.num}} </ion-col>
+					<ion-col col-4>Initiateur</ion-col>
+					<ion-col col-8>{{ r.userName }}</ion-col>
+					<ion-col col-4 *ngIf="r.role" >Role</ion-col>
+					<ion-col col-8 *ngIf="r.role" >{{ r.role}}</ion-col>
+					<ion-col col-4 *ngIf="r.montant" >Montant sollicité </ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="r.montant" >{{r.montant | number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4 *ngIf="r.montant_justifie" >Montant validé </ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="r.montant_justifie" >{{r.montant_justifie | number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-12 *ngIf="(_SYGALIN.isDFIN()|| _SYGALIN.isDGEN() || _SYGALIN.isPDG() )  && r.oriente==0 ">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button block  color="secondary" round (click)="openDisbursementDetail(r.id)"
+											class="medium">
+										Ouvrir le décaissement
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+					<ion-col col-12 *ngIf="_SYGALIN.isDFIN() && r.oriente==1">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button block (click)="justifDfin(r)" color="secondary" class="medium">
+										Justifier
+									</button>
+								</ion-col>
+								<ion-col>
+									<button ion-button block (click)="reorienting(r)" color="warning" class="medium">
+										Réorienter &nbsp;
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+					<ion-col col-12 *ngIf="(_SYGALIN.isCOMPTAG() && r.montant_justifie!=0)">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button block  color="primary" round (click)="openAccountingJustifie(r.ticket)"
+											class="medium">
+										Justification
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+					<ion-col col-12 *ngIf="(_SYGALIN.isCOMPTAG() && r.montant_justifie==0)">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button block  color="secondary" round (click)="openDisbursementDetail(r.id,r.ticket)"
+											class="medium">
+										Affectation
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card *ngIf="!(Decaissements && Decaissements.length)">
+		<ion-card-content class="text-error-msg">
+			Aucun Décaissement trouvé...
+		</ion-card-content>
+	</ion-card>
+</ion-content>

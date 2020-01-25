@@ -1,0 +1,124 @@
+page-perf-reabo-svod {
+	table {
+		//border: medium solid #6495ed;
+		border-collapse: collapse;
+		width: 50%;
+	}
+
+	th {
+		//font-family: monospace;
+		//border: thin solid #6495ed;
+		font-weight: bold;
+		width: 50%;
+		padding: 5px;
+		background-color: #D0E3FA;
+	}
+
+	thead th {
+		//font-family: monospace;
+		border: thin solid #6495ed;
+		/*width: 50%;
+		padding: 5px;
+		background-color: #D0E3FA;*/
+	}
+
+	td {
+		//font-family: sans-serif;
+		border: thin solid #6495ed;
+		width: 50%;
+		padding: 5px;
+		text-align: center;
+		background-color: #ffffff;
+	}
+
+	caption {
+		font-family: sans-serif;
+	}
+
+	.position {
+		text-align: center;
+	}
+
+	.text-red {
+		color: #ec4131;
+	}
+
+	.text-green {
+		color: #129901;
+	}
+
+	ion-refresher {
+		background-color: white;
+	}
+	ion-content{
+		background: rgb(225, 227, 248) !important;
+	}
+
+	.card-ios{
+		border-radius: 10px;
+		width: 100% !important;
+		margin: 0 !important;
+	}
+
+	ion-card-content{
+		padding: 0 !important;
+	}
+
+	ion-card-content table{
+		width: 100% !important;
+		border-top: 1px solid lightgrey !important;
+	}
+
+	ion-card-content table tr{
+		border-bottom: 0.5px solid lightgrey !important;
+	}
+
+	ion-card-content table tr td{
+		padding-top: 9px !important;
+		padding-bottom: 9px !important;
+	}
+
+	ion-card-content table tr td .button-inner{
+		color: #2626c0 !important;
+	}
+
+	ion-card-content table tr th {
+		padding-top: 9px !important;
+		padding-bottom: 9px !important;
+		text-transform: uppercase;
+	}
+
+	ion-card-title {
+		text-align: center;
+		font-weight: lighter;
+	}
+
+	.is-today{
+		border: 3px solid #ff8a2c !important;
+	}
+
+	.is-today td{
+		background-color: #dff0ff;
+		font-weight: bold;
+	}
+
+	.is-yesterday td{
+		background-color: #e3e3e3;
+	}
+
+	tfoot{
+		tr{
+			th{
+				font-weight: bolder !important;
+				border: thin solid #6495ed;
+				//border-bottom: none;
+				&:first-child:not(:last-child) {
+					border-bottom-left-radius: 10px;
+				}
+				&:last-child:not(:first-child) {
+					border-bottom-right-radius: 10px;
+				}
+			}
+		}
+	}
+}

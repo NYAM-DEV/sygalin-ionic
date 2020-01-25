@@ -1,0 +1,201 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Nouveau prospect</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<div class="cent" [formGroup]="formgroup">
+		<ion-grid class="button-group">
+			<ion-row>
+				<ion-col>
+					<button ion-button round block (click)="listProspect()" class="large"><ion-icon name="list"></ion-icon>&nbsp;Liste</button>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+		<ion-card center>
+			<ion-card-header>
+				Informations sur le prospect
+				<hr>
+			</ion-card-header>
+			<ion-card-content>
+				<ion-item>
+					<ion-label floating color="primary" class="item item-input item-select">
+						<div class="input-label">
+							Civilité <span>*</span>
+						</div>
+					</ion-label>
+					<ion-select formControlName="civ" clearInput [ngClass]="{
+						'has-danger': invalidField('civ'),
+						'has-success': validField('civ')
+					      }">
+						<ion-option selected value="Mr">M.</ion-option>
+						<ion-option value="Mme">Mme</ion-option>
+						<ion-option value="Mlle">Mlle</ion-option>
+					</ion-select>
+				</ion-item>
+				<div *ngIf="invalidField('civ')" class="validator-error validation-summary-errors">
+					Le champ Civilité est obligatoire
+				</div>
+				<ion-item>
+					<ion-label floating color="primary">Nom <span>*</span></ion-label>
+					<ion-input type="text" formControlName="nom" clearInput  [ngClass]="{
+						'has-danger': invalidField('nom'),
+						'has-success': validField('nom')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('nom')"  class="validator-error validation-summary-errors">
+					Le champ Nom est obligatoire
+				</div>
+				<ion-item>
+					<ion-label floating color="primary">Prénom <span>*</span></ion-label>
+					<ion-input type="text" formControlName="prenom" clearInput [ngClass]="{
+						'has-danger': invalidField('prenom'),
+						'has-success': validField('prenom')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('prenom')"  class="validator-error validation-summary-errors">
+					Le champ Prenom est obligatoire
+				</div>
+				<ion-item>
+					<ion-label floating color="primary">Téléphone <span>*</span></ion-label>
+					<ion-input type="number" formControlName="tel" clearInput [ngClass]="{
+						'has-danger': invalidField('tel'),
+						'has-success': validField('tel')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('tel')"  class="validator-error validation-summary-errors">
+					Le champ Téléphone est obligatoire
+				</div>
+				<ion-item>
+					<ion-label color="primary" floating class="item item-input item-select">
+						Région <span>*</span>
+					</ion-label>
+					<ion-select formControlName="region" clearInput [ngClass]="{
+						'has-danger': invalidField('region'),
+						'has-success': validField('region')
+					      }">
+						<ion-option *ngFor="let r of _SYGALIN.regions" value="{{ r.id }}">{{ r.nom }}</ion-option>
+					</ion-select>
+				</ion-item>
+				<div *ngIf="invalidField('region')"  class="validator-error validation-summary-errors">
+					Le champ Région est obligatoire
+				</div>
+				<ion-item>
+					<ion-label color="primary" floating class="item item-input item-select">
+						Ville <span>*</span>
+					</ion-label>
+					<ionic-selectable
+						formControlName="ville"
+						item-content
+						[items]="villes"
+						itemValueField="id"
+						itemTextField="nom"
+						[canSearch]="true"
+						(onChange)="selectChangedVille($event)"
+						[ngClass]="{
+						'has-danger': invalidField('ville'),
+						'has-success': validField('ville')
+					      }">
+					</ionic-selectable>
+				</ion-item>
+				<div *ngIf="invalidField('ville')"  class="validator-error validation-summary-errors">
+					Le champ Ville est obligatoire
+				</div>
+				<ion-item *ngIf="!hideVille">
+					<ion-input type="text" formControlName="new_ville" clearInput placeholder="Saisir la ville ici" [ngClass]="{
+						'has-danger': invalidField('new_ville'),
+						'has-success': validField('new_ville')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('new_ville') && !hideVille"  class="validator-error validation-summary-errors">
+					Le champ Nouvelle ville est obligatoire
+				</div>
+				<ion-item>
+					<ion-label color="primary" floating class="item item-input item-select">
+						Quartier <span>*</span>
+					</ion-label>
+					<ionic-selectable
+						formControlName="quartier"
+						item-content
+						[items]="quartiers"
+						itemValueField="id"
+						itemTextField="nom"
+						[canSearch]="true"
+						[ngClass]="{
+						'has-danger': invalidField('quartier'),
+						'has-success': validField('quartier')
+					      }"
+						(onChange)="selectChangedQuartier($event)">
+					</ionic-selectable>
+				</ion-item>
+				<div *ngIf="invalidField('quartier') "  class="validator-error validation-summary-errors">
+					Le champ Quartier ville est obligatoire
+				</div>
+				<ion-item *ngIf="!hideQuartier">
+					<ion-input type="text" formControlName="new_quartier" clearInput [ngClass]="{
+						'has-danger': invalidField('new_quartier'),
+						'has-success': validField('new_quartier')
+					      }"
+							   placeholder="Saisir le quartier ici"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('new_quartier') "  class="validator-error validation-summary-errors">
+					Le champ Nouveau quartier est obligatoire
+				</div>
+				<ion-item>
+					<ion-label floating color="primary">Longitude <span>*</span></ion-label>
+					<ion-input type="text" formControlName="longitude" clearInput [ngClass]="{
+						'has-danger': invalidField('longitude'),
+						'has-success': validField('longitude')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('longitude') "  class="validator-error validation-summary-errors">
+					Le champ Longitude est obligatoire
+				</div>
+				<ion-item>
+					<ion-label floating color="primary">Latitude <span>*</span></ion-label>
+					<ion-input type="text" formControlName="latitude" clearInput  [ngClass]="{
+						'has-danger': invalidField('latitude'),
+						'has-success': validField('latitude')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('latitude') "  class="validator-error validation-summary-errors">
+					Le champ Latitude est obligatoire
+				</div>
+			</ion-card-content>
+		</ion-card>
+		<ion-card center>
+			<ion-card-header>
+				Informations sur le rendez-vous
+			</ion-card-header>
+			<ion-card-content>
+				<ion-item>
+					<ion-label floating color="primary">Date <span>*</span></ion-label>
+					<ion-datetime displayFormat="DD-MMMM-YYYY " formControlName="today" clearInput [ngClass]="{
+						'has-danger': invalidField('today'),
+						'has-success': validField('today')
+					      }">{{ today }}</ion-datetime>
+				</ion-item>
+				<div *ngIf="invalidField('today') "  class="validator-error validation-summary-errors">
+					Le champ Date est obligatoire
+				</div>
+				<ion-item>
+					<ion-label floating color="primary">Lieu <span>*</span></ion-label>
+					<ion-input type="text" formControlName="lieu"  clearInput [ngClass]="{
+						'has-danger': invalidField('lieu'),
+						'has-success': validField('lieu')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('lieu') "  class="validator-error validation-summary-errors">
+					Le champ Lieu est obligatoire
+				</div>
+			</ion-card-content>
+		</ion-card>
+		<div padding>
+			<button ion-button block (click)="onSubmit1()" class="rounded"><ion-icon name="cloud-upload"></ion-icon>&nbsp;Enregistrer</button>
+		</div>
+	</div>
+</ion-content>

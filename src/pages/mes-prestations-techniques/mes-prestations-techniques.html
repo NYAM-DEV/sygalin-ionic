@@ -1,0 +1,98 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>{{ title }}</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Glisser pour rafraîchir"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<ion-card [@listItemState]="'in'" *ngFor="let p of prestations">
+		<ion-card-content>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4>Ticket </ion-col>
+					<ion-col col-8>{{ p.num }} </ion-col>
+					<ion-col col-4>Type de prestation </ion-col>
+					<ion-col col-8>{{ p.intervNom | uppercase }} </ion-col>
+					<ion-col col-4>Secteur </ion-col>
+					<ion-col col-8>{{ p.secNom | uppercase }} </ion-col>
+					<ion-col col-4 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isRFVI()">PDV </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isRFVI()">{{ p.btqNom }} <span *ngIf="p.numdist!==null">({{p.numdist}})</span> </ion-col>
+					<ion-col col-4>Ouverture </ion-col>
+					<ion-col col-8> {{ _SYGALIN.momentjs(p.open_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss") }} </ion-col>
+					<ion-col col-4>Nom du client  </ion-col>
+					<ion-col col-8> {{ p.nom_abonne | uppercase }} </ion-col>
+					<ion-col col-4>Tél. du client  </ion-col>
+					<ion-col col-8> {{ p.tel_abonne | uppercase }} </ion-col>
+					<ion-col col-4>Carte  </ion-col><!--<ion-col col-4>Ville  </ion-col>
+					<ion-col col-8>{{ p.ville }}</ion-col>-->
+					<ion-col ion-text color='primary' col-8> {{ p.carte }} </ion-col>
+
+					<ion-col col-4>Quartier  </ion-col>
+					<ion-col col-8>{{ p.quartier | uppercase }}</ion-col>
+					<ion-col col-4 *ngIf="false">Technicien  </ion-col>
+					<ion-col col-8 *ngIf="false">{{ p.tech }}</ion-col>
+					<ion-col col-4 *ngIf="p.label">Moyen de paiement  </ion-col>
+					<ion-col col-8 *ngIf="p.label"><span [ngStyle]="{'color': p.couleur}">{{ p.label }}</span></ion-col>
+					<ion-col col-4 *ngIf="p.label">ID transaction</ion-col>
+					<ion-col col-8 *ngIf="p.label">
+						<span *ngIf="!checkedID || !checkedID.includes(p.num)">{{ p.ref_payement }}</span>
+						<span *ngIf="checkedID && checkedID.includes(p.num)" color="secondary">{{ p.ref_payement }}&nbsp;<ion-icon name="checkmark-circle-outline" color="secondary"></ion-icon></span>
+						<button *ngIf="(!checkedID || !checkedID.includes(p.num)) && (_SYGALIN.isRFVI()|| _SYGALIN.isRAA()) && p.state==0" ion-button (click)="verifyID(p)" class="rounded thiny">Vérifier</button>
+					</ion-col>
+					<ion-col col-4>Etat </ion-col>
+					<ion-col col-8 *ngIf="p.state==0" ion-text color="warning" class=" bold">EN COURS...</ion-col>
+					<ion-col col-8 *ngIf="p.state==1" ion-text color="secondary" class="bold">
+						TRAIT&Eacute;  /
+						<span *ngIf="p.paye=='0'" ion-text color="warning">  NON PAY&Eacute;</span>
+						<span *ngIf="p.paye=='1'" ion-text color="secondary">  PAY&Eacute;</span>
+					</ion-col>
+					<ion-col col-8 *ngIf="p.state==-1" ion-text color="danger" class="bold">REJET&Eacute; </ion-col>
+					<ion-col col-4 color='danger' *ngIf="p.state==-1">Motif de rejet</ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="p.state==-1">
+						<p align="justify"><em>{{ p.motif }}</em></p>
+					</ion-col>
+					<ion-col col-4>Montant</ion-col>
+					<ion-col col-8 ion-text color='danger'> {{ p.prix | number :"1.0-0" }} XAF </ion-col>
+					<ion-col col-4 *ngIf="p.user_offert!=0">Offert par</ion-col>
+					<ion-col col-8 *ngIf="p.user_offert!=0">
+						{{ p.user_offert | uppercase }}
+					</ion-col>
+					<ion-col col-4 *ngIf="p.user_offert!=0">Motif</ion-col>
+					<ion-col col-8 *ngIf="p.user_offert!=0">
+						{{ p.motif }}
+					</ion-col>
+					<ion-col col-4 *ngIf="p.close_date">Fermeture </ion-col>
+					<ion-col col-8 *ngIf="p.close_date"> {{ _SYGALIN.momentjs(p.close_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss") }} </ion-col>
+					<!--<ion-col col-12 *ngIf="(_SYGALIN.isRAA() || _SYGALIN.isRFVI()) && p.state==0">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button block (click)="presentConfirm(r, 'validate')" color="secondary" class="large"><ion-icon name="thumbs-up" start>  </ion-icon> &nbsp; Valider </button>
+								</ion-col>
+								<ion-col>
+									<button ion-button block (click)="presentConfirm(r, 'reject')" color="danger" class="large"> Rejeter &nbsp; <ion-icon name="thumbs-down" end></ion-icon></button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>-->
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card *ngIf="!(prestations && prestations.length)">
+		<ion-card-content class="text-error-msg">
+			Aucune prestation technique trouv&eacute;e...
+		</ion-card-content>
+	</ion-card>
+</ion-content>

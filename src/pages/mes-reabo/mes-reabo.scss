@@ -1,0 +1,30 @@
+page-mes-reabo {
+	ion-refresher {
+		background-color: white;
+	}
+	ion-content{
+		background: rgb(225, 227, 248) !important;
+	}
+	.card-ios{
+		border-radius: 20px;
+	}
+
+	.text-error-msg
+	{
+		font-weight: lighter;
+		font-size: 1.8em;
+	}
+
+	.header-text{
+		font-size: 1.6em;
+	}
+
+	[col-4]{
+		font-weight: lighter;
+		text-transform: uppercase;
+	}
+
+	[col-8]{
+		text-transform: uppercase;
+	}
+}

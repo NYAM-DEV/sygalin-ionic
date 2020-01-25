@@ -1,0 +1,18 @@
+<!--
+  Generated template for the WeeklyCommissionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+	<ion-navbar color="primary">
+		<ion-title *ngIf="week!='S0'">Commissions semaine {{ week }}</ion-title>
+		<ion-title *ngIf="week=='S0'">Commissions du mois</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding >
+	<iframe *ngIf="pdfLink | pdfview" [src]="pdfLink | pdfview:'100'" width="100%" height="100%"
+			frameborder="0"></iframe>
+	<!--<div [innerHTML]="view"></div>-->
+</ion-content>

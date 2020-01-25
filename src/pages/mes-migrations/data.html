@@ -1,0 +1,61 @@
+<ion-row *ngIf="r.type==3">
+  <ion-col col-4>Ticket</ion-col>
+  <ion-col col-8>{{ r.numTicket }} </ion-col>
+  <ion-col col-4>Ouverture</ion-col>
+  <ion-col col-8> {{_SYGALIN.momentjs(r.open_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss") }} </ion-col>
+  <ion-col col-4>Type</ion-col>
+  <ion-col col-8 *ngIf="r.type==3"> Suspension </ion-col>
+  <ion-col col-4>Commentaire</ion-col>
+  <ion-col ion-text color='primary' col-8> {{ r.commentaire }} </ion-col>Abonné
+  <ion-col col-4>Decodeur</ion-col>
+  <ion-col ion-text color='primary' col-8> {{ r.decodeur }} </ion-col>
+  <ion-col col-4>Abonné</ion-col>
+  <ion-col ion-text color='primary' col-8> {{ r.abonne }} </ion-col>
+  <ion-col col-4>Btq Nom</ion-col>
+  <ion-col ion-text color='primary' col-8> {{ r.btqNom }} </ion-col>
+  <ion-col col-4>Cuser</ion-col>
+  <ion-col ion-text color='primary' col-8> {{ r.cuser }} </ion-col>
+  <ion-col col-4>Etat</ion-col>
+  <ion-col col-8 *ngIf="r.state==0" ion-text color="warning" class=" bold">EN COURS...</ion-col>
+  <ion-col col-4 *ngIf="r.state==0">Chez</ion-col>
+  <ion-col col-8 *ngIf="r.state==0" ion-text color="warning" class=" bold">{{ r.role}}</ion-col>
+  <ion-col col-8 *ngIf="r.state==1" ion-text color="secondary" class="bold">TRAIT&Eacute;</ion-col>
+  <ion-col col-8 *ngIf="r.state==-1" ion-text color="danger" class="bold">REJET&Eacute;</ion-col>
+  <ion-col col-4 *ngIf="r.motif">Motif</ion-col>
+  <ion-col col-8 *ngIf="r.motif" ion-text color='danger'> {{r.motif}} </ion-col>
+  <ion-col col-4 *ngIf="r.state!=0">Fermeture</ion-col>
+  <ion-col col-8 *ngIf="r.state!=0" > {{_SYGALIN.momentjs(r.close_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss") }} </ion-col>
+</ion-row>
+<ion-row *ngIf="r.type==2">
+  <ion-col col-4>Ticket</ion-col>
+  <ion-col col-8>{{ r.numTicket }} </ion-col>
+  <ion-col col-4>Ouverture</ion-col>
+  <ion-col col-8> {{_SYGALIN.momentjs(r.open_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss") }} </ion-col>
+  <ion-col col-4>Type</ion-col>
+  <ion-col col-8 *ngIf="r.type==2"> Modification </ion-col>
+  <ion-col col-4>Carte</ion-col>
+  <ion-col ion-text color='primary' col-8> {{ r.carte }} </ion-col>
+  <ion-col col-4 *ngIf="r.formule">Formule 1</ion-col>
+  <ion-col col-8 *ngIf="r.formule"> {{ r.formule}} </ion-col>
+  <ion-col col-4 *ngIf="r.option">Option 1</ion-col>
+  <ion-col col-8 *ngIf="r.option"> {{ r.option }} </ion-col>
+  <ion-col col-4 *ngIf="r.formule1">Formule 2</ion-col>
+  <ion-col col-8 *ngIf="r.formule1"> {{ r.formule1}} </ion-col>
+  <ion-col col-4 *ngIf="r.option1">Option 2</ion-col>
+  <ion-col col-8 *ngIf="r.option1"> {{ r.option1 }} </ion-col>
+  <ion-col col-4>Btq Nom</ion-col>
+  <ion-col ion-text color='primary' col-8> {{ r.btqNom }} </ion-col>
+  <ion-col col-4>Cuser</ion-col>
+  <ion-col ion-text color='primary' col-8> {{ r.cuser }} </ion-col>
+  <ion-col col-4>Etat</ion-col>
+  <ion-col col-8 *ngIf="r.state==0" ion-text color="warning" class=" bold">EN COURS...</ion-col>
+  <ion-col col-4 *ngIf="r.state==0">Chez</ion-col>
+  <ion-col col-8 *ngIf="r.state==0" ion-text color="warning" class=" bold">{{ r.role}}</ion-col>
+  <ion-col col-8 *ngIf="r.state==1" ion-text color="secondary" class="bold">TRAIT&Eacute;</ion-col>
+  <ion-col col-8 *ngIf="r.state==-1" ion-text color="danger" class="bold">REJET&Eacute;</ion-col>
+  <ion-col col-4 *ngIf="r.motif">Motif</ion-col>
+  <ion-col col-8 *ngIf="r.motif" ion-text color='danger'> {{r.motif}} </ion-col>
+  <ion-col col-4 *ngIf="r.state!=0">Fermeture</ion-col>
+  <ion-col col-8 *ngIf="r.state!=0" > {{_SYGALIN.momentjs(r.close_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss") }} </ion-col>
+
+</ion-row>

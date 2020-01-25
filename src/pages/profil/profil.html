@@ -1,0 +1,91 @@
+<!--
+  Generated template for the ProfilPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+	<ion-navbar  color="primary">
+		<button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Modifier mon profil</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<ion-card  class="alert-card" style="padding: 0 !important; background-color:  #e85e5e; border-radius: 20px">
+		<ion-card-content style="margin: 0 !important; padding: 0">
+			<ion-grid style="margin: 0 !important;">
+				<ion-row>
+					<ion-col col-2="">
+						<ion-icon name="alert" color="text-light" style="font-size: 60px; "></ion-icon>
+					</ion-col>
+					<ion-col col-10="">
+						<p align="justify" style="color: #fff; padding-right: 9px">
+							Vous serez automatiquement déconnecté(e) après modification de votre mot de passe
+						</p>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card>
+		<ion-card-header>
+			Votre profil
+		</ion-card-header>
+		<ion-card-content>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-6>Nom :</ion-col>
+					<ion-col col-6>{{ uNom }} </ion-col>
+					<ion-col col-6>Cuser :</ion-col>
+					<ion-col col-6>{{ cuser }} </ion-col>
+					<ion-col col-6>Tél.  :</ion-col>
+					<ion-col col-6 > {{tel}} </ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+
+	<form class="cent" [formGroup]="formgroup">
+		<ion-card>
+			<ion-card-header>Modification du mot du passe</ion-card-header>
+			<ion-card-content>
+				<ion-item>
+					<ion-label color="primary" floating>Ancien mot de passe <span>*</span></ion-label>
+					<ion-input formControlName="pwd1" type="password"  [ngClass]="{
+						'has-danger': invalidField('pwd1'),
+						'has-success': validField('pwd1')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('pwd1') " class="validator-error validation-summary-errors">
+					Ce champ est obligatoire
+				</div>
+				<ion-item>
+					<ion-label color="primary" floating >Nouveau mot de passe <span>*</span></ion-label>
+					<ion-input formControlName="pwd2" type="password" [ngClass]="{
+						'has-danger': invalidField('pwd2'),
+						'has-success': validField('pwd2')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('pwd2') " class="validator-error validation-summary-errors">
+					Ce champ est obligatoire
+				</div>
+				<ion-item>
+					<ion-label color="primary" floating >Confirmer le mot de passe <span>*</span></ion-label>
+					<ion-input formControlName="pwd3" type="password" [ngClass]="{
+						'has-danger': invalidField('pwd3'),
+						'has-success': validField('pwd3')
+					      }"></ion-input>
+				</ion-item>
+				<div *ngIf="invalidField('pwd3') " class="validator-error validation-summary-errors">
+					Ce champ est obligatoire / Ne correspond pas au nouveau mot de passe
+				</div>
+			</ion-card-content>
+		</ion-card>
+		<button ion-button center outline class="rounded" (click)="onSubmit()" >Modifier</button>
+
+	</form>
+
+</ion-content>

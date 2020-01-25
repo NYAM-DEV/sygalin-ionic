@@ -1,0 +1,187 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<ion-title> CMD B</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content >
+	<form [formGroup]="formgroup">
+	<ion-card>
+		<ion-card-content>
+			<ion-item>
+				<ion-label color="primary" stacked>Référence de la commande</ion-label>
+				<ion-input type="text" value="{{ refCmd }}" readonly></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label floating color="primary">Date de Facturation <span>*</span></ion-label>
+				<ion-datetime formControlName="today"  displayFormat="DD-MMMM-YYYY" ></ion-datetime>
+			</ion-item>
+		</ion-card-content>
+	</ion-card>
+
+	<ion-card>
+		<ion-card-content >
+			<ion-grid>
+				<ion-item>
+					<ion-label floating color="primary">
+						Kits
+					</ion-label>
+					<ion-select  clearInput formControlName="kit"  >
+						<ion-option value="0" selected="true" >Aucune</ion-option>
+						<ion-option *ngFor="let k of localKits" value="{{k.id}}">{{k.libelle | uppercase}}</ion-option>
+					</ion-select>
+				</ion-item>
+				<span ion-button float-left icon-left clear end (click)="addNewKits()" >
+					<ion-icon name="add"></ion-icon>
+					Ajouter
+				</span>
+				<div *ngFor="let s of selectedKits">
+					<ion-item >
+						<ion-label floating color="primary">{{s.libelle}}</ion-label>
+						<ion-input  formControlName="Qte_{{s.id}}" type="number" ></ion-input>
+					</ion-item>
+					<span float-right ion-button icon-left clear (click)="removeKits(s.id)" >
+					  <ion-icon name="close" end ></ion-icon>
+					  Supprimer
+					</span>
+				</div>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card>
+		<ion-card-header text-center>
+			ETAT de STOCK
+		</ion-card-header>
+		<ion-card-content>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4> Noms</ion-col>
+					<ion-col col-4> Quantité</ion-col>
+					<ion-col col-4> déclaration</ion-col>
+
+					<ion-col col-4> Kit installation parabole LNB + Câble</ion-col>
+					<ion-col col-4> 12</ion-col>
+					<ion-col col-4> <ion-input type="number"></ion-input> </ion-col>
+
+					<ion-col col-4> Paraboles acier 060 cm + Support fixation</ion-col>
+					<ion-col col-4> 12</ion-col>
+					<ion-col col-4> <ion-input type="number"></ion-input> </ion-col>
+
+					<ion-col col-4> Smart carte Afrique</ion-col>
+					<ion-col col-4> 12</ion-col>
+					<ion-col col-4> <ion-input type="number"></ion-input> </ion-col>
+
+					<ion-col col-4> Terminal SX2</ion-col>
+					<ion-col col-4> 12</ion-col>
+					<ion-col col-4> <ion-input type="number"></ion-input> </ion-col>
+
+					<ion-col col-4> Terminal Z4	</ion-col>
+					<ion-col col-4> 12</ion-col>
+					<ion-col col-4> <ion-input type="number"></ion-input> </ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card>
+		<ion-card-header text-center>
+			Décodeurs pas encore activés
+		</ion-card-header>
+		<ion-card-content>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-6> Référence </ion-col>
+					<ion-col col-6> Action </ion-col>
+					<ion-col col-12> {{ "Terminal Z4"| uppercase }}</ion-col>
+
+					<ion-col col-8>23800308328089</ion-col>
+					<ion-col col-4> <ion-checkbox color="primary" checked="false"></ion-checkbox></ion-col>
+
+					<ion-col col-8>23800308328089</ion-col>
+					<ion-col col-4> <ion-checkbox color="primary" checked="false"></ion-checkbox></ion-col>
+
+					<ion-col col-8>23800308328089</ion-col>
+					<ion-col col-4> <ion-checkbox color="primary" checked="false"></ion-checkbox></ion-col>
+
+					<ion-col col-8>23800308328089</ion-col>
+					<ion-col col-4> <ion-checkbox color="primary" checked="false"></ion-checkbox></ion-col>
+
+					<ion-col col-12 text-capitalize > {{"Smart carte Afrique"| uppercase}} </ion-col>
+					<ion-col col-12 text-center ion-text color="warning"> Aucun Element En stock </ion-col>
+
+					<ion-col col-12> {{ "Terminal SX2"| uppercase}} </ion-col>
+					<ion-col col-12 text-center ion-text color="warning"> Aucun Element En stock </ion-col>
+
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card >
+		<ion-card-header >
+			{{ "achat d'accessoires"|uppercase }}
+			<button  (click)="showAccessoirefn()" class="btn"  color="primary">
+				<ion-icon [name]=" showAccessoire? 'arrow-dropdown':'arrow-dropup'"></ion-icon>
+			</button>
+
+		</ion-card-header>
+		<ion-card-content *ngIf="showAccessoire">
+			<ion-item>
+				<ion-label floating color="primary" class="item item-input item-select">
+					<div class="input-label">
+						Accessoires
+					</div>
+				</ion-label>
+				<ion-select  clearInput >
+					<ion-option value="0" selected="true" >Aucune</ion-option>
+					<ion-option *ngFor="let k of _SYGALIN.kits" value="{{k.id}}">{{k.libelle | uppercase}}</ion-option>
+				</ion-select>
+			</ion-item>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-3> Noms </ion-col>
+					<ion-col col-3> Quantité </ion-col>
+					<ion-col col-3> Déclaration </ion-col>
+					<ion-col col-3> Stock </ion-col>
+
+					<ion-col col-3> Bloc Alimentation </ion-col>
+					<ion-col col-3> <ion-input type="number"></ion-input> </ion-col>
+					<ion-col col-3> <ion-input type="number"></ion-input></ion-col>
+					<ion-col col-3> 5 </ion-col>
+
+					<ion-col col-3> Disque dur HD Z4</ion-col>
+					<ion-col col-3> <ion-input type="number"></ion-input> </ion-col>
+					<ion-col col-3> <ion-input type="number"></ion-input></ion-col>
+					<ion-col col-3> 5 </ion-col>
+
+					<ion-col col-3> Terminal Z4</ion-col>
+					<ion-col col-3> <ion-input type="number"></ion-input> </ion-col>
+					<ion-col col-3> <ion-input type="number"></ion-input></ion-col>
+					<ion-col col-3> 5 </ion-col>
+
+					<ion-col col-3> Parafoudre </ion-col>
+					<ion-col col-3> <ion-input type="number"></ion-input> </ion-col>
+					<ion-col col-3> <ion-input type="number"></ion-input></ion-col>
+					<ion-col col-3> 5 </ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+
+	<ion-card>
+		<ion-card-content>
+				<ion-grid class="button-group">
+					<ion-row>
+						<ion-col>
+							<button ion-button block round  color="secondary"
+									class="medium" (click)="simuler()">
+								Simuler
+							</button>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			<ion-item *ngIf="showTotal">
+				<ion-input type="number" readonly></ion-input>
+			</ion-item>
+		</ion-card-content>
+	</ion-card>
+	</form>
+</ion-content>

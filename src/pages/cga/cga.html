@@ -1,0 +1,91 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>CGA Postpayé</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Glissez pour rafraîchir"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<ion-card [@listItemState]="'in'" *ngFor="let r of reqCga">
+		<ion-card-content style="margin: 0px;">
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4>Ticket</ion-col>
+					<ion-col col-8 *ngIf="r.tkNum" >{{ r.tkNum}} </ion-col>
+					<ion-col col-8 *ngIf="r.num" >{{ r.num }} </ion-col>
+					<ion-col col-4>PDV</ion-col>
+					<ion-col col-8 >{{ r.nom }} </ion-col>
+					<ion-col col-4>Numdist</ion-col>
+					<ion-col col-8> {{ r.numdist}} </ion-col>
+					<ion-col col-4>Telephone</ion-col>
+					<ion-col col-8> {{r.bTel }} </ion-col>
+					<ion-col col-4 *ngIf="r.label">Service </ion-col>
+					<ion-col ion-text color='primary' col-8 *ngIf="r.label">{{r.label}} </ion-col>
+					<ion-col col-4 *ngIf="r.n_versement">Reference</ion-col>
+					<ion-col col-8 *ngIf="r.n_versement">{{r.n_versement}}</ion-col>
+					<ion-col col-4 *ngIf="r.fichier"> fichier</ion-col>
+					<ion-col col-8 *ngIf="r.fichier" > {{ r.fichier}}<ion-icon name="eye" (click)="getUrlFile(r.fichier)" ></ion-icon></ion-col>
+					<ion-col col-4>Montant</ion-col>
+					<ion-col col-8 ion-text color='danger'>{{r.montant| number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4>Ouverture</ion-col>
+					<ion-col col-8>{{ _SYGALIN.momentjs(r.open_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss")}} </ion-col>
+					<button ion-button (click)="sayOK(r)" small >Memo details</button>
+					<ion-col col-12 *ngIf="(_SYGALIN.isDFIN() || _SYGALIN.isCONTROL() || _SYGALIN.isSUPER())  && r.tState==0">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button block (click)="presentConfirmPost(r, 'validate')" color="secondary"
+											class="medium">
+										<ion-icon name="thumbs-up" start>&nbsp;</ion-icon>
+									</button>
+								</ion-col>
+								<ion-col>
+									<button ion-button block (click)="presentConfirm(r, 'reject')" color="danger"
+											class="medium"> &nbsp;
+										<ion-icon name="thumbs-down" end></ion-icon>
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+					<ion-col col-12 *ngIf="_SYGALIN.isCM()">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button block (click)="backToFin(r)" color="danger"
+											class="medium"> &nbsp;
+										<ion-icon name="arrow-round-back" start ></ion-icon>
+										Finance
+									</button>
+								</ion-col>
+								<ion-col>
+									<button ion-button block round (click)="presentPromptCm(r,'post')" color="secondary"
+											class="medium">
+										<ion-icon name="thumbs-up" start>&nbsp;</ion-icon> Créditer
+									</button>
+								</ion-col>
+
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+
+	<ion-card *ngIf="!(reqCga && reqCga.length)">
+		<ion-card-content class="text-error-msg">
+			Aucune Recharge CGA postpayée trouv&eacute;e...
+		</ion-card-content>
+	</ion-card>
+</ion-content>

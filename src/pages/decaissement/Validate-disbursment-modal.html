@@ -1,0 +1,76 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button icon-only (click)="dismiss()">
+			<ion-icon name="arrow-back"></ion-icon>
+		</button>
+		<ion-title>Décaissement: Traitement </ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content  class="cent" [formGroup]="formgroup_gen" >
+	<ion-card  *ngFor="let r of Decaissements_detail let i=index">
+		<ion-card-content style="margin: 0px;">
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4 *ngIf="r.objet && (_SYGALIN.isDGEN() || _SYGALIN.isPDG()) ">Motif</ion-col>
+					<ion-col col-8 *ngIf="r.objet && (_SYGALIN.isDGEN() || _SYGALIN.isPDG())">{{ r.objet }} </ion-col>
+
+					<ion-col col-4 *ngIf="r.montant" >Montant demandé </ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="r.montant" >{{r.montant | number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4 *ngIf="r.montantM" >Montant Validé </ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="r.montantM" >{{r.montantM | number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4 *ngIf="r.pj"> fichier</ion-col>
+					<ion-col col-8 *ngIf="r.pj" (click)="getUrlFile(r.pj)"> <button ion-button small round color="primary"> <ion-icon name="document" ></ion-icon> &nbsp; Piece jointe</button></ion-col>
+				</ion-row>
+				<ion-row>
+					<ion-item>
+						<ion-label  floating> Montant Validé <span>*</span></ion-label>
+						<ion-input type="number" formControlName="montant_{{i++1}}" (ionChange)="refrech()" ></ion-input>
+					</ion-item>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card  *ngIf="_SYGALIN.isDGEN() || _SYGALIN.isPDG()">
+		<ion-card-header  text-center >
+			Traitement du décaissement
+			<hr>
+		</ion-card-header>
+		<ion-card-content style="margin: 0px;">
+			<ion-grid>
+				<ion-row>
+					<ion-row >
+						<ion-col col-7>
+							MONTANT TOTAL
+						</ion-col>
+						<ion-col col-5>
+							<span style="color: red">{{ montanTotal | number :"1.0-0" }} XAF</span>
+						</ion-col>
+					</ion-row>
+
+
+					<ion-col col-12 *ngIf="(_SYGALIN.isDGEN() || _SYGALIN.isPDG()) ">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button block (click)="presentPrompt(Decaissements_detail)"  color="secondary"
+											class="medium">
+										<ion-icon name="thumbs-up" start>&nbsp;</ion-icon>
+										Valider
+									</button>
+								</ion-col>
+								<ion-col>
+									<button ion-button block  color="danger" class="medium" (click)="presentConfirm(Decaissements_detail[0],'reject')">
+										<ion-icon name="thumbs-down" end>&nbsp;</ion-icon>
+										Invalider &nbsp;
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+
+</ion-content>

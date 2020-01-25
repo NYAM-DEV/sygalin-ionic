@@ -1,0 +1,74 @@
+
+<ion-header>
+  <ion-navbar color="primary" >
+	  <button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+		  <ion-icon name="menu"></ion-icon>
+	  </button>
+	  <ion-title>Mémos</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="cent">
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Glissez pour rafraîchir"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<ion-card  [@listItemState]="'in'" *ngFor="let r of mem">
+		<ion-card-content style="margin: 0px;">
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4 *ngIf="r.bNom">PDV</ion-col>
+					<ion-col col-8 *ngIf="r.bNom">{{ r.bNom }} </ion-col>
+					<ion-col col-4 *ngIf="r.numdist">Numdist</ion-col>
+					<ion-col col-8 *ngIf="r.numdist"> {{ r.numdist}} </ion-col>
+					<ion-col col-4>Code Memo</ion-col>
+					<ion-col col-8>{{ r.code }}</ion-col>
+					<ion-col col-4 *ngIf="r.tpNom" >Type memo</ion-col>
+					<ion-col col-8 *ngIf="r.tpNom" >{{ r.tpNom }}</ion-col>
+					<ion-col col-4 *ngIf="r.montantCGA" >Montant CGA</ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="r.montantCGA" >{{r.montantCGA | number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4 *ngIf="r.montantMat" >Montant MAT</ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="r.montantMat" >{{r.montantMat | number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4 *ngIf="r.next_user">En Traitement par </ion-col>
+					<ion-col col-8 *ngIf="r.next_user==14"> CONTROLEUR </ion-col>
+					<ion-col col-8 *ngIf="r.next_user==16"> SUPERVISEUR </ion-col>
+					<ion-col col-8 *ngIf="r.next_user==18"> DIRECTION FINANCIERE </ion-col>
+					<ion-col col-4 *ngIf="r.motivation"> Motivation</ion-col>
+					<ion-col col-8 *ngIf="r.motivation">{{ r.motivation }} </ion-col>
+					<ion-col col-4>Date Ouverture</ion-col>
+					<ion-col col-8>{{ _SYGALIN.momentjs(r.date).add(1,'h').format("DD MMMM YYYY ")}} </ion-col>
+					<ion-col col-4>Date Payement</ion-col>
+					<ion-col col-8 ion-text color='danger'>{{ _SYGALIN.momentjs(r.date_paiement).add(1,'h').format("DD MMMM YYYY ")}} </ion-col>
+					<ion-col col-12 *ngIf="(_SYGALIN.isCONTROL() || _SYGALIN.isSUPER() || _SYGALIN.isDFIN()) && memo ">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+										<button ion-button block (click)="presentConfirm(r, 'validate')" color="secondary"
+											class="medium">
+										<ion-icon name="thumbs-up" start>&nbsp;</ion-icon>
+									</button>
+								</ion-col>
+								<ion-col>
+									<button ion-button block (click)="RejectMemo(r)" color="danger"
+											class="medium"> &nbsp;
+										<ion-icon name="thumbs-down" end></ion-icon>
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card *ngIf="!(mem && mem.length)">
+		<ion-card-content class="text-error-msg">
+			Aucun Mémo trouvé...
+		</ion-card-content>
+	</ion-card>
+</ion-content>

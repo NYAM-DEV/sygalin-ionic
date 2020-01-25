@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Traitement des Justifs</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+	<ion-card  *ngFor="let r of Justifies">
+		<ion-card-content style="margin: 0px;">
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4 *ngIf="r.date">Ouverture</ion-col>
+					<ion-col col-8>{{ _SYGALIN.momentjs(r.date).add(1,'h').format("DD MMMM YYYY ")}} </ion-col>
+					<ion-col col-4 *ngIf="r.num">Ticket</ion-col>
+					<ion-col col-8 *ngIf="r.num"> {{ r.num }} </ion-col>
+					<ion-col col-4 *ngIf="r.userName" >Initateur </ion-col>
+					<ion-col col-8  *ngIf="r.userName" >{{r.userName}} </ion-col>
+					<ion-col col-4 *ngIf="r.role" >Role </ion-col>
+					<ion-col col-8  *ngIf="r.role" >{{ r.role }} </ion-col>
+					<ion-col col-4 *ngIf="r.label" >Paiement par </ion-col>
+					<ion-col col-8  *ngIf="r.label" >{{r.label}} </ion-col>
+					<ion-col col-4 *ngIf="r.reference" >Reférence</ion-col>
+					<ion-col col-8  *ngIf="r.reference" >{{r.reference}} </ion-col>
+					<ion-col col-4 *ngIf="r.montant " >Montant justifié </ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="r.montant" >{{r.montant | number :"1.0-0"}} XAF </ion-col>
+					<div *ngFor="let file of myJson(r.document)" >
+						<ion-col col-4 *ngIf="r.document"> fichier</ion-col>
+						<ion-col col-8 *ngIf="r.document" (click)="getUrlFile(file)"> <button ion-button small round color="primary"> <ion-icon name="document" ></ion-icon> &nbsp; Piece jointe</button></ion-col>
+					</div>
+					<ion-col col-4 *ngIf="r.montantM && r.state!=-1" >Montant validé </ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="r.montantM && r.state!=-1" >{{r.montantM | number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4 *ngIf="r.montantM && r.state==1" >Etat </ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="r.montantM && r.state==1" > TRAITER </ion-col>
+					<ion-col col-4 *ngIf="r.state==-1 " >Etat </ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="r.state==-1" > {{ "rejeter"| uppercase}} </ion-col>
+					<ion-col col-12  >
+						<ion-grid class="button-group" *ngIf="r.etat==0">
+							<ion-row>
+								<ion-col>
+									<button ion-button block round  color="secondary" (click)="presentConfirm(r,'validate')"
+											class="medium">
+										Valider
+									</button>
+								</ion-col>
+								<ion-col>
+									<button ion-button block color="danger" class="medium" (click)="presentConfirm(r,'invalidate')"  >
+										Invalider
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+						<ion-item-divider color="item-bleu" *ngIf="r.etat==1">JUSTIF VALIDÉ</ion-item-divider>
+						<ion-item-divider color="warning" *ngIf="r.etat==-1">JUSTIF INVALIDÉ </ion-item-divider>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card>
+		<ion-card-content>
+			<ion-item-divider color="light">Retourné en caisse : {{rest}} XAF</ion-item-divider>
+			<ion-grid class="button-group">
+				<ion-row>
+					<ion-col>
+						<button ion-button block round color="secondary" class="medium" (click)="treatAll()" >
+							Traiter
+						</button>
+					</ion-col>
+					<ion-col *ngIf="rest!=0">
+						<button ion-button block round color="primary" class="medium" (click)="disbursmentDetailReaffect()" >
+							Affectation
+						</button>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+
+
+		</ion-card-content>
+	</ion-card>
+</ion-content>

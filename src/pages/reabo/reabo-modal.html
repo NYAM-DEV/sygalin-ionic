@@ -1,0 +1,27 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button icon-only (click)="dismiss()">
+			<ion-icon name="arrow-back"></ion-icon>
+		</button>
+		<ion-title>Réabo: Recherche</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content  class="cent">
+	<div >
+		<ion-card>
+			<ion-card-header>Résultats pour "<em>{{key}}</em>"</ion-card-header>
+			<ion-card-content>
+				<ion-list *ngIf="client.length">
+					<ion-item *ngFor="let cli of client" tappable (tap)="setForm(cli)">
+						{{ cli.nom_abo | uppercase }}<br>
+						Décodeur/Carte: <b>{{ cli.carte_abo }}</b>
+					</ion-item>
+				</ion-list>
+				<p *ngIf="!client.length" style="font-weight: lighter; font-size: 1.8em;">
+					Aucun résultat correspondant à la clé de recherche
+				</p>
+			</ion-card-content>
+		</ion-card>
+	</div>
+</ion-content>

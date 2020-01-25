@@ -1,0 +1,68 @@
+<!-- -->
+<ion-content padding class="animated fadeIn login auth-page">
+	<div class="login-content">
+
+		<!-- Logo -->
+		<div padding-horizontal text-center class="animated fadeInDown">
+			<div class="logo"></div>
+			<h2 ion-text class="text-primary">
+				<div  class="djab">
+					<img src="../../assets/images/C.png" alt="logo djabbama">
+				</div>
+				<div class="logo_cm"> <strong> SYGALIN TVSAT&reg;</strong>
+<!--					<img src="../../assets/imgs/Cameroon.png">-->
+				</div>
+				<div style="text-align: center;">
+					<span style="font-size: small"	>Version</span>
+					<img src="../../assets/imgs/canal.png" style="width: 20%">
+				</div>
+			</h2>
+		</div>
+		<br>
+		<br>
+		<!-- Login form -->
+		<form class="list-form" (ngSubmit)="validation()" [formGroup]="formgroup">
+			<ion-item>
+				<ion-label floating>
+					<ion-icon name="person" item-start class="text-primary"></ion-icon>
+					Login / Cuser
+				</ion-label>
+				<ion-input [(ngModel)]="login"  formControlName="login" type="text" autocapitalize="on"></ion-input>
+				<div *ngIf="formgroup.get('login').hasError('required') && formgroup.get('login').touched" >
+					<p class="err">*le login est obligatoire</p>
+				</div>
+			</ion-item>
+
+			<ion-item>
+				<ion-label floating>
+					<ion-icon name="lock" item-start class="text-primary"></ion-icon>
+					Mot de passe
+				</ion-label>
+				<ion-input type="password"  [(ngModel)]="password"   formControlName="password"></ion-input>
+				<div *ngIf="formgroup.get('password').hasError('required') && formgroup.get('password').touched" >
+					<p class=err>*le password est obligatoire</p>
+				</div>
+			</ion-item>
+		</form>
+
+		<p text-right ion-text color="secondary" tappable><strong></strong></p>
+
+		<div>
+			<br><br><br>
+			<button ion-button icon-start block (tap)="validation()" (click)="validation()" class="rounded large" color="secondary-1" size="large" round>
+				<ion-icon name="log-in"></ion-icon>
+				Connexion
+			</button>
+		</div>
+
+
+		<!-- Other links -->
+		<div text-center margin-top class="contat_us">
+			<p text-center ion-text color="secondary">CONTACT</p>
+			<hr>
+			<p >E-mail: support@sygalin.com </p>
+		</div>
+
+	</div>
+</ion-content>
+

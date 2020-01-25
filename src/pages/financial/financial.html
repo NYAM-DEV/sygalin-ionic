@@ -1,0 +1,69 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Recharge du compte financier</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content >
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Glissez pour rafraîchir"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<ion-card [@listItemState]="'in'" *ngFor="let r of reqfin">
+		<ion-card-content style="margin: 0px;">
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4>Ticket</ion-col>
+					<ion-col col-8 *ngIf="r.num" >{{ r.num }} </ion-col>
+					<ion-col col-4>PDV</ion-col>
+					<ion-col col-8 >{{ r.nom }} </ion-col>
+					<ion-col col-4 *ngIf="r.numdist">Numdist</ion-col>
+					<ion-col col-8 *ngIf="r.numdist"> {{ r.numdist}} </ion-col>
+					<ion-col col-4>Telephone</ion-col>
+					<ion-col col-8> {{r.bTel }} </ion-col>
+
+					<ion-col col-4>Service </ion-col>
+					<ion-col ion-text color='primary' col-8>{{r.label}} </ion-col>
+					<ion-col col-4>Reference</ion-col>
+					<ion-col col-8>{{r.n_versement}}</ion-col>
+					<ion-col col-4 *ngIf="r.fichier"> fichier</ion-col>
+					<ion-col col-8 *ngIf="r.fichier" (click)="getUrlFile(r.fichier)" > <button ion-button small round color="primary"> <ion-icon name="document" ></ion-icon> &nbsp; Piece jointe</button></ion-col>
+					<ion-col col-4>Montant</ion-col>
+					<ion-col col-8 ion-text color='danger'>{{r.montant| number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4>Ouverture</ion-col>
+					<ion-col col-8>{{ _SYGALIN.momentjs(r.open_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss")}} </ion-col>
+					<ion-col col-12 *ngIf="_SYGALIN.isDFIN()  && r.state==0">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button block (click)="presentConfirm(r, 'validate')" color="secondary"
+											class="medium">
+										<ion-icon name="thumbs-up" start>&nbsp;</ion-icon>
+									</button>
+								</ion-col>
+								<ion-col>
+									<button ion-button block (click)="presentConfirm(r, 'reject')" color="danger"
+											class="medium"> &nbsp;
+										<ion-icon name="thumbs-down" end></ion-icon>
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card *ngIf="!(reqfin && reqfin.length)">
+		<ion-card-content class="text-error-msg">
+			Aucune demande de recharge de compte financier trouv&eacute;e...
+		</ion-card-content>
+	</ion-card>
+</ion-content>

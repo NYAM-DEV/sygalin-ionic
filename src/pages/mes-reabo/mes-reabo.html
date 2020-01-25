@@ -1,0 +1,104 @@
+<ion-header>
+	<ion-navbar color='primary'>
+		<button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>{{ title }}</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Pull to refresh"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<ion-card [@listItemState]="'in'" *ngFor="let r of reabos">
+		<ion-card-content>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4>Ticket</ion-col>
+					<ion-col col-8>{{ r.numTicket}} </ion-col>
+					<ion-col col-4>Type</ion-col>
+					<ion-col col-8 *ngIf="r.type==3">UPGRADE </ion-col>
+					<ion-col col-8 *ngIf="r.type!=3">RÉABONNEMENT</ion-col>
+					<ion-col col-4 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isRFVI()">PDV</ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isRFVI()">{{ r.btqNom }} <span
+						*ngIf="r.numdist!==null">({{r.numdist}})</span></ion-col>
+					<ion-col col-4>Ouverture</ion-col>
+					<ion-col col-8> {{_SYGALIN.momentjs(r.open_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss")}} </ion-col>
+					<ion-col col-4>Nom</ion-col>
+					<ion-col col-8> {{r.nom_abo | uppercase }} </ion-col>
+					<ion-col col-4>Telephone</ion-col>
+					<ion-col col-8> {{r.telReabo1 }} </ion-col>
+					<ion-col col-4>Carte</ion-col>
+					<ion-col ion-text color='primary' col-8 *ngIf="r.carte_abo ; else Nodecodeur">{{r.carte_abo}} </ion-col>
+					<ng-template #Nodecodeur>
+						<ion-col ion-text color='danger' col-8 > Non renseignée </ion-col>
+					</ng-template>
+
+					<ion-col col-4>Dur&eacute;e</ion-col>
+					<ion-col col-8>{{r.duree}} mois</ion-col>
+					<ion-col col-4>Formule</ion-col>
+					<ion-col col-8 *ngIf="r.type!=3"> {{r.formule}} </ion-col>
+					<ion-col col-8 *ngIf="r.type==3"> {{'De '+r.formule+' à '+r.nFormule}} </ion-col>
+					<ion-col col-4 *ngIf="r.oFormule">Option</ion-col>
+					<ion-col col-8 *ngIf="r.oFormule"> {{r.oFormule}} </ion-col>
+					<ion-col col-4>Etat</ion-col>
+					<ion-col col-8 *ngIf="r.state==0" ion-text color="warning" class=" bold">EN COURS...</ion-col>
+					<ion-col col-8 *ngIf="r.state==1" ion-text color="secondary" class="bold">
+						TRAIT&Eacute; /
+						<span *ngIf="r.paye=='0'" ion-text color="warning">  NON PAY&Eacute;</span>
+						<span *ngIf="r.paye=='1'" ion-text color="secondary">  PAY&Eacute;</span>
+					</ion-col>
+					<ion-col col-8 *ngIf="r.state==-1" ion-text color="danger" class="bold">REJET&Eacute;</ion-col>
+					<ion-col col-4 color='danger' *ngIf="r.state==-1">Motif de rejet</ion-col>
+					<ion-col col-8 ion-text class="bold" color='danger' *ngIf="r.state==-1">
+						<p align="justify" class="bold"><em>{{ r.motif }}</em></p>
+					</ion-col>
+					<ion-col col-4 *ngIf="r.tpNom">Moyen de paiement  </ion-col>
+					<ion-col col-8 *ngIf="r.tpNom">{{ r.tpNom }}</ion-col>
+					<ion-col col-4 *ngIf=" r.mpLabel">Opérateur  </ion-col>
+					<ion-col col-8 *ngIf=" r.mpLabel"><span [ngStyle]="{'color': r.couleur}">{{ r.mpLabel }}</span></ion-col>
+					<ion-col col-4 *ngIf=" r.mpLabel">ID transaction  </ion-col>
+					<ion-col col-8 *ngIf="r.mpLabel">
+						<span *ngIf="!checkedID || (checkedID && !checkedID.includes(r.numTicket))">{{ r.id_trans }}</span>
+						<span *ngIf="checkedID && checkedID.includes(r.numTicket)" color="secondary">{{ r.id_trans }}&nbsp;<ion-icon name="checkmark-circle-outline" color="secondary"></ion-icon></span>
+						<button *ngIf="(!checkedID || (checkedID && !checkedID.includes(r.numTicket))) && (_SYGALIN.isRAA() || _SYGALIN.isRFVI()) && r.state=='0'" ion-button (click)="verifyID(r)" class="rounded thiny">Vérifier</button>
+					</ion-col>
+					<ion-col col-4>Montant</ion-col>
+					<ion-col col-8 ion-text color='danger'> {{r.montant| number :"1.0-0"}} XAF</ion-col>
+					<ion-col col-4 *ngIf="r.close_date">Fermeture</ion-col>
+					<ion-col col-8 *ngIf="r.close_date"> {{_SYGALIN.momentjs(r.close_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss")}} </ion-col>
+					<ion-col col-12 *ngIf="(_SYGALIN.isRAA() || _SYGALIN.isRFVI()) && r.state==0">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button block (click)="presentConfirm(r, 'validate')" color="secondary"
+											class="medium">
+										<ion-icon name="thumbs-up" start>&nbsp;</ion-icon>
+										Valider
+									</button>
+								</ion-col>
+								<ion-col>
+									<button ion-button block (click)="presentConfirm(r, 'reject')" color="danger"
+											class="medium">Rejeter &nbsp;
+										<ion-icon name="thumbs-down" end></ion-icon>
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<ion-card *ngIf="!(reabos && reabos.length)">
+		<ion-card-content class="text-error-msg">
+			Aucun reabonnement trouv&eacute;...
+		</ion-card-content>
+	</ion-card>
+</ion-content>

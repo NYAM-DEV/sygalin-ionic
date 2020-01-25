@@ -1,0 +1,387 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>{{title}}</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<ng-container *ngIf="ready">
+		<ng-container *ngIf="_SYGALIN.isPDG() && data.requestsO!==undefined && data.requestsO!==nulll && _SYGALIN.jsonParse(data.requestsO[0].users_validate).indexOf(_SYGALIN.getCurUser().id)<0">
+			<ng-container [formGroup]="formgroup">
+				<ion-card >
+					<ion-card-header>
+						<h4>MOYEN DE DÉPLACEMENT</h4>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-grid *ngFor="let r of data.requests; let i=index" style="padding-bottom: 0 !important;"  style="border-bottom: 1px solid grey">
+							<ion-row>
+								<ion-col col-12>
+									<ion-item>
+										<ion-label color="primary" floating>Déplacement par </ion-label>
+										<ion-input type="text" formControlName="moyen_{{i++1}}" readonly></ion-input>
+									</ion-item>
+								</ion-col>
+
+								<ion-col col-12>
+									<ion-item>
+										<ion-label color="primary" floating>Agence de transport <span>*</span></ion-label>
+										<ion-input type="text" *ngIf="r.donne==0" formControlName="agence_{{i++1}}"    [ngClass]="{
+						'has-danger': invalidField('agence_'+(i++1)),
+						'has-success': validField('agence_'+(i++1))
+					      }"></ion-input>
+										<ion-input type="text" *ngIf="r.donne==1" readonly formControlName="agence_{{i++1}}"    [ngClass]="{
+						'has-danger': invalidField('agence_'+(i++1)),
+						'has-success': validField('agence_'+(i++1))
+					      }"></ion-input>
+									</ion-item>
+									<div *ngIf="invalidField('agence_'+(i++1))"  class="validator-error validation-summary-errors">
+										Ce champ est obligatoire
+									</div>
+								</ion-col>
+
+								<ion-col col-12>
+									<ion-item>
+										<ion-label color="primary" floating>Départ <span>*</span></ion-label>
+										<ion-input type="text" *ngIf="r.donne==0"  formControlName="ville_d_{{i++1}}"  [ngClass]="{
+						'has-danger': invalidField('ville_d_'+(i++1)),
+						'has-success': validField('ville_d_'+(i++1))
+					      }"></ion-input>
+										<ion-input type="text" *ngIf="r.donne==1" readonly  formControlName="ville_d_{{i++1}}"  [ngClass]="{
+						'has-danger': invalidField('ville_d_'+(i++1)),
+						'has-success': validField('ville_d_'+(i++1))
+					      }"></ion-input>
+									</ion-item>
+									<div *ngIf="invalidField('ville_d_'+(i++1))"  class="validator-error validation-summary-errors">
+										Ce champ est obligatoire
+									</div>
+								</ion-col>
+
+								<ion-col col-12>
+									<ion-item>
+										<ion-label color="primary" floating>Arrivée <span>*</span></ion-label>
+										<ion-input type="text"  *ngIf="r.donne==0" formControlName="ville_a_{{i++1}}" [ngClass]="{
+						'has-danger': invalidField('ville_a_'+(i++1)),
+						'has-success': validField('ville_a_'+(i++1))
+					      }"></ion-input>
+										<ion-input type="text"  *ngIf="r.donne==1" readonly formControlName="ville_a_{{i++1}}" [ngClass]="{
+						'has-danger': invalidField('ville_a_'+(i++1)),
+						'has-success': validField('ville_a_'+(i++1))
+					      }"></ion-input>
+									</ion-item>
+									<div *ngIf="invalidField('ville_a_'+(i++1))"  class="validator-error validation-summary-errors">
+										Ce champ est obligatoire
+									</div>
+								</ion-col>
+
+								<ion-col col-12>
+									<ion-item>
+										<ion-label color="primary" floating>Montant <span>*</span></ion-label>
+										<ion-input type="text"  *ngIf="r.donne==0" formControlName="montant_{{i++1}}" (ionChange)="refreshDplAmount($event, (i++1))"  [ngClass]="{
+						'has-danger': invalidField('montant_'+(i++1)),
+						'has-success': validField('montant_'+(i++1))
+					      }"></ion-input>
+										<ion-input type="text"  *ngIf="r.donne==1" readonly formControlName="montant_{{i++1}}" (ionChange)="refreshDplAmount($event, (i++1))"  [ngClass]="{
+						'has-danger': invalidField('montant_'+(i++1)),
+						'has-success': validField('montant_'+(i++1))
+					      }"></ion-input>
+									</ion-item>
+									<div *ngIf="invalidField('montant_'+(i++1))"  class="validator-error validation-summary-errors">
+										Ce champ est obligatoire
+									</div>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-card-content>
+					<ion-row class="cardfooter">
+						<ion-col>
+							<h6 style="font-weight: bolder">MONTANT DÉPLACEMENT: <span style="color: red">{{ amount | number :"1.0-0" }} XAF</span></h6>
+						</ion-col>
+					</ion-row>
+				</ion-card>
+				<br>
+				<ion-card>
+					<ion-card-header>
+						<h4>DÉPENSES</h4>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-grid>
+							<ion-row>
+								<ion-col col-12 *ngFor="let e of data.requestsFM; let j=index">
+									<fieldset class="expenses" style="border-radius: 20px; border: 0.5px solid lightgray">
+										<label>{{e.nom}}</label>
+										<ion-item>
+											<ion-label color="primary" floating>Montant <span>*</span></ion-label>
+											<ion-input type="text" formControlName="mnt_{{(j++1)}}" (ionChange)="refreshExpAmount($event, (j++1))"  [ngClass]="{
+						'has-danger': invalidField('mnt_'+(j++1)),
+						'has-success': validField('mnt_'+(j++1))
+					      }"></ion-input>
+										</ion-item>
+										<div *ngIf="invalidField('mnt_'+(j++1))"  class="validator-error validation-summary-errors">
+											Ce champ est obligatoire
+										</div>
+									</fieldset>
+								</ion-col>
+								<ion-col col-12>
+									<ion-item>
+										<ion-label color="primary" floating>Autres dépenses </ion-label>
+										<ion-textarea type="text" formControlName="other_expenses"  [ngClass]="{
+						'has-danger': invalidField('other_expenses'),
+						'has-success': validField('other_expenses')
+					      }"></ion-textarea>
+									</ion-item>
+									<div *ngIf="invalidField('other_expenses')"  class="validator-error validation-summary-errors">
+										Ce champ est obligatoire
+									</div>
+								</ion-col>
+								<ion-col col-12>
+									<ion-item>
+										<ion-label color="primary" floating>Montant </ion-label>
+										<ion-input type="text" formControlName="other_mnt_expenses" (ionChange)="refreshExpAmountO($event)" [ngClass]="{
+						'has-danger': invalidField('other_mnt_expenses'),
+						'has-success': validField('other_mnt_expenses')
+					      }"></ion-input>
+									</ion-item>
+									<div *ngIf="invalidField('other_mnt_expenses')"  class="validator-error validation-summary-errors">
+										Ce champ est obligatoire
+									</div>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-card-content>
+					<ion-row class="cardfooter">
+						<ion-col>
+							<h6 style="font-weight: bolder">MONTANT DÉPENSES: <span style="color: red">{{ amountFM | number :"1.0-0" }} XAF</span></h6>
+						</ion-col>
+					</ion-row>
+				</ion-card>
+				<ion-card>
+					<ion-card-header>
+						MONTANTS
+					</ion-card-header>
+					<ion-card-content>
+						<ion-grid>
+							<ion-row style="border-bottom: 0.5px solid lightgrey; padding: 10px; font-weight: bolder;">
+								<ion-col col-7>
+									MONTANT GLOBAL
+								</ion-col>
+								<ion-col col-5>
+									<span style="color: red">{{ globalAmount | number :"1.0-0" }} XAF</span>
+								</ion-col>
+							</ion-row>
+							<ion-row style="border-bottom: 0.5px solid lightgrey;  padding: 10px; font-weight: bolder;">
+								<ion-col col-7>
+									MONTANT SUBVENTIONNÉ
+								</ion-col>
+								<ion-col col-5>
+									<span style="color: red">{{ subsidizedAmount | number :"1.0-0" }} XAF</span>
+								</ion-col>
+							</ion-row>
+							<ion-row style="border-bottom: 0.5px solid lightgrey;  padding: 10px; font-weight: bolder;">
+								<ion-col col-7>
+									DIFFÉRENCE DES MONTANTS
+								</ion-col>
+								<ion-col col-5>
+									<span style="color: red">{{ diffAmount | number :"1.0-0" }} XAF</span>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-card-content>
+				</ion-card>
+
+				<ion-grid class="button-group">
+					<ion-row>
+						<ion-col>
+							<button ion-button block (click)="presentConfirm('validate')" color="secondary"
+								class="medium">
+								<ion-icon name="thumbs-up" start>&nbsp;</ion-icon>
+								Valider
+							</button>
+						</ion-col>
+						<ion-col>
+							<button ion-button block (click)="presentConfirm('reject')" color="danger"
+								class="medium">Rejeter &nbsp;
+								<ion-icon name="thumbs-down" end></ion-icon>
+							</button>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ng-container>
+		</ng-container>
+		<ng-container *ngIf="_SYGALIN.isDFIN() || (_SYGALIN.isPDG() && data.requestsO!==undefined && data.requestsO!==nulll && _SYGALIN.jsonParse(data.requestsO[0].users_validate).indexOf(_SYGALIN.getCurUser().id)>=0)">
+			<ng-container [formGroup]="formgroup">
+				<ion-card>
+					<ion-card-header>
+						<h4>MOYEN DE DÉPLACEMENT</h4>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-grid *ngFor="let r of data.requests; let i=index" style="padding-bottom: 0 !important;" style="border-bottom: 0.5px solid lightgrey">
+							<ion-row>
+								<ion-col col-6>
+									Déplacement par
+								</ion-col>
+
+								<ion-col col-6>
+									{{r.mdplNom}}
+								</ion-col>
+
+								<ion-col col-6>
+									Agence
+								</ion-col>
+
+								<ion-col col-6>
+									{{r.details}}
+								</ion-col>
+
+								<ion-col col-6>
+									Ville de départ
+								</ion-col>
+
+								<ion-col col-6>
+									{{r.ville_depart}}
+								</ion-col>
+
+								<ion-col col-6>
+									Ville d'arrivée
+								</ion-col>
+
+								<ion-col col-6>
+									{{r.ville_arrive}}
+								</ion-col>
+
+								<ion-col col-6>
+									Montant
+								</ion-col>
+
+								<ion-col col-6 style="color: red">
+									{{r.montant | number :"1.0-0" }} XAF
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-card-content>
+					<ion-row class="cardfooter">
+						<ion-col>
+							<h6 style="font-weight: bolder">MONTANT DÉPLACEMENT: <span style="color: red">{{ amount | number :"1.0-0" }} XAF</span></h6>
+						</ion-col>
+					</ion-row>
+				</ion-card>
+				<br>
+				<ion-card>
+					<ion-card-header>
+						<h4>DÉPENSES</h4>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-grid>
+							<ng-container *ngFor="let e of data.requestsFM; let j=index">
+								<ion-row style="padding: 10px; border-bottom: 0.5px solid lightgrey">
+									<ion-col col-4>
+										{{e.nom}}
+									</ion-col>
+									<ion-col col-8 style="color: red">
+										{{e.montant| number :"1.0-0" }} XAF
+									</ion-col>
+								</ion-row>
+							</ng-container>
+							<ion-row style="padding: 10px; border-bottom: 0.5px solid lightgrey" *ngIf="data.requestsO[0].autre_depense">
+								<ion-col col-12 *ngIf="data.requestsO[0].autre_depense">
+									AUTRES DÉPENSES
+								</ion-col>
+								<ion-col col-12 *ngIf="data.requestsO[0].autre_depense" style="color: grey">
+									{{data.requestsO[0].autre_depense}}
+								</ion-col>
+							</ion-row>
+							<ion-row style="padding: 10px; border-bottom: 0.5px solid lightgrey" *ngIf="data.requestsO[0].montant_autre_depense!==undefined && data.requestsO[0].montant_autre_depense!==null && data.requestsO[0].montant_autre_depense!==0">
+								<ion-col col-12 *ngIf="data.requestsO[0].montant_autre_depense">
+									MONTANT AUTRES DÉPENSES
+								</ion-col >
+								<ion-col col-12 style="color: red" *ngIf="data.requestsO[0].montant_autre_depense">
+									{{data.requestsO[0].montant_autre_depense | number :"1.0-0" }} XAF
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-card-content>
+					<ion-row class="cardfooter">
+						<ion-col>
+							<h6 style="font-weight: bolder">MONTANT DÉPENSES: <span style="color: red">{{ amountFM | number :"1.0-0" }} XAF</span></h6>
+						</ion-col>
+					</ion-row>
+				</ion-card>
+
+				<hr>
+				<ion-card *ngIf="_SYGALIN.isDFIN() && data.requestsO[0].state==0">
+					<ion-card-header>
+						Orienter vers <span style="color: red">*</span>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-item>
+							<ion-label color="primary" floating>Source <span>*</span></ion-label>
+							<ion-select formControlName="boutique"  [ngClass]="{
+                                                                                        'has-danger': invalidField('boutique'),
+                                                                                        'has-success': validField('boutique')
+                                                                                         }">
+								<ion-option value="-1">CAISSE PRINCIPALE</ion-option>
+								<ion-option *ngFor="let b of data.boutiques; let i=index" value="{{b.id}}">{{b.nom}}</ion-option>
+							</ion-select>
+						</ion-item>
+						<div *ngIf="invalidField('boutique')"  class="validator-error validation-summary-errors">
+							Ce champ est obligatoire
+						</div>
+					</ion-card-content>
+				</ion-card>
+				<ion-card>
+					<ion-card-header>
+						MONTANTS
+					</ion-card-header>
+					<ion-card-content>
+						<ion-grid>
+							<ion-row style="border-bottom: 0.5px solid lightgrey; padding: 10px; font-weight: bolder;">
+								<ion-col col-7>
+									MONTANT GLOBAL
+								</ion-col>
+								<ion-col col-5>
+									<span style="color: red">{{ globalAmount | number :"1.0-0" }} XAF</span>
+								</ion-col>
+							</ion-row>
+							<ion-row style="border-bottom: 0.5px solid lightgrey;  padding: 10px; font-weight: bolder;">
+								<ion-col col-7>
+									MONTANT SUBVENTIONNÉ
+								</ion-col>
+								<ion-col col-5>
+									<span style="color: red">{{ subsidizedAmount | number :"1.0-0" }} XAF</span>
+								</ion-col>
+							</ion-row>
+							<ion-row style="border-bottom: 0.5px solid lightgrey;  padding: 10px; font-weight: bolder;">
+								<ion-col col-7>
+									DIFFÉRENCE DES MONTANTS
+								</ion-col>
+								<ion-col col-5>
+									<span style="color: red">{{ diffAmount | number :"1.0-0" }} XAF</span>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-card-content>
+				</ion-card>
+
+				<ion-grid class="button-group" *ngIf="_SYGALIN.isDFIN() && data.requestsO[0].state==0">
+					<ion-row>
+						<ion-col>
+							<button ion-button block (click)="presentConfirm('validate')" color="secondary"
+								class="medium">
+								<ion-icon name="thumbs-up" start>&nbsp;</ion-icon>
+								Valider
+							</button>
+						</ion-col>
+						<ion-col>
+							<button ion-button block (click)="presentConfirm('reject')" color="danger"
+								class="medium">Rejeter &nbsp;
+								<ion-icon name="thumbs-down" end></ion-icon>
+							</button>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ng-container>
+		</ng-container>
+	</ng-container>
+</ion-content>

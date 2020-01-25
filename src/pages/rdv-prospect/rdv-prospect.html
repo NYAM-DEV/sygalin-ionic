@@ -1,0 +1,60 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<ion-title>Rendez-vous</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding class="cent">
+	<ion-card [@listItemState]="'in'" *ngFor="let r  of rdv">
+		<ion-card-content>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4>
+						<ion-icon name="alarm"></ion-icon>&nbsp; Date
+					</ion-col>
+					<ion-col col-8>{{ _SYGALIN.momentjs(r.date_rdv).format('DD MMMM YYYY') }} </ion-col>
+					<ion-col col-4>
+						<ion-icon name="person"></ion-icon>&nbsp;Nom
+					</ion-col>
+					<ion-col col-8>{{ r.nom }}</ion-col>
+					<ion-col col-4 *ngIf="r.prenom">
+						<ion-icon name="person"></ion-icon>&nbsp;Pr&eacute;nom
+					</ion-col>
+					<ion-col col-8 *ngIf="r.prenom">{{ r.prenom }}</ion-col>
+					<ion-col col-4>
+						<ion-icon name="pin"></ion-icon>&nbsp;Lieu
+					</ion-col>
+					<ion-col col-8>{{ r.lieu }}</ion-col>
+					<ion-col col-4 *ngIf="r.statut!=0">
+						<ion-icon name="pin"></ion-icon>&nbsp;Etat
+					</ion-col>
+					<ion-col col-8 *ngIf="r.statut==1"><span class="text-green">FAVORABLE</span></ion-col>
+					<ion-col col-8 *ngIf="r.statut==2"><span class="text-green"><b>RECRUT&Eacute;</b></span></ion-col>
+					<ion-col col-8 *ngIf="r.statut==-1 || r.statut==-2"><span class="text-red">D&Eacute;FAVORABLE</span>
+					</ion-col>
+					<ion-grid class="button-group" *ngIf="r.statut==0 && !_SYGALIN.isRFVI()">
+						<ion-row>
+							<ion-col>
+								<button ion-button block (click)="reportModal(r)">
+									<ion-icon name="add"></ion-icon>
+								</button>
+							</ion-col>
+							<ion-col>
+								<button ion-button block (click)="presentConfirm(r, 'recrut')" color="secondary">
+									<ion-icon name="thumbs-up"></ion-icon>
+								</button>
+							</ion-col>
+							<ion-col>
+								<button ion-button block (click)="presentConfirm(r, 'reject')" color="danger">
+									<ion-icon name="thumbs-down"></ion-icon>
+								</button>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+
+				</ion-row>
+			</ion-grid>
+
+		</ion-card-content>
+	</ion-card>
+</ion-content>

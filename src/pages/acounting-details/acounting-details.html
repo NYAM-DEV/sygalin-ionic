@@ -1,0 +1,139 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button icon-only >
+		</button>
+		<ion-title>{{ request_detail.objet }} </ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<form [formGroup]="formgroup">
+	<ion-card>
+		<ion-card-content style="margin: 0px;">
+			<ion-grid>
+				<ion-row>
+					<ion-item>
+						<ion-label color="primary" floating> Motivation <span>*</span></ion-label>
+						<ion-input type="text" formControlName="motivation" ></ion-input>
+					</ion-item>
+					<ion-item>
+						<ion-label color="primary" floating> Montant <span>*</span></ion-label>
+						<ion-input type="number" formControlName="montant" ></ion-input>
+					</ion-item>
+					<ion-item>
+						<ion-label color="primary" floating> Departements <span>*</span></ion-label>
+						<ion-select formControlName="departement" clearInput >
+							<ion-option *ngFor="let dept of departement " value="{{ dept.id }}"  >{{ dept.nom}}</ion-option>
+						</ion-select>
+					</ion-item>
+					<ion-item>
+						<ion-label color="primary" floating> Boutiques <span>*</span></ion-label>
+						<ion-select formControlName="boutique" clearInput >
+							<ion-option *ngFor="let shop of boutiques " value="{{ shop.id }}"  >{{ shop.nom}}</ion-option>
+						</ion-select>
+					</ion-item>
+					<ion-item>
+						<ion-label color="primary" floating> Journal <span>*</span></ion-label>
+						<ion-select formControlName="journal" clearInput >
+							<ion-option *ngFor="let jrnal of journal " value="{{ jrnal.id }}"  >{{ jrnal.libelle}}</ion-option>
+						</ion-select>
+					</ion-item>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	<div>
+		<ion-card formArrayName="debits" class="card-color-debit">
+			<ion-card-header>
+				AFFECTATION DES COMPTES AU DÉBIT
+			</ion-card-header>
+			<ion-card-content >
+				<ion-grid [formGroupName]="i" *ngFor="let deb of formgroup.controls.debits.controls;let i=index" >
+					<ion-item-divider color="light">Compte #{{ i + 1 }}</ion-item-divider>
+					<ion-item>
+						<ion-label color="primary" floating> Débit <span>*</span></ion-label>
+						<ion-select formControlName="debit" clearInput >
+							<ion-option *ngFor="let plan of planComptable " value="{{ plan.id }}"  > {{ plan.numero }}--{{ plan.libelle}}</ion-option>
+						</ion-select>
+					</ion-item>
+					<ion-item>
+						<ion-label color="primary" floating >Montant</ion-label>
+						<ion-input type="number" formControlName="montant" (ionChange)="makeComparison(formgroup.value)" ></ion-input>
+					</ion-item>
+					<span float-right ion-button icon-left clear *ngIf="formgroup.controls.debits.length > 1"
+						  (click)="removeDebitField(i)">
+					  <ion-icon name="close"></ion-icon>
+					  Supprimer
+					</span>
+				</ion-grid>
+				<span ion-button float-left icon-left clear (click)="addNewDebitField()">
+					<ion-icon name="add"></ion-icon>
+					Ajouter un Nouveau Compte Debit
+				</span>
+			</ion-card-content>
+		</ion-card>
+		<ion-card formArrayName="credits" class="card-color-credit">
+			<ion-card-header>
+				AFFECTATION DES COMPTES AU CREDIT
+			</ion-card-header>
+			<ion-card-content>
+				<ion-grid [formGroupName]="i" *ngFor="let cre of formgroup.controls.credits.controls;let i=index" >
+					<ion-item-divider color="light">Compte #{{ i + 1 }}</ion-item-divider>
+					<ion-item>
+						<ion-label color="primary" floating> Crédit <span>*</span></ion-label>
+						<ion-select formControlName="credit" clearInput >
+							<ion-option *ngFor="let plan of planComptable " value="{{ plan.id }}"  > {{ plan.numero }}--{{ plan.libelle}}</ion-option>
+						</ion-select>
+					</ion-item>
+					<ion-item>
+						<ion-label color="primary" floating >Montant</ion-label>
+						<ion-input type="number" formControlName="montant" (ionChange)="makeComparison(formgroup.value)"></ion-input>
+					</ion-item>
+					<span float-right ion-button icon-left clear *ngIf="formgroup.controls.credits.length > 1" (click)="removeCreditField(i)">
+					  <ion-icon name="close"></ion-icon>
+					  Supprimer
+					</span>
+				</ion-grid>
+				<span ion-button float-left icon-left clear (click)="addNewCreditField()">
+					<ion-icon name="add"></ion-icon>
+					Ajouter un Nouveau Compte Credit
+				  </span>
+			</ion-card-content>
+		</ion-card>
+	</div>
+<!--		<button round ion-button block margin-top color="primary" text-center [disabled]="!formgroup.valid && amountCompare ">Valider</button>-->
+
+		<ion-card>
+			<ion-card-content>
+				<ion-grid>
+					<ion-row>
+						<ion-col col-12 >
+							<ion-grid class="button-group">
+								<ion-row>
+									<ion-col>
+										<!--<button ion-button block round  color="secondary" [disabled]="!formgroup.valid || !amountCompare "
+												class="medium" (click)="accountingAssignment(formgroup.value)">
+											Valider
+										</button>-->
+										<button ion-button block round  color="secondary" [disabled]="!formgroup.valid || !amountCompare "
+												class="medium" (click)="presentConfirm(formgroup.value,'validate')">
+											Valider
+										</button>
+									</ion-col>
+									<ion-col>
+										<!--<button ion-button block color="primary" class="medium" (click)="infirmDisbursementDetail()">
+											Invalider&nbsp;
+										</button>-->
+										<button ion-button block color="danger" class="medium" (click)="presentConfirm(formgroup.value,'reject')">
+											Invalider&nbsp;
+										</button>
+									</ion-col>
+								</ion-row>
+							</ion-grid>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-card-content>
+		</ion-card>
+	</form>
+</ion-content>

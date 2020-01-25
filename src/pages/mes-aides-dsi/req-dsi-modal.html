@@ -1,0 +1,25 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button icon-only (click)="dismiss()">
+			<ion-icon name="arrow-back"></ion-icon>
+		</button>
+		<ion-title>Requête DSI: Repondre</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content  class="cent">
+	<div [formGroup]="formgroup">
+		<ion-card>
+			<ion-card-header>
+				 <span *ngIf="req.nom">Nom: {{ req.nom }} </span> <br>
+				<span *ngIf="req.roleUser">{{ req.roleUser }}</span>
+			</ion-card-header>
+			<ion-item>
+				<ion-textarea rows="9" cols="20" formControlName="message" placeholder="Entrez votre  message ici..."></ion-textarea>
+			</ion-item>
+		</ion-card>
+		<div padding>
+			<button ion-button block (click)="setForm()" class="rounded"><ion-icon name="cloud-upload"></ion-icon>&nbsp;Enregistrer</button>
+		</div>
+	</div>
+</ion-content>

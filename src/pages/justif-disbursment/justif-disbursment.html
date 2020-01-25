@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Justif décaissement</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+	<div *ngFor="let r of justif">
+		<ion-card *ngIf="r.state!=-1"  >
+		<ion-card-content style="margin: 0px;">
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4 *ngIf="r.objetM">Motif</ion-col>
+					<ion-col col-8 *ngIf="r.objetM">{{ r.objetM }} </ion-col>
+					<ion-col col-4 *ngIf="r.montant" >Montant demandé </ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="r.montant" >{{r.montant | number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4 *ngIf="r.montantM" >Montant Validé </ion-col>
+					<ion-col col-8 ion-text color='danger' *ngIf="r.montantM" >{{r.montantM | number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-4 *ngIf="r.pj"> fichier</ion-col>
+					<ion-col col-8 *ngIf="r.pj" (click)="getUrlFile(r.pj)"> <button ion-button small round color="primary"> <ion-icon name="document" ></ion-icon> &nbsp; Piece jointe</button></ion-col>
+					<ion-col col-4 *ngIf="_SYGALIN.isDFIN() && r.restant" >Restant à justifier </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isDFIN() && r.restant" >{{r.restant | number :"1.0-0"}} XAF </ion-col>
+					<ion-col col-12 *ngIf="(_SYGALIN.isDFIN() && r.restant!=0)">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button block round (click)="openModal(r)" color="secondary"
+											class="medium">
+										Justifier
+									</button>
+								</ion-col>
+								<ion-col>
+									<button ion-button block color="primary" (click)="presentPromptCashback(r)" class="medium">
+										Retour en caisse &nbsp;
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+	</div>
+	<ion-card *ngIf="!(justif && justif.length)" >
+		<ion-card-content class="text-error-msg">
+			Aucun Element de Décaissement  trouv&eacute;...
+		</ion-card-content>
+	</ion-card>
+</ion-content>
