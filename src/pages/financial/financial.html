@@ -39,7 +39,33 @@
 					<ion-col col-8 ion-text color='danger'>{{r.montant| number :"1.0-0"}} XAF </ion-col>
 					<ion-col col-4>Ouverture</ion-col>
 					<ion-col col-8>{{ _SYGALIN.momentjs(r.open_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss")}} </ion-col>
+					
+					<ion-col col-4 *ngIf="_SYGALIN.isDFIN()">Responsable AA: </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isDFIN()"> {{ r.cnom}} {{r.cpnom}}</ion-col>
+
+					<ion-col col-4 *ngIf="_SYGALIN.isDFIN()">Tél: </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isDFIN()"> {{ r.tel}} </ion-col>
+
+
 					<ion-col col-12 *ngIf="_SYGALIN.isDFIN()  && r.state==0">
+						<ion-grid class="button-group">
+							<ion-row>
+								<ion-col>
+									<button ion-button block (click)="presentConfirm(r, 'validate')" color="secondary"
+											class="medium">
+										<ion-icon name="thumbs-up" start>&nbsp;</ion-icon>
+									</button>
+								</ion-col>
+								<ion-col>
+									<button ion-button block (click)="presentConfirm(r, 'reject')" color="danger"
+											class="medium"> &nbsp;
+										<ion-icon name="thumbs-down" end></ion-icon>
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-col>
+					<ion-col col-12 *ngIf="_SYGALIN.isRAA()  && r.state==0">
 						<ion-grid class="button-group">
 							<ion-row>
 								<ion-col>

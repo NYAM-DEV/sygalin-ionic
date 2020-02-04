@@ -10,4 +10,6 @@ import { ListReffilfinancePage } from './list-reffilfinance';
     IonicPageModule.forChild(ListReffilfinancePage),
   ],
 })
-export class ListReffilfinancePageModule {}
+export class ListReffilfinancePageModule {
+  
+}

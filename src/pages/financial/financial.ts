@@ -92,7 +92,7 @@ export class FinancialPage {
 		let postData = new FormData();
 		let url='validateRequestFinancier/'+ req.id;
 		let cuser = this._SYGALIN.getCurUser();
-		if(type=='rejet'){
+		if(type=='reject'){
 			url='requestsFinancial/reject'
 			postData.append('motivation', motif);
 			postData.append('request', req.id);
@@ -101,6 +101,7 @@ export class FinancialPage {
 			postData.append('ref', req.n_versement);
 			postData.append('amount', req.montant);
 		}
+		
 		postData.append('user_id', cuser.id);
 		postData.append('user_role', cuser.role);
 		postData.append('message', motif);
@@ -156,6 +157,7 @@ export class FinancialPage {
 						} else {
 							console.log("non oki");
 							//this.TreatFin(request,"reject");
+							
 							this.presentPrompt(request,"reject");
 						}
 					}
@@ -231,5 +233,36 @@ export class FinancialPage {
 
 	doRefresh(event) {
 		this.finTotreatRefresh(event);
+	}
+	rejectrifll(motif?:any) {
+		
+			
+		console.log('reject');
+		let postData = new FormData();
+		let cuser = this._SYGALIN.getCurUser();
+			postData.append('motivation', motif);
+			postData.append('boutique', cuser.shop);
+			postData.append('motif', motif);
+			postData.append('bType', cuser.shopType);
+			postData.append('uId', cuser.id);
+			postData.append('Urole', cuser.role);
+			postData.append('sector', cuser.sector);
+			
+			let that = this;
+			this._SYGALIN.query('requests/reject', postData).then(res => {
+				
+			if (event) {
+			//	event.complete();
+				
+			} else
+				that._SYGALIN.loadingDismiss();
+		}).catch(error => {
+			console.log(error);
+			if (event) {
+				//event.complete();
+			} else
+				that._SYGALIN.loadingDismiss();
+			that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
+		});
 	}
 }

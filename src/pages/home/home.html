@@ -346,6 +346,8 @@
 				</ion-card>
 			</ion-col>
 
+			
+
 			<ion-col col-4 *ngIf="_SYGALIN.isDFIN() || _SYGALIN.isCM()">
 				<ion-card class="full-width blackText " (tap)="cgaPre()"  ion-button style="color: #000000 !important">
 					<ion-badge style="position: fixed; margin-left: 44px; margin-top: -16px;" color="{{_SYGALIN.unreadCgapreObservable==0?'secondary':'danger'}}" class="cbadge" item-end>{{_SYGALIN.unreadCgapreObservable}}</ion-badge>

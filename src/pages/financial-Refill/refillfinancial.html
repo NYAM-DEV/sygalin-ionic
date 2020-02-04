@@ -32,7 +32,7 @@
 						'has-danger': invalidField('pay_option'),
 						'has-success': validField('pay_option')
 					      }">
-						<ion-option [selected]="true" value="0">CASH </ion-option>
+					<!--	<ion-option [selected]="true" value="0">CASH </ion-option>-->
 						<ion-option *ngFor="let p of _SYGALIN.all_pay_options" value="{{p.id}}">{{p.label | uppercase}}</ion-option>
 					</ion-select>
 				</ion-item>

@@ -46,11 +46,15 @@ export class MesRecruPage {
 		console.log("ADDED CHECKED-ID");
 		this.checkedID=['none'];
 		this._SYGALIN.loadingPresent("Chargement de la liste");
+
+		
 		console.log('Page: recrutements');
 		if (this.page === "forPDV") {
 			this.title = "Mes recrutements";
 			this.mesRecru();
 		} else if (this.page === "toTreat") {
+			console.log("toTreat");
+			
 			this.title = "Recrutements à traiter";
 			this.recruToTreat();
 		} else if (this.page === "treated") {
@@ -94,9 +98,11 @@ export class MesRecruPage {
 		postData.append('role', cuser.role);
 		postData.append('uId', cuser.id);
 		let that = this;
-		this._SYGALIN.query('recruToTreat/', postData).then(res => {
+		//this._SYGALIN.query('recruToTreat/', postData).then(res => {
+		this._SYGALIN.query('myRecruitmentsRequests/', postData).then(res => {
 			console.log(res);
 			that.recruts = res;
+			console.log(res)
 			if (event) {
 				event.complete();
 			} else

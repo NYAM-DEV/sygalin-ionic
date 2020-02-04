@@ -170,6 +170,28 @@ export class MyApp {
 				this.onlineOffline=true;
 			});*/
 
+			
+			//OneSignal
+			if (platform.is('cordova')) {
+        
+     
+				//code pour gerer les notification
+				var notificationOpenedCallback = function(jsonData) {
+				  console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+				};
+			
+				window["plugins"].OneSignal
+				  .startInit("3f1c6646-3b24-471d-8442-a67f94189155", "267579579268")
+				  .handleNotificationOpened(notificationOpenedCallback)
+				  .handleNotificationReceived().subscribe(data => {
+					let msg = data.payload.body;
+					let title = data.payload.title;
+					let additionalData = data.payload.additionalData;
+					this.showAlert(title, msg, additionalData.task);
+				  })
+				  .endInit();
+			   }
+
 			statusBar.backgroundColorByHexString('#3F51B5');
 			splashScreen.hide();
 			this.initializeOptions();
@@ -223,6 +245,7 @@ export class MyApp {
 			}, 0);
 		});
 
+		
 		platform.resume.subscribe((result) => {
 			this._SYGALIN._AppPaused=false;
 			/*let NOW=this._SYGALIN.momentjs();
@@ -264,7 +287,22 @@ export class MyApp {
 
 
 	}
-
+	//OneSignal
+	async showAlert(title, msg, task) {
+		const alert = await this._ALERT.create({
+		  title: title,
+		  message: msg,
+		  buttons: [
+			{
+			  text: `Action: ${task}`,
+			  handler: () => {
+				// E.g: Navigate to a specific screen
+			  }
+			}
+		  ]
+		})
+		alert.present();
+	  }
 
 	public onOptionSelected(option: SideMenuOption): void {
 		this.menuCtrl.close().then(() => {
@@ -329,7 +367,7 @@ export class MyApp {
 			iconName:'logo-usd',
 			displayText: 'Dépt. finances',
 			custom: {
-				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleDFIN()],
+				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleDFIN(), GlobalProvider.roleRAA()],
 			},
 			suboptions: []
 		};
@@ -472,6 +510,9 @@ export class MyApp {
 			},
 			suboptions: []
 		};
+
+		
+		
 
 		let memoOption = {
 			iconName: 'card',
@@ -1015,9 +1056,6 @@ export class MyApp {
 					}
 				}
 			},
-		];
-
-		let rfinSub = [
 			{
 				iconName: 'radio-button-off',
 				displayText: 'À traiter',
@@ -1031,6 +1069,46 @@ export class MyApp {
 			},
 		];
 
+		let rfinSub=[
+		{
+				iconName: 'radio-button-off',
+				displayText: 'À traiter',
+				component: 'FinancialPage',
+				custom: {
+					allowed: [GlobalProvider.roleDFIN(),GlobalProvider.roleRAA()],
+					data: {
+						page: 'toTreat'
+					}
+				}
+			},
+
+			{
+				iconName: 'checkmark-circle-outline',
+				displayText: 'Traités',
+				component: 'ListReffilfinancePage',
+				custom: {
+					allowed: [GlobalProvider.roleDFIN(),GlobalProvider.roleRAA()],
+					data: {
+						page: 'myrequestsdfin'
+					}
+				}
+			},
+			
+		];
+
+		let listfinSub = [
+			{
+				iconName: 'checkmark-circle-outline',
+				displayText: 'Traités',
+				component: 'ListReffilfinancePage',
+				custom: {
+					allowed: [GlobalProvider.roleDFIN(),GlobalProvider.roleRAA()],
+					data: {
+						page: 'myrequests'
+					}
+				}
+			},
+		];
 		let cgaSub = [
 			{
 				iconName: 'radio-button-off',
@@ -1179,6 +1257,7 @@ export class MyApp {
 			}
 		});
 
+
 		cashingSub.forEach((option) => {
 			// console.log("allowed Migr: ", option.custom.allowed, "Role ID: "+this.roleId);
 			if (option.custom.allowed.indexOf(Number(this.roleId)) >= 0) {
@@ -1261,12 +1340,12 @@ export class MyApp {
 			}
 		};
 		let refillOption={
-			iconName: 'cash',
+			iconName: 'logo-usd',
 			displayText: 'Recharge financiere',
 			component: 'RefillfinancialPage',
 			selected: false,
 			custom: {
-				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleRFVI(), GlobalProvider.roleRAA()]
+				allowed: [GlobalProvider.roleAAD()]
 			}
 		};
 		if (remunOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)

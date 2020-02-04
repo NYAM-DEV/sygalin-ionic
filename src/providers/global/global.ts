@@ -25,7 +25,8 @@ const DISTRIBUTORS: Array<DTYPE> =[
 	{
 		name: "DJABBAMA DOUNIA",
 		http: "https",
-		url: 'test-dsi.sygalin.com',
+		//url: 'test-dsi.sygalin.com',
+		url:'djabbama-aws.sygalin-tvsat.com',
 		numdist: 707
 	},
 	{

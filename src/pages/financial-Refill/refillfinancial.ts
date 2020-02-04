@@ -3,6 +3,7 @@ import {IonicPage, NavController, Events, NavParams, ModalController, ViewContro
 import {FormGroup, Validators, FormControl} from '@angular/forms';
 import {GlobalProvider} from '../../providers/global/global';
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import { empty } from 'rxjs/Observer';
 
 @IonicPage()
 @Component({
@@ -118,8 +119,6 @@ export class RefillfinancialPage {
 				'pdf': 'pdf'
 			};
 			this.toJustif=null;
-			console.log("Tpe de fichier")
-			console.log(this.fileTypes)
 	}
 
 
@@ -147,38 +146,22 @@ export class RefillfinancialPage {
 		});
 	}
 
-	selectChangedOption(event) {
-		console.log(event);
-		if (this.formgroup.controls['duree'].value && this.formgroup.controls['formule'].value) {
-			let postData = new FormData();
-			postData.append('option', event);
-			postData.append('duree', this.formgroup.controls['duree'].value);
-			postData.append('formule', this.formgroup.controls['formule'].value);
-
-			let that = this;
-			this._SYGALIN.query('getReaboAmount/', postData, true)
-				.then(res => {
-					console.log('Montant recru:', res);
-					that.amount = res;
-				}, reason => {
-					console.log('Raison:', reason);
-				})
-				.catch(error => {
-					console.log('Erreur:', error);
-				})
-		}
-	}
-
 	selectChangeMopay(event) {
 		console.log(event);
 		this.showRef = event != 0;
 		
-	
-		let payment=Array.from(this._SYGALIN.all_pay_options).filter((e: any)=> e.id==event) as Array<any>;
-		this.type_paie=payment[0].type;
-		console.log('TYPE PAIE: ', this.type_paie);
+		if(event==0)
+		{
 
-	if (this.type_paie == 3)
+		}
+		else
+		{
+			let payment=Array.from(this._SYGALIN.all_pay_options).filter((e: any)=> e.id==event) as Array<any>;
+			this.type_paie=payment[0].type;
+			console.log('TYPE PAIE: ', this.type_paie);
+		}
+
+	if (this.type_paie == 3 || this.type_paie == 6)
 		{
 			this.showRef=true;
 			//this.formgroup.get('file1').enable();
@@ -232,10 +215,11 @@ export class RefillfinancialPage {
 			//for (const file of this.file){
 				//postData.append('files[]', file);
 			//}
-		}
-		for (const file of this.file){
-			postData.append('files[]', file);
-		}
+		
+			for (const file of this.file){
+				postData.append('files[]', file);
+			}
+		}	
 			postData.append('reference', this.formgroup.value['reference']);
 			postData.append('montant', this.formgroup.value['montant']);
 			postData.append('boutique', this.user.shop);
@@ -262,7 +246,8 @@ export class RefillfinancialPage {
 					this._SYGALIN.presentToast("Une erreur interne est survenue. Veuillez réessayer (Code 104)", 'danger');
 				});
 			
-			}
+	}
+		
 			
 
 		removeFile(i){
@@ -306,7 +291,7 @@ export class RefillfinancialPage {
 		
 		listReffilfinance() {
 			console.log('list recharge financiere ');
-			this.navCtrl.push("ListReffilfinancePage", {page: 'forPDV'});
+			this.navCtrl.push("ListReffilfinancePage", {page: 'myrequests'});
 		}
 	
 	

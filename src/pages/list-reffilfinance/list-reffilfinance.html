@@ -1,18 +1,126 @@
-<!--
-  Generated template for the ListReffilfinancePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-  <ion-navbar>
-    <ion-title>listReffilfinance</ion-title>
-  </ion-navbar>
+	<ion-navbar color='primary'>
+		<button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>{{ title }}</ion-title>
+	</ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="cent">
+	<ion-refresher #refresherRef slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Pull to refresh"
+			refreshingSpinner="circles"
+			refreshingText="">
+		</ion-refresher-content>
+	</ion-refresher>
+	<ion-card  *ngFor="let r of listerecharge">
+		<ion-card-content>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4 *ngIf="r.state=='1'">Ticket: </ion-col>
+					<ion-col col-8 *ngIf="r.state=='1'">N° {{ r.num}} (<div style="color: #f7b731;"> TRAITÉ </div> )</ion-col>
+					
+					<ion-col col-4 *ngIf="r.state==!'-1'">Ticket: </ion-col>
+					<ion-col col-8 *ngIf="r.state==!'-1'">N° {{ r.num}} (<div style="color: #f7b731;"> {{etat_ticket(r.state)}}</div> )</ion-col>
+					
+					<ion-col col-4 *ngIf="r.state=='-1'">Ticket: </ion-col>
+					<ion-col col-8 *ngIf="r.state=='-1'">N° {{ r.num}} (<div style="color: red;"> {{etat_ticket(r.state)}}</div> )</ion-col>
+
+					<ion-col col-4 *ngIf="r.state=='-1'">Motif du rejet :</ion-col>
+					<ion-col col-8 *ngIf="r.state=='-1'"> {{ r.tkMotif}} </ion-col>
+					
+					<ion-col col-4>Ouvert le :</ion-col>
+					<ion-col col-8>{{ _SYGALIN.momentjs(r.open_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss")}} </ion-col>
+										
+					<ion-col col-4 *ngIf="r.recharge=='1'">Fermé le :</ion-col>
+					<ion-col col-8 *ngIf="r.recharge=='1'"> {{ _SYGALIN.momentjs(r.close_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss")}} </ion-col>
 
 
 
-  
+					<ion-col col-4 >MÉMO: </ion-col>
+					<ion-col col-8 > {{ memo(r.mCode)}} </ion-col>
+
+					<ion-col col-4 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isDFIN() ">Nom: </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isDFIN()"> {{ r.nom}} </ion-col>
+
+					<ion-col col-4 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isDFIN()">Numdist: </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isDFIN()"> {{ r.Numdist}} </ion-col>
+
+					<ion-col col-4 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isDFIN()">Tél: </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isDFIN()"> {{ r.bTel}} </ion-col>
+
+			<!-- Affichage DFIN-->
+										
+					
+
+					<ion-col col-4 *ngIf="_SYGALIN.isDFIN()">Responsable AA: </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isDFIN()"> {{ nom_resp_RAA(r.cnom,r.cpnom) }} </ion-col>
+
+					<ion-col col-4 *ngIf="_SYGALIN.isDFIN()">Tél: </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isDFIN()"> {{ r.tel}} </ion-col>
+					
+
+					<ion-col col-4>Demande: </ion-col>
+					<ion-col col-8 ion-text color='secondary'>PRÉPAYÉE</ion-col>
+
+					<ion-col col-4 *ngIf="_SYGALIN.isDFIN()">Date de recharge: </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isDFIN()"> {{ r.date_recharge}} </ion-col>
+
+					<ion-col col-4>Montant : </ion-col>
+					<ion-col col-8 ion-text color='danger'>{{r.montant| number :"1.0-0"}} XAF </ion-col>
+					
+					<ion-col col-4>Service :</ion-col>
+					<ion-col col-8>{{ r.label}}</ion-col>
+					
+					<ion-col col-4>Type: </ion-col>
+					<ion-col col-8>{{valeur_b(r.type)}} </ion-col>
+			
+					<ion-col col-4 *ngIf="r.fichier" >Facture :</ion-col>
+					<ion-col col-8 *ngIf="r.fichier" >
+						<button color="light"  small  ion-button (click)="getUrlFile(r.fichier)">
+							<ion-icon name="document"></ion-icon>&nbsp; pièce jointe
+						</button>
+					</ion-col>
+
+					<ion-col col-4>Référence : </ion-col>
+					<ion-col col-8>{{ r.n_versement}}</ion-col>
+
+					<!--<ion-col col-4>Validé : </ion-col>
+					<ion-col col-8 ion-text color='danger'> {{valeur_valide(r.next_role)}}</ion-col>-->
+							   
+					<ion-col col-4>Etat du traitement : </ion-col>
+					<ion-col col-8 ><div style="color: #f7b731;">{{valeur_valid(r.valide)}} </div></ion-col>
+
+					<ion-col col-4>{{action_traitement(r.recharge)}} : </ion-col>
+					<ion-col col-8 ion-text color='secondary'> {{valeur_resp(r.next_role)}} </ion-col>	<!---->
+					
+					</ion-row>
+			</ion-grid>
+		</ion-card-content>
+	</ion-card>
+
+	<ion-card >
+		<ion-row>
+			<ion-col>
+					<ion-col col-4>Total du Jour : </ion-col>
+					<ion-col col-8 > {{totalAJ | number :"1.0-0"}}</ion-col> XAF
+			</ion-col> 
+			<ion-col>
+					<ion-col col-4>Total du Mois : </ion-col>
+					<ion-col col-8 > {{totalM | number :"1.0-0"}}  </ion-col>XAF
+			</ion-col>
+		</ion-row>
+	
+	</ion-card>
+	
+	<ion-card *ngIf="!(listerecharge && listerecharge.length)">
+		<ion-card-content class="text-error-msg">
+			Aucun element trouv&eacute;...
+		</ion-card-content>
+	</ion-card>
 </ion-content>
+
+

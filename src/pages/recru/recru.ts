@@ -100,6 +100,7 @@ export class RecruPage {
 		postData.append('uId', this.user.id);
 		postData.append('secteur', this._SYGALIN.user.sector);
 		postData.append('tech', this.formgroup.value['tech']);
+		console.log("voici l'id de la boutique:" + this.user.shop);
 		if(this.showPrice){
 			postData.append('installation', this.price);
 		}
