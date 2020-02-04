@@ -82,7 +82,7 @@ constructor(
 		this.ListeRechargeFinanciere();
 		} else if (this.page === "myrequestsdfin") {
 			this.title = "Mes récharges traité";
-		//this.ListRechargFin();
+		this.ListRechargFin();
 		} else if (this.page === "rejected") {
 			//this.title = "Réabonnements rejetés";
 			//this.reaboRejected();
@@ -92,7 +92,7 @@ constructor(
 		if (this.page === "myrequests") {
 			this.ListeRechargeFinanciere(event);
 		} else if (this.page === "myrequestsdfin") {
-		///	this.ListRechargFin(event);
+			this.ListRechargFin(event);
 		} else if (this.page === "treated") {
 		//	this.reaboTreated(event);
 		} else if (this.page === "rejected") {

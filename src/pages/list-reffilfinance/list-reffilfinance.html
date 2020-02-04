@@ -38,36 +38,29 @@
 					<ion-col col-4 *ngIf="r.recharge=='1'">Fermé le :</ion-col>
 					<ion-col col-8 *ngIf="r.recharge=='1'"> {{ _SYGALIN.momentjs(r.close_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss")}} </ion-col>
 
-
+					<!-- Affichage RAA-->
 
 					<ion-col col-4 >MÉMO: </ion-col>
 					<ion-col col-8 > {{ memo(r.mCode)}} </ion-col>
 
-					<ion-col col-4 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isDFIN() ">Nom: </ion-col>
-					<ion-col col-8 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isDFIN()"> {{ r.nom}} </ion-col>
+					<ion-col col-4 *ngIf="_SYGALIN.isRAA()">Nom: </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isRAA()"> {{ r.nom}} </ion-col>
 
-					<ion-col col-4 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isDFIN()">Numdist: </ion-col>
-					<ion-col col-8 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isDFIN()"> {{ r.Numdist}} </ion-col>
+					<ion-col col-4 *ngIf="_SYGALIN.isRAA()">Numdist: </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isRAA()"> {{ r.Numdist}} </ion-col>
 
-					<ion-col col-4 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isDFIN()">Tél: </ion-col>
-					<ion-col col-8 *ngIf="_SYGALIN.isRAA() || _SYGALIN.isDFIN()"> {{ r.bTel}} </ion-col>
+					<ion-col col-4 *ngIf="_SYGALIN.isRAA()">Tél: </ion-col>
+					<ion-col col-8 *ngIf="_SYGALIN.isRAA()"> {{ r.bTel}} </ion-col>
 
-			<!-- Affichage DFIN-->
-										
+					<!-- Affichage DFIN-->
 					
-
-					<ion-col col-4 *ngIf="_SYGALIN.isDFIN()">Responsable AA: </ion-col>
-					<ion-col col-8 *ngIf="_SYGALIN.isDFIN()"> {{ nom_resp_RAA(r.cnom,r.cpnom) }} </ion-col>
-
-					<ion-col col-4 *ngIf="_SYGALIN.isDFIN()">Tél: </ion-col>
-					<ion-col col-8 *ngIf="_SYGALIN.isDFIN()"> {{ r.tel}} </ion-col>
 					
 
 					<ion-col col-4>Demande: </ion-col>
 					<ion-col col-8 ion-text color='secondary'>PRÉPAYÉE</ion-col>
 
-					<ion-col col-4 *ngIf="_SYGALIN.isDFIN()">Date de recharge: </ion-col>
-					<ion-col col-8 *ngIf="_SYGALIN.isDFIN()"> {{ r.date_recharge}} </ion-col>
+					<ion-col col-4 *ngIf="r.recharge=='1'">Date de recharge: </ion-col>
+					<ion-col col-8 *ngIf="r.recharge=='1'"> {{ r.date_recharge}} </ion-col>
 
 					<ion-col col-4>Montant : </ion-col>
 					<ion-col col-8 ion-text color='danger'>{{r.montant| number :"1.0-0"}} XAF </ion-col>
