@@ -54,7 +54,6 @@ export class MesRecruPage {
 			this.mesRecru();
 		} else if (this.page === "toTreat") {
 			console.log("toTreat");
-			
 			this.title = "Recrutements à traiter";
 			this.recruToTreat();
 		} else if (this.page === "treated") {
@@ -97,10 +96,12 @@ export class MesRecruPage {
 		postData.append('sector', cuser.sector);
 		postData.append('role', cuser.role);
 		postData.append('uId', cuser.id);
+		postData.append('boutique', cuser.shop);
 		let that = this;
 		//this._SYGALIN.query('recruToTreat/', postData).then(res => {
 		this._SYGALIN.query('myRecruitmentsRequests/', postData).then(res => {
-			console.log(res);
+		//this._SYGALIN.query('aaRecruRequests/', postData).then(res => {
+			console.log("res");
 			that.recruts = res;
 			console.log(res)
 			if (event) {
@@ -170,6 +171,7 @@ export class MesRecruPage {
 		let postData = new FormData();
 		let cuser = this._SYGALIN.getCurUser();
 		postData.append('user', cuser.id);
+		postData.append('tel', cuser.tel);
 		postData.append('formule', request.idFormule);
 		postData.append('option', request.option);
 		postData.append('kit', request.materiel);

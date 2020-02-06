@@ -125,6 +125,7 @@ constructor(
 			console.log("Mois");
 			console.log(this.totalM);
 			console.log(this.som2);
+
 			if (event) {
 				event.complete();
 				
@@ -139,48 +140,7 @@ constructor(
 			that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
 		});
 	}
-	presentConfirm(request: any, type: string) {
-		let msg = "", title = "";
-		if (type === 'validate') {
-			title = "validation";
-			msg = 'valider';
-		} else {
-			title = "rejet";
-			msg = 'rejeter';
-		}
-
-		let alert = this._ALERT.create({
-			title: 'Confirmation de ' + title,
-			message: 'Voulez-vous vraiment ' + msg + ' ce réabonnement? Cette opération est irréversible...',
-			buttons: [
-				{
-					text: 'Non',
-					role: 'cancel',
-					handler: () => {
-						console.log('Opération annulée');
-					}
-				},
-				{
-					text: 'Oui',
-					handler: () => {
-						if (type === 'validate') {
-							if(request.carte_abo){
-								//this.validateReabo(request);
-							}else {
-							//	this.presentPrompt(request,"decodeur");
-							}
-
-						} else {
-							//this.presentPrompt(request);
-						}
-					}
-				}
-			]
-		});
-		alert.present();
-	}
-
-
+	
 	valeur_b(id)
 	{
 		if(id=="3")
@@ -268,7 +228,6 @@ constructor(
 		for(let r of this.listerecharge)
 		{
 		
-			console.log(r, r.state=="1");
 			if(r.state=="1")
 			{
 				this.totalR += Number.parseInt(r.montant);
@@ -371,14 +330,7 @@ constructor(
 			console.log("Liste des recharge CGA");
 			console.log(this.listerecharge);
 			this.solde_valide();
-			console.log("Total");
-			console.log(this.totalR);
-			console.log("Jour");
-			console.log(this.totalAJ);
-			console.log("Mois");
-			console.log(this.totalM);
-			console.log(this.som2);
-
+			
 			if (event) {
 				event.complete();
 				

@@ -83,9 +83,13 @@ export class RecruPage {
 
 	sendform() {
 		this._SYGALIN.loadingPresent("Enregistrement...");
+		this.simuler();
 		let postData = new FormData();
 		let ctrlN = this.navCtrl;
+		
 		postData.append('nom', this.formgroup.value['nom']);
+		postData.append('pay_option', this.formgroup.value['pay_option']);
+		postData.append('montant_abo', this.amount);
 		postData.append('tel', this.formgroup.value['tel']);
 		postData.append('decodeur', this.formgroup.value['decodeur']);
 		postData.append('formule', this.formgroup.value['formule']);
@@ -98,9 +102,10 @@ export class RecruPage {
 		postData.append('kit', this.formgroup.value['kit']);
 		postData.append('uRole', this.user.role);
 		postData.append('uId', this.user.id);
-		postData.append('secteur', this._SYGALIN.user.sector);
+		postData.append('secteur', this.user.sector);
 		postData.append('tech', this.formgroup.value['tech']);
-		console.log("voici l'id de la boutique:" + this.user.shop);
+		postData.append('carte', this.formgroup.value['decodeur']);
+		postData.append('pay_option', this.formgroup.value['pay_option']);
 		if(this.showPrice){
 			postData.append('installation', this.price);
 		}

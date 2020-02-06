@@ -205,16 +205,12 @@ export class RefillfinancialPage {
 
 	
 
-	sendform3() {
+	sendform() {
 		this._SYGALIN.loadingPresent("Traitement...");
 		
 		let postData = new FormData();
 		var ctrlN = this.navCtrl;
 		if (this.showRef){
-			//this._SYGALIN.presentToast("Veuillez renseigner le(s) fichier(s) justificatif(s)", 'danger', 4000);
-			//for (const file of this.file){
-				//postData.append('files[]', file);
-			//}
 		
 			for (const file of this.file){
 				postData.append('files[]', file);
@@ -233,7 +229,7 @@ export class RefillfinancialPage {
 			postData.append('pay_option', this.formgroup.value['pay_option']);
 			this._SYGALIN.query("refillfinancial/", postData)
 				.then(res => {
-					//console.log(res);
+					
 					this._SYGALIN.loadingDismiss();
 					var type=(res.type=='success'?'success':'danger');
 					this._SYGALIN.presentToast(res.message, type);
@@ -242,7 +238,7 @@ export class RefillfinancialPage {
 				})
 				.catch(error => {
 					this._SYGALIN.loadingDismiss();
-					//console.log("Une erreur survenue:  " + error);
+					
 					this._SYGALIN.presentToast("Une erreur interne est survenue. Veuillez réessayer (Code 104)", 'danger');
 				});
 			
