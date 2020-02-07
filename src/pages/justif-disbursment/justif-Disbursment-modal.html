@@ -144,7 +144,7 @@
 								</label>
 								<div class="file-list" *ngIf="issetFile" style="padding: 0">
 									<ion-list style="padding: 0" id="files" class="file-list">
-										<ion-item [@fileItemState]="'in'"  *ngFor="let f of file; let i=index">
+										<ion-item [@fileItemState]="'in'"  *ngFor="let f of files; let i=index">
 											<ion-thumbnail item-start>
 												<img src="../../assets/icons/{{ issetElem(f.name.split('.').slice(-1)[0] , fileTypes)?fileTypes[f.name.split('.').slice(-1)[0]]:'file' }}-fluent.png" alt="{{ f.name.split('.').slice(-1)[0] }}">
 											</ion-thumbnail>
