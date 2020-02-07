@@ -205,46 +205,49 @@ export class RefillfinancialPage {
 
 	
 
-	sendform() {
-		this._SYGALIN.loadingPresent("Traitement...");
-		
-		let postData = new FormData();
-		var ctrlN = this.navCtrl;
-		if (this.showRef){
-		
-			for (const file of this.file){
-				postData.append('files[]', file);
-			}
+	sendform():void {
+				
+		if(this.formgroup.controls['reference'].value &&  this.formgroup.controls['montant'].value && this.formgroup.controls['pay_option'].value ){
+		this._SYGALIN.loadingPresent("Traitement...");	
+			let postData = new FormData();
+			var ctrlN = this.navCtrl;
+			if (this.showRef){
+			
+				for (const file of this.file){
+					postData.append('files[]', file);
+				}
+			}	
+				postData.append('reference', this.formgroup.value['reference']);
+				postData.append('montant', this.formgroup.value['montant']);
+				postData.append('boutique', this.user.shop);
+				postData.append('bType', this.user.shopType);
+				postData.append('uRole', this.user.role);
+				postData.append('uId', this.user.id);
+				postData.append('sector', this.user.sector);
+				postData.append('type_paie',this.type_paie);
+				postData.append('id_trans', this.formgroup.value['id_trans']);
+				postData.append('pay_option', this.formgroup.value['pay_option']);
+				this._SYGALIN.query("refillfinancial/", postData)
+					.then(res => {
+						
+						this._SYGALIN.loadingDismiss();
+						var type=(res.type=='success'?'success':'danger');
+						this._SYGALIN.presentToast(res.message, type);
+						if (type=='success')
+							ctrlN.setRoot('RefillfinancialPage');
+					})
+					.catch(error => {
+						this._SYGALIN.loadingDismiss();
+						
+						this._SYGALIN.presentToast("Une erreur interne est survenue. Veuillez réessayer (Code 104)", 'danger');
+					});
+				
+	
+		}else
+		{
+			this._SYGALIN.presentToast("Bien vouloir remplir tous les champs du formulaire", 'danger');
 		}	
-			postData.append('reference', this.formgroup.value['reference']);
-			postData.append('montant', this.formgroup.value['montant']);
-			postData.append('boutique', this.user.shop);
-			postData.append('bType', this.user.shopType);
-			postData.append('duree', this.formgroup.value['duree']);
-			postData.append('uRole', this.user.role);
-			postData.append('uId', this.user.id);
-			postData.append('sector', this.user.sector);
-			postData.append('type_paie',this.type_paie);
-			postData.append('id_trans', this.formgroup.value['id_trans']);
-			postData.append('pay_option', this.formgroup.value['pay_option']);
-			this._SYGALIN.query("refillfinancial/", postData)
-				.then(res => {
-					
-					this._SYGALIN.loadingDismiss();
-					var type=(res.type=='success'?'success':'danger');
-					this._SYGALIN.presentToast(res.message, type);
-					if (type=='success')
-						ctrlN.setRoot('RefillfinancialPage');
-				})
-				.catch(error => {
-					this._SYGALIN.loadingDismiss();
-					
-					this._SYGALIN.presentToast("Une erreur interne est survenue. Veuillez réessayer (Code 104)", 'danger');
-				});
-			
-	}
-		
-			
+}		
 
 		removeFile(i){
 			console.log(this.file);

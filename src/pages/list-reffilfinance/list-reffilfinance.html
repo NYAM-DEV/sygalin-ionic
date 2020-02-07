@@ -76,19 +76,9 @@
 						<button ion-button small round color="primary"> 
 							<ion-icon name="document" ></ion-icon> &nbsp; Piece jointe</button>
 						</ion-col>
-					
-					<!--<ion-col col-4 *ngIf="r.fichier" >Facture :</ion-col>
-					<ion-col col-8 *ngIf="r.fichier" >
-						<button color="light"  small  ion-button (click)="getUrlFile(r.fichier)">
-							<ion-icon name="document"></ion-icon>&nbsp; pièce jointe
-						</button>
-					</ion-col>-->
 
 					<ion-col col-4>Référence : </ion-col>
 					<ion-col col-8>{{ r.n_versement}}</ion-col>
-
-					<!--<ion-col col-4>Validé : </ion-col>
-					<ion-col col-8 ion-text color='danger'> {{valeur_valide(r.next_role)}}</ion-col>-->
 							   
 					<ion-col col-4>Etat du traitement : </ion-col>
 					<ion-col col-8 ><div style="color: #f7b731;">{{valeur_valid(r.valide)}} </div></ion-col>
