@@ -64,32 +64,29 @@
 	</ion-col>
 	<ion-item *ngIf="showRef" >
 		<ion-col col-12 >
-			<ion-col col-12 >
-				<label for="file-upload"  class="custom-file-upload" [ngClass]="{
-		'with-file': issetFile
-			}">
-					<ion-icon name="cloud-upload"></ion-icon>&nbsp;&nbsp; <span *ngIf="issetFile" style="color: #2c57e4; font-weight: bold">{{ file.length }} {{ file.length>1?"fichiers sélectionnés":"fichier sélectionné" }}</span><span *ngIf="!issetFile">{{ labelJustif}}</span>
-				</label>
-				<div class="file-list" *ngIf="issetFile" style="padding: 0">
-					<ion-list style="padding: 0" id="files" class="file-list">
-						<ion-item [@fileItemState]="'in'"  *ngFor="let f of file; let i=index">
-							<ion-thumbnail item-start>
-								<img src="../../assets/icons/{{ issetElem(f.name.split('.').slice(-1)[0] , fileTypes)?fileTypes[f.name.split('.').slice(-1)[0]]:'file' }}-fluent.png" alt="{{ f.name.split('.').slice(-1)[0] }}">
-							</ion-thumbnail>
-							<h4>{{f.name}}</h4>
-							<button ion-button clear item-end icon-only (click)="removeFile(i)"><ion-icon name="close-circle-outline" color="danger"></ion-icon></button>
-						</ion-item>
-					</ion-list>
-				</div>
-				<input
-					type="file"
-					name="file"
-					formcontrolName="file1"
-					id="file-upload"
-					(change)="updateFile($event)"
-					class="fileInput" multiple />
-			</ion-col>
+			<label for="file-upload"  class="custom-file-upload" [ngClass]="{ 'with-file': issetFile }">
+				<ion-icon name="cloud-upload"></ion-icon>&nbsp;&nbsp; <span *ngIf="issetFile" style="color: #2c57e4; font-weight: bold">{{ file.length }} {{ file.length>1?"fichiers sélectionnés":"fichier sélectionné" }}</span><span *ngIf="!issetFile">{{ labelJustif}}</span>
+			</label>
+			<div class="file-list" *ngIf="issetFile" style="padding: 0">
+				<ion-list style="padding: 0" id="files" class="file-list">
+					<ion-item [@fileItemState]="'in'"  *ngFor="let f of file; let i=index">
+						<ion-thumbnail item-start>
+							<img src="../../assets/icons/{{ issetElem(f.name.split('.').slice(-1)[0] , fileTypes)?fileTypes[f.name.split('.').slice(-1)[0]]:'file' }}-fluent.png" alt="{{ f.name.split('.').slice(-1)[0] }}">
+						</ion-thumbnail>
+						<h4>{{f.name}}</h4>
+						<button ion-button clear item-end icon-only (click)="removeFile(i)"><ion-icon name="close-circle-outline" color="danger"></ion-icon></button>
+					</ion-item>
+				</ion-list>
+			</div>
+			<input
+				type="file"
+				name="file"
+				formcontrolName="file1"
+				id="file-upload"
+				(change)="updateFile($event)"
+				class="fileInput" multiple />
 		</ion-col>
+		
 	</ion-item>	
 
 	</ion-card-content>

@@ -70,8 +70,12 @@ export class MesRecruPage {
 		let postData = new FormData();
 		let cuser = this._SYGALIN.getCurUser();
 		postData.append('shop', cuser.shop);
+		postData.append('secteur', cuser.sector);
+		postData.append('role', cuser.role);
+		postData.append('uId', cuser.id);
 		let that = this;
 		this._SYGALIN.query('myRecruitmentsRequests/', postData).then(res => {
+			
 			console.log(res);
 			that.recruts = res;
 			if (event)
@@ -90,7 +94,7 @@ export class MesRecruPage {
 	}
 
 	recruToTreat(event?: any) {
-		//console.log('mesRecru()');
+		
 		let postData = new FormData();
 		let cuser = this._SYGALIN.getCurUser();
 		postData.append('sector', cuser.sector);
@@ -98,9 +102,8 @@ export class MesRecruPage {
 		postData.append('uId', cuser.id);
 		postData.append('boutique', cuser.shop);
 		let that = this;
-		//this._SYGALIN.query('recruToTreat/', postData).then(res => {
-		this._SYGALIN.query('myRecruitmentsRequests/', postData).then(res => {
-		//this._SYGALIN.query('aaRecruRequests/', postData).then(res => {
+		
+		this._SYGALIN.query('listToTreat/', postData).then(res => {
 			console.log("res");
 			that.recruts = res;
 			console.log(res)
