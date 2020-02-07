@@ -20,14 +20,13 @@
 		<ion-card-content>
 			<ion-grid>
 				<ion-row>
-					<ion-col col-4 *ngIf="r.state=='1'">Ticket: </ion-col>
-					<ion-col col-8 *ngIf="r.state=='1'">N° {{ r.num}} (<div style="color: #f7b731;"> TRAITÉ </div> )</ion-col>
+					<ion-col col-4 >Ticket: </ion-col>
+					<ion-col col-8 >N° {{ r.num}}</ion-col>
 					
-					<ion-col col-4 *ngIf="r.state==!'-1'">Ticket: </ion-col>
-					<ion-col col-8 *ngIf="r.state==!'-1'">N° {{ r.num}} (<div style="color: #f7b731;"> {{etat_ticket(r.state)}}</div> )</ion-col>
-					
-					<ion-col col-4 *ngIf="r.state=='-1'">Ticket: </ion-col>
-					<ion-col col-8 *ngIf="r.state=='-1'">N° {{ r.num}} (<div style="color: red;"> {{etat_ticket(r.state)}}</div> )</ion-col>
+					<ion-col col-4 >Etat du ticket: </ion-col>
+					<ion-col col-8 *ngIf="r.state=='0'" ion-text color="warning">EN COURS.... </ion-col>
+					<ion-col col-8 *ngIf="r.state=='1'" ion-text color="primary">TRAITÉ </ion-col>
+					<ion-col col-8 *ngIf="r.state=='-1'" ion-text color='danger'> REJETÉ</ion-col>
 
 					<ion-col col-4 *ngIf="r.state=='-1'">Motif du rejet :</ion-col>
 					<ion-col col-8 *ngIf="r.state=='-1'"> {{ r.tkMotif}} </ion-col>

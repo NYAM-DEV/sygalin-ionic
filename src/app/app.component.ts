@@ -506,7 +506,7 @@ export class MyApp {
 			iconName: 'logo-usd',
 			displayText: 'Recharge compte financier',
 			custom: {
-				allowed: [GlobalProvider.roleDFIN(), GlobalProvider.roleRAA()]
+				allowed: [GlobalProvider.roleDFIN(), GlobalProvider.roleRAA(),GlobalProvider.roleAAD(),]
 			},
 			suboptions: []
 		};
@@ -1093,22 +1093,20 @@ export class MyApp {
 					}
 				}
 			},
+
+			{
+				iconName: 'checkmark-circle-outline',
+				displayText: 'Demandere une recharge',
+				component: 'RefillfinancialPage',
+				custom: {
+					allowed: [GlobalProvider.roleAAD()],
+					
+				}
+			},
 			
 		];
 
-		let listfinSub = [
-			{
-				iconName: 'checkmark-circle-outline',
-				displayText: 'Traités',
-				component: 'ListReffilfinancePage',
-				custom: {
-					allowed: [GlobalProvider.roleDFIN(),GlobalProvider.roleRAA()],
-					data: {
-						page: 'myrequests'
-					}
-				}
-			},
-		];
+		
 		let cgaSub = [
 			{
 				iconName: 'radio-button-off',
@@ -1339,19 +1337,10 @@ export class MyApp {
 				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleRFVI(), GlobalProvider.roleRAA()]
 			}
 		};
-		let refillOption={
-			iconName: 'logo-usd',
-			displayText: 'Recharge financiere',
-			component: 'RefillfinancialPage',
-			selected: false,
-			custom: {
-				allowed: [GlobalProvider.roleAAD()]
-			}
-		};
+	
 		if (remunOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)
 			dfinDept.suboptions.push(remunOption);
-		if (refillOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)
-			dfinDept.suboptions.push(refillOption);
+		
 		if (cashingOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)
 			dfinDept.suboptions.push(cashingOption);
 

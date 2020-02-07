@@ -49,18 +49,13 @@ export class RefillfinancialPage {
 	img:any;
 	option: string;
 	showRef: any;
-	
 	uRole: string;
 	uId: string;
-	boutique: string;
-	bType: string;
 	user: any;
-	amount: any;
 	type_paie: any;
 	showItem:boolean=false;
 	page: any;
 	orders: any;
-	title: any;
 	toJustif: any;
 	justifFile: any;
 	labelJustif: any;
@@ -110,30 +105,6 @@ export class RefillfinancialPage {
 	}
 
 
-	isFieldValid(field: string) {
-		return !this.formgroup.get(field).valid && this.formgroup.get(field).touched;
-	}
-
-	displayFieldCss(field: string) {
-		return {
-			'has-error': this.isFieldValid(field),
-			'has-feedback': this.isFieldValid(field)
-		};
-	}
-
-	validateAllFormFields(formGroup: FormGroup) {
-		Object.keys(formGroup.controls).forEach(field => {
-			const control = formGroup.get(field);
-			if (control instanceof FormControl) {
-				control.markAsTouched({
-					onlySelf: true
-				});
-			} else if (control instanceof FormGroup) {
-				this.validateAllFormFields(control);
-			}
-		});
-	}
-
 	selectChangeMopay(event) {
 		console.log(event);
 		this.showRef = event != 0;
@@ -152,34 +123,14 @@ export class RefillfinancialPage {
 	if (this.type_paie == 3 || this.type_paie == 6)
 		{
 			this.showRef=true;
-			//this.formgroup.get('file1').enable();
+			
 		}
 		else
 		{
 			this.showRef=false;
-			//this.formgroup.get('file1').disable();
+			
 		}
 	}
-
-	getItem(item) {
-		let pos = this._SYGALIN.pay_options.map(function (e) {
-			return e.id;
-		}).indexOf(item);
-		return this._SYGALIN.pay_options[pos];
-	}
-	formCacher(field: string)
-	{
-		if (this.type_paie==2)
-		{
-			return this.formgroup.disable[field];
-		}
-		else
-		{
-			return this.formgroup.enable[field];
-		}
-		
-	}
-	
 
 	invalidField(field: string)
 	{
@@ -190,8 +141,6 @@ export class RefillfinancialPage {
 	{
 		return this.formgroup.controls[field].valid && (this.formgroup.controls[field].dirty || this.formgroup.controls[field].touched);
 	}
-
-	
 
 	sendform():void {
 				

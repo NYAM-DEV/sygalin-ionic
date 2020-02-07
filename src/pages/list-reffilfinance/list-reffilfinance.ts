@@ -256,29 +256,6 @@ constructor(
 	//	return totalR;
 	}
 
-	etat_ticket(id)
-	{
-		if(id=="0")
-		{
-			return "EN COURS...";
-		}
-		else		
-		{
-			if(id=="-1")
-			{
-				return "REJETÉ";
-			}
-			else
-			{
-				if(id=="1")
-				{return "TRAITÉ";}
-				
-			}
-			
-			
-		}
-		
-		}
 		
 
 	action_traitement(id)
