@@ -47,14 +47,9 @@ import { empty } from 'rxjs/Observer';
 export class RefillfinancialPage {
 	formgroup: FormGroup;
 	img:any;
-	showDocFile:boolean=false;
-	nom: string;
-	tel: string;
-	decodeur: string;
-	formule: string;
 	option: string;
 	showRef: any;
-	duree: string;
+	
 	uRole: string;
 	uId: string;
 	boutique: string;
@@ -86,17 +81,10 @@ export class RefillfinancialPage {
 	ngOnInit() {
 		this.user = this._SYGALIN.getCurUser();
 		this.formgroup = new FormGroup({
-			nom: new FormControl('', [Validators.required]),
-			tel: new FormControl('', [Validators.required,Validators.minLength(9),Validators.maxLength(9)]),
-			decodeur: new FormControl('', [Validators.minLength(12), Validators.maxLength(14)]),
-			formule: new FormControl('', [Validators.required]),
 			option: new FormControl('', [Validators.required]),
 			file1: new FormControl({disabled: true, value: ''}, [Validators.required]),
-			duree: new FormControl('', [Validators.required]),
 			pay_option: new FormControl('', [Validators.required]),
 			search: new FormControl('', []),
-			doc:new FormControl('',[]),
-			//file: new FormControl({disabled: true, value: ''}, [Validators.required]),
 			id_trans: new FormControl({disabled: true, value: ''}, [Validators.required]),
 			montant: new FormControl('',[Validators.required]),
 			reference: new FormControl('',[Validators.required])
