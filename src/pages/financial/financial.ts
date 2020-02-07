@@ -46,7 +46,7 @@ export class FinancialPage {
 	finTotreat(type?:any,motif?:any){
 		let postData = new FormData();
 		let cuser = this._SYGALIN.getCurUser();
-		if(type=='rejet'){
+		if(type=='reject'){
 			postData.append('valider', "-1");
 		}else{
 			postData.append('valider', "1");

@@ -71,12 +71,18 @@
 					<ion-col col-4>Type: </ion-col>
 					<ion-col col-8>{{valeur_b(r.type)}} </ion-col>
 			
-					<ion-col col-4 *ngIf="r.fichier" >Facture :</ion-col>
+					<ion-col col-4 *ngIf="r.fichier"> fichier</ion-col>
+					<ion-col col-8 *ngIf="r.fichier" (click)="getUrlFile(r.fichier)" > 
+						<button ion-button small round color="primary"> 
+							<ion-icon name="document" ></ion-icon> &nbsp; Piece jointe</button>
+						</ion-col>
+					
+					<!--<ion-col col-4 *ngIf="r.fichier" >Facture :</ion-col>
 					<ion-col col-8 *ngIf="r.fichier" >
 						<button color="light"  small  ion-button (click)="getUrlFile(r.fichier)">
 							<ion-icon name="document"></ion-icon>&nbsp; pièce jointe
 						</button>
-					</ion-col>
+					</ion-col>-->
 
 					<ion-col col-4>Référence : </ion-col>
 					<ion-col col-8>{{ r.n_versement}}</ion-col>

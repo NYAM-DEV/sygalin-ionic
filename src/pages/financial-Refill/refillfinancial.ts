@@ -46,24 +46,32 @@ import { empty } from 'rxjs/Observer';
 })
 export class RefillfinancialPage {
 	formgroup: FormGroup;
+	img:any;
+	showDocFile:boolean=false;
 	nom: string;
 	tel: string;
+	decodeur: string;
+	formule: string;
+	option: string;
 	showRef: any;
+	duree: string;
 	uRole: string;
 	uId: string;
 	boutique: string;
 	bType: string;
-	user:any;
+	user: any;
+	amount: any;
 	type_paie: any;
 	showItem:boolean=false;
 	page: any;
+	orders: any;
+	title: any;
 	toJustif: any;
 	justifFile: any;
 	labelJustif: any;
 	issetFile: boolean=false;
 	fileTypes: any;
 	file:any;
-	option:any;
 
 	constructor(
 		public _SYGALIN: GlobalProvider,
@@ -78,14 +86,18 @@ export class RefillfinancialPage {
 	ngOnInit() {
 		this.user = this._SYGALIN.getCurUser();
 		this.formgroup = new FormGroup({
-			
+			nom: new FormControl('', [Validators.required]),
+			tel: new FormControl('', [Validators.required,Validators.minLength(9),Validators.maxLength(9)]),
+			decodeur: new FormControl('', [Validators.minLength(12), Validators.maxLength(14)]),
+			formule: new FormControl('', [Validators.required]),
 			option: new FormControl('', [Validators.required]),
 			file1: new FormControl({disabled: true, value: ''}, [Validators.required]),
 			duree: new FormControl('', [Validators.required]),
 			pay_option: new FormControl('', [Validators.required]),
 			search: new FormControl('', []),
 			doc:new FormControl('',[]),
-			
+			//file: new FormControl({disabled: true, value: ''}, [Validators.required]),
+			id_trans: new FormControl({disabled: true, value: ''}, [Validators.required]),
 			montant: new FormControl('',[Validators.required]),
 			reference: new FormControl('',[Validators.required])
 		});
@@ -152,10 +164,12 @@ export class RefillfinancialPage {
 	if (this.type_paie == 3 || this.type_paie == 6)
 		{
 			this.showRef=true;
+			//this.formgroup.get('file1').enable();
 		}
 		else
 		{
 			this.showRef=false;
+			//this.formgroup.get('file1').disable();
 		}
 	}
 
@@ -206,11 +220,13 @@ export class RefillfinancialPage {
 			postData.append('montant', this.formgroup.value['montant']);
 			postData.append('boutique', this.user.shop);
 			postData.append('bType', this.user.shopType);
+			postData.append('duree', this.formgroup.value['duree']);
 			postData.append('uRole', this.user.role);
 			postData.append('uId', this.user.id);
 			postData.append('sector', this.user.sector);
 			postData.append('type_paie',this.type_paie);
-			postData.append('pay_option',this.formgroup.value['pay_option']);
+			postData.append('id_trans', this.formgroup.value['id_trans']);
+			postData.append('pay_option', this.formgroup.value['pay_option']);
 			this._SYGALIN.query("refillfinancial/", postData)
 				.then(res => {
 					
