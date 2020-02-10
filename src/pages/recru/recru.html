@@ -170,25 +170,27 @@
 					 class="validator-error validation-summary-errors">
 					Le champ Prestation technique est obligatoire
 				</div>
-				<ion-item>
-					<ion-label floating color="primary" class="item item-input item-select">
-						<div class="input-label">
-							Moyen de paiement
-						</div>
-					</ion-label>
-					<ion-select formControlName="pay_option" clearInput (ionChange)="selectChangeMopay($event)" [ngClass]="{
-						'has-danger': invalidField('pay_option'),
-						'has-success': validField('pay_option')
-					      }">
-						<ion-option value="0" selected>CASH</ion-option>
-						<ion-option *ngFor="let p of _SYGALIN.pay_options"
-									value="{{p.id}}">{{p.label | uppercase}}</ion-option>
-					</ion-select>
-				</ion-item>
-				<div *ngIf="invalidField('pay_option')" class="validator-error validation-summary-errors">
-					Le champ Moyen de paiement est obligatoire
-				</div>
-				<ion-item *ngIf="showRef">
+				<ng-container *ngIf="_SYGALIN.isFVI()" >
+					<ion-item >
+							<ion-label floating color="primary" class="item item-input item-select">
+								<div class="input-label">
+										Moyen de paiement
+								</div>
+								</ion-label>
+									<ion-select formControlName="pay_option" clearInput (ionChange)="selectChangeMopay($event)" [ngClass]="{
+											'has-danger': invalidField('pay_option'),
+											'has-success': validField('pay_option')
+											}">
+										<ion-option value="0" selected>CASH</ion-option>
+										<ion-option *ngFor="let p of _SYGALIN.pay_options" value="{{p.id}}">{{p.label | uppercase}}</ion-option>
+									</ion-select>
+					</ion-item>
+					<div *ngIf="invalidField('pay_option')" class="validator-error validation-summary-errors">
+							Le champ Moyen de paiement est obligatoire
+					</div>
+				</ng-container>
+				
+				<ion-item *ngIf="_SYGALIN.isFVI() && showRef">
 					<ion-label floating color="primary">ID Transaction</ion-label>
 					<ion-input type="text" formControlName="id_trans"  clearInput [ngClass]="{
 						'has-danger': invalidField('id_trans'),
@@ -198,27 +200,29 @@
 				<div *ngIf="invalidField('id_trans') && showRef" class="validator-error validation-summary-errors">
 					Le champ ID Transaction est obligatoire
 				</div>
-				<ion-item>
-					<ion-label floating color="primary" class="item item-input item-select">
-						<div class="input-label">
-							Avec installation
-						</div>
-					</ion-label>
-					<ion-select formControlName="installation" clearInput (ionChange)="selectChangedInstall($event)"  [ngClass]="{
-						'has-danger': invalidField('installation'),
-						'has-success': validField('installation')
-					      }">
-						<ion-option  value="1">OUI</ion-option>
-						<ion-option value="0">NON</ion-option>
-					</ion-select>
-				</ion-item>
-				<ion-item *ngIf="showPrice">
-					<ion-label floating color="primary">Prix Installation</ion-label>
-					<ion-input type="text" disabled  value="5.000" clearInput *ngIf="showPrice"></ion-input>
-				</ion-item>
-				<div *ngIf="invalidField('installation')" class="validator-error validation-summary-errors">
-					Ce champ est obligatoire
-				</div>
+				<ng-container *ngIf="_SYGALIN.isFVI()">
+					<ion-item >
+						<ion-label floating color="primary" class="item item-input item-select">
+							<div class="input-label">
+								Avec installation
+							</div>
+						</ion-label>
+						<ion-select formControlName="installation" clearInput (ionChange)="selectChangedInstall($event)"  [ngClass]="{
+							'has-danger': invalidField('installation'),
+							'has-success': validField('installation')
+							}">
+							<ion-option  value="1">OUI</ion-option>
+							<ion-option value="0">NON</ion-option>
+						</ion-select>
+					</ion-item>
+					<ion-item *ngIf="showPrice">
+						<ion-label floating color="primary">Prix Installation</ion-label>
+						<ion-input type="text" disabled  value="5.000" clearInput *ngIf="showPrice"></ion-input>
+					</ion-item>
+					<div *ngIf="invalidField('installation')" class="validator-error validation-summary-errors">
+						Ce champ est obligatoire
+					</div>
+				</ng-container>
 			</ion-card-content>
 		</ion-card>
 		<ion-card center>

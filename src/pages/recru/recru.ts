@@ -3,6 +3,7 @@ import {GlobalProvider} from '../../providers/global/global';
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
+import { ThrowStmt } from '@angular/compiler';
 
 
 @IonicPage()
@@ -42,7 +43,9 @@ export class RecruPage {
 
 	ngOnInit() {
 		this.user = this._SYGALIN.getCurUser();
-		this.formgroup = new FormGroup({
+		if(this._SYGALIN.isFVI())
+		{
+			this.formgroup = new FormGroup({
 			nom: new FormControl('', [Validators.required]),
 			ville: new FormControl('', [Validators.required]),
 			tel: new FormControl('', [Validators.required,Validators.minLength(9),Validators.maxLength(9)]),
@@ -58,6 +61,29 @@ export class RecruPage {
 			installation: new FormControl( '', [Validators.required]),
 
 		});
+		}
+		else
+		{
+			this.formgroup = new FormGroup({
+			nom: new FormControl('', [Validators.required]),
+			ville: new FormControl('', [Validators.required]),
+			tel: new FormControl('', [Validators.required,Validators.minLength(9),Validators.maxLength(9)]),
+			quartier: new FormControl('', [Validators.required]),
+			decodeur: new FormControl('', [Validators.minLength(12), Validators.required]),
+			formule: new FormControl('', [Validators.required]),
+			option: new FormControl('', [Validators.required]),
+			duree: new FormControl('', [Validators.required]),
+			kit: new FormControl('', [Validators.required]),
+			tech: new FormControl('', []),
+			pay_option: new FormControl('', []),
+			id_trans: new FormControl({disabled: true, value: ''}, []),
+			
+		});
+
+		}
+
+		
+		
 	}
 
 	ionViewDidLoad() {
@@ -83,13 +109,9 @@ export class RecruPage {
 
 	sendform() {
 		this._SYGALIN.loadingPresent("Enregistrement...");
-		this.simuler();
 		let postData = new FormData();
 		let ctrlN = this.navCtrl;
-		
 		postData.append('nom', this.formgroup.value['nom']);
-		postData.append('pay_option', this.formgroup.value['pay_option']);
-		postData.append('montant_abo', this.amount);
 		postData.append('tel', this.formgroup.value['tel']);
 		postData.append('decodeur', this.formgroup.value['decodeur']);
 		postData.append('formule', this.formgroup.value['formule']);
@@ -102,10 +124,8 @@ export class RecruPage {
 		postData.append('kit', this.formgroup.value['kit']);
 		postData.append('uRole', this.user.role);
 		postData.append('uId', this.user.id);
-		postData.append('secteur', this.user.sector);
+		postData.append('secteur', this._SYGALIN.user.sector);
 		postData.append('tech', this.formgroup.value['tech']);
-		postData.append('carte', this.formgroup.value['decodeur']);
-		postData.append('pay_option', this.formgroup.value['pay_option']);
 		if(this.showPrice){
 			postData.append('installation', this.price);
 		}
