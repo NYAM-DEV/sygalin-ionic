@@ -54,7 +54,7 @@ export class HomePage {
 		if(this._SYGALIN.isRFVI()){
 			this.navCtrl.push("MesReaboPage", {page: 'toTreat'});
 		}else {
-			this.navCtrl.push("MesReaboPage", {page: 'forPDV'});
+			this.navCtrl.push("MesReaboPage", {page: 'toTreat'});
 		}
 	}
 
