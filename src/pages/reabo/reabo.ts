@@ -118,7 +118,7 @@ export class ReaboPage {
 		postData.append('uRole', this.user.role);
 		postData.append('uId', this.user.id);
 		postData.append('secteur', this.user.sector);
-		console.log(this.user.sector);
+	
 		postData.append('id_trans', this.formgroup.value['id_trans']);
 		postData.append('pay_option', this.formgroup.value['pay_option']);
 		this._SYGALIN.query("newRenewal/", postData)
