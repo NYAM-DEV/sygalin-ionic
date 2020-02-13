@@ -53,7 +53,7 @@ export class RecapSoldPage {
 			postData.append('mois', this.formgroup.value['mois']);
       postData.append('annee',this.formgroup.value['annee']);	
       postData.append('secteur', cuser.sector);
-      postData.append('boutiqueId',cuser.shopType);
+      postData.append('boutiqueId',cuser.shop);
       postData.append('user_role', cuser.role);
       
 			let that = this;

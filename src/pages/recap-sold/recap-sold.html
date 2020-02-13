@@ -42,7 +42,7 @@
 						'has-success': validField('mois')
 					      }">
 						<ion-option value="{{curentyear}}">{{curentyear}}</ion-option>
-						<ion-option value="{{curentyear}}">{{lastyear}}</ion-option>
+						<ion-option value="{{lastyear}}">{{lastyear}}</ion-option>
 					</ion-select>
 
 				</ion-item>
@@ -78,22 +78,15 @@
                     
               <tbody>
               <!-- Corps du tableau -->
-              <ng-container  >
+              <ng-container  *ngFor="let item of soldecga; let ind=index">
                <!--*ngFor="let item of soldecga; let ind=index"-->
                 <tr>
-                  <td>1{{lastyear}}</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>4</td>
-                  <td>5</td>
-                  <!--<td>{{ item.date }}</td>
-                  <td>{{ item.objectifParc  | number :"1.0-0" }}</td>
-                  <td>{{ item.objectifreabo  | number :"1.0-0" }}</td>
-                  <td class="couleurreal">{{ item.nbrparc }}</td>
-                  <td class="couleurreal">{{ item.montant  | number :"1.0-0" }}</td>
-                  <td class="couleurreal">{{ item.arpu  | number :"1.0-0" }}</td>
-                  <td *ngIf="item.performanceReabo<100" class="text-red">{{ item.performanceReabo }} %</td>
-                  <td *ngIf="item.performanceReabo>=100" class="text-green">{{ item.performanceReabo }} %</td>-->
+                  <td class="couleurreal">{{item.jour}}</td>
+                  <td class="couleurreal">{{item.soldeE }} </td>
+                  <td class="couleurreal">{{item.versement }} </td>
+                  <td class="couleurreal">{{item.activation }}</td>
+                  <td class="couleurreal">{{item.soldeS }} </td>
+                  
                 </tr>
               </ng-container>
       
