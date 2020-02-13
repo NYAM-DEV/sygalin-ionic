@@ -103,7 +103,7 @@ export class MesRecruPage {
 		postData.append('boutique', cuser.shop);
 		let that = this;
 		
-		this._SYGALIN.query('listToTreat/', postData).then(res => {
+		this._SYGALIN.query('recruToTreat/', postData).then(res => {
 			console.log("res");
 			that.recruts = res;
 			console.log(res)

@@ -129,9 +129,11 @@ export class RecruPage {
 		if(this.showPrice){
 			postData.append('installation', this.price);
 		}
-
-		postData.append('id_trans', this.formgroup.value['id_trans']);
-		postData.append('pay_option', this.formgroup.value['pay_option']);
+		if(this._SYGALIN.isFVI())
+		{
+			postData.append('id_trans', this.formgroup.value['id_trans']);
+			postData.append('pay_option', this.formgroup.value['pay_option']);
+		}
 		this._SYGALIN.query("newRecruitment/", postData)
 			.then(res => {
 				//console.log(res);

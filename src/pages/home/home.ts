@@ -51,16 +51,16 @@ export class HomePage {
 	}
 
 	mesReabonnements() {
-		if(this._SYGALIN.isRFVI()){
+		if(this._SYGALIN.isRFVI() || this._SYGALIN.isRAA()){
 			this.navCtrl.push("MesReaboPage", {page: 'toTreat'});
 		}else {
-			this.navCtrl.push("MesReaboPage", {page: 'toTreat'});
+			this.navCtrl.push("MesReaboPage", {page: 'forPDV'});
 		}
 	}
 
 	mesRecrutements() {
 
-		if(this._SYGALIN.isRFVI()){
+		if(this._SYGALIN.isRFVI() || this._SYGALIN.isRAA()){
 			this.navCtrl.push("MesRecruPage", {page: 'toTreat'});
 		}else {
 			this.navCtrl.push("MesRecruPage", {page: 'forPDV'});
@@ -78,7 +78,7 @@ export class HomePage {
 
 	mesReabonnementsSvod(){
 
-		if(this._SYGALIN.isRFVI()){
+		if(this._SYGALIN.isRFVI() || this._SYGALIN.isRAA() ){
 			this.navCtrl.push("MesReaboSvodPage", {page: 'toTreat'});
 		}else{
 			this.navCtrl.push("MesReaboSvodPage", {page: 'forPDV'});

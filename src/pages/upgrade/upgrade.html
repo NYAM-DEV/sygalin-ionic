@@ -85,6 +85,7 @@
 				<div *ngIf="invalidField('formule2')"  class="validator-error validation-summary-errors">
 					Le champ Formule sollicitée est obligatoire
 				</div>
+			
 				<ion-item>
 					<ion-label color="primary" floating class="item item-input item-select">
 						Option
@@ -100,6 +101,7 @@
 				<div *ngIf="invalidField('option')" class="validator-error validation-summary-errors">
 					Veuillez renseigner une option valide
 				</div>
+			<ng-container *ngIf="_SYGALIN.isFVI()">
 				<ion-item>
 					<ion-label floating color="primary" class="item item-input item-select">
 						<div class="input-label">
@@ -127,6 +129,7 @@
 				<div *ngIf="invalidField('id_trans') && showRef" class="validator-error validation-summary-errors">
 					Ce champ est obligatoire
 				</div>
+			</ng-container>
 			</ion-card-content>
 		</ion-card>
 		<ion-card center>

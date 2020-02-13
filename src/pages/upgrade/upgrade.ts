@@ -43,17 +43,33 @@ export class UpgradePage {
 	ngOnInit() {
 
 		this.user = this._SYGALIN.getCurUser();
-		this.formgroup = new FormGroup({
-			nom: new FormControl('', [Validators.required]),
-			tel: new FormControl('', [Validators.minLength(9), Validators.maxLength(9), Validators.required]),
-			decodeur: new FormControl('', [Validators.minLength(12), Validators.maxLength(14), Validators.required]),
-			formule: new FormControl('', [Validators.required]),
-			formule2: new FormControl('', [Validators.required]),
-			pay_option: new FormControl('', [Validators.required]),
-			option: new FormControl('', [Validators.required]),
-			search: new FormControl('', []),
-			id_trans: new FormControl({disabled: true, value: ''}, [Validators.required])
-		});
+		if(this._SYGALIN.isFVI())
+		{
+			this.formgroup = new FormGroup({
+				nom: new FormControl('', [Validators.required]),
+				tel: new FormControl('', [Validators.minLength(9), Validators.maxLength(9), Validators.required]),
+				decodeur: new FormControl('', [Validators.minLength(12), Validators.maxLength(14), Validators.required]),
+				formule: new FormControl('', [Validators.required]),
+				formule2: new FormControl('', [Validators.required]),
+				pay_option: new FormControl('', [Validators.required]),
+				option: new FormControl('', [Validators.required]),
+				search: new FormControl('', []),
+				id_trans: new FormControl({disabled: true, value: ''}, [Validators.required])
+			});
+		}
+		else if(this._SYGALIN.isAAD())
+		{
+			this.formgroup = new FormGroup({
+				nom: new FormControl('', [Validators.required]),
+				tel: new FormControl('', [Validators.minLength(9), Validators.maxLength(9), Validators.required]),
+				decodeur: new FormControl('', [Validators.minLength(12), Validators.maxLength(14), Validators.required]),
+				formule: new FormControl('', [Validators.required]),
+				formule2: new FormControl('', [Validators.required]),
+				option: new FormControl('', [Validators.required]),
+				search: new FormControl('', []),
+				
+			});
+		}
 	}
 
 	onSubmit() {
@@ -88,6 +104,7 @@ export class UpgradePage {
 		postData.append('tel', this.formgroup.value['tel']);
 		postData.append('formule', this.formgroup.value['formule']);
 		postData.append('formule2', this.formgroup.value['formule2']);
+		postData.append('sector', this.user.sector);
 
 		postData.append('option', this.formgroup.value['option']);
 		postData.append('pay_option', this.formgroup.value['pay_option']);

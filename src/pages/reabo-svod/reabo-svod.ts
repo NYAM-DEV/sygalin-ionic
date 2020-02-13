@@ -34,15 +34,30 @@ export class ReaboSvodPage {
 
 	ngOnInit() {
 		this.user = this._SYGALIN.getCurUser();
-		this.formgroup = new FormGroup({
-			nom: new FormControl('', [Validators.required]),
-			tel1: new FormControl('', [Validators.required,Validators.minLength(9),Validators.maxLength(9)]),
-			tel2: new FormControl('',[Validators.minLength(9),Validators.maxLength(9)]),
-			decodeur: new FormControl('', [Validators.minLength(12), Validators.maxLength(14), Validators.required]),
-			duree: new FormControl('', [Validators.required]),
-			pay_option: new FormControl('', [Validators.required]),
-			id_trans: new FormControl({disabled: true, value: ''}, [Validators.required])
-		});
+		if(this._SYGALIN.isFVI())
+		{
+			this.formgroup = new FormGroup({
+				nom: new FormControl('', [Validators.required]),
+				tel1: new FormControl('', [Validators.required,Validators.minLength(9),Validators.maxLength(9)]),
+				tel2: new FormControl('',[Validators.minLength(9),Validators.maxLength(9)]),
+				decodeur: new FormControl('', [Validators.minLength(12), Validators.maxLength(14), Validators.required]),
+				duree: new FormControl('', [Validators.required]),
+				pay_option: new FormControl('', [Validators.required]),
+				id_trans: new FormControl({disabled: true, value: ''}, [Validators.required])
+			});
+		}
+		else if(this._SYGALIN.isAAD())
+		{
+			this.formgroup = new FormGroup({
+				nom: new FormControl('', [Validators.required]),
+				tel1: new FormControl('', [Validators.required,Validators.minLength(9),Validators.maxLength(9)]),
+				tel2: new FormControl('',[Validators.minLength(9),Validators.maxLength(9)]),
+				decodeur: new FormControl('', [Validators.minLength(12), Validators.maxLength(14), Validators.required]),
+				duree: new FormControl('', [Validators.required]),
+				pay_option: new FormControl('', []),
+				id_trans: new FormControl('', [])
+			});
+		}
 	}
 
 	ionViewDidLoad() {
@@ -73,9 +88,12 @@ export class ReaboSvodPage {
 		postData.append('duree', this.formgroup.value['duree']);
 		postData.append('role', this.user.role);
 		postData.append('user', this.user.id);
-
-		postData.append('id_trans', this.formgroup.value['id_trans']);
-		postData.append('pay_option', this.formgroup.value['pay_option']);
+		if(this._SYGALIN.isFVI())
+		{
+			postData.append('id_trans', this.formgroup.value['id_trans']);
+			postData.append('pay_option', this.formgroup.value['pay_option']);
+		}
+		
 		this._SYGALIN.query("newRenewalSvod/", postData)
 			.then(res => {
 				//console.log(res);

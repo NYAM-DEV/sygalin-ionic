@@ -105,6 +105,7 @@
 					 class="validator-error validation-summary-errors">
 					Le champ Durée est obligatoire
 				</div>
+			<ng-container *ngIf="_SYGALIN.isFVI()" >
 				<ion-item>
 					<ion-label floating color="primary" class="item item-input item-select">
 						<div class="input-label">
@@ -135,6 +136,7 @@
 				     class="validator-error validation-summary-errors">
 					Le champ ID Transaction est obligatoire
 				</div>
+			</ng-container>
 			</ion-card-content>
 		</ion-card>
 		<ion-card center>

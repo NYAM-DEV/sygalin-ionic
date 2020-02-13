@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, ModalController, ViewController} from 'ionic-angular';
 import {FormGroup, Validators, FormControl} from '@angular/forms';
 import {GlobalProvider} from '../../providers/global/global';
+import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
 
 @IonicPage()
 @Component({
@@ -44,7 +45,9 @@ export class ReaboPage {
 
 	ngOnInit() {
 		this.user = this._SYGALIN.getCurUser();
-		this.formgroup = new FormGroup({
+	if(this._SYGALIN.isFVI())
+		{
+			this.formgroup = new FormGroup({
 			nom: new FormControl('', [Validators.required]),
 			tel: new FormControl('', [Validators.required,Validators.minLength(9),Validators.maxLength(9)]),
 			decodeur: new FormControl('', [Validators.minLength(12), Validators.maxLength(14)]),
@@ -55,6 +58,23 @@ export class ReaboPage {
 			search: new FormControl('', []),
 			id_trans: new FormControl({disabled: true, value: ''}, [Validators.required])
 		});
+		}
+	else
+		{
+			this.formgroup = new FormGroup({
+			nom: new FormControl('', [Validators.required]),
+			tel: new FormControl('', [Validators.required,Validators.minLength(9),Validators.maxLength(9)]),
+			decodeur: new FormControl('', [Validators.minLength(12), Validators.maxLength(14)]),
+			formule: new FormControl('', [Validators.required]),
+			option: new FormControl('', [Validators.required]),
+			duree: new FormControl('', [Validators.required]),
+			pay_option: new FormControl('', []),
+			search: new FormControl('', []),
+			id_trans: new FormControl('', [])
+		});
+		}
+
+		
 	}
 
 	ionViewDidLoad() {
@@ -118,9 +138,12 @@ export class ReaboPage {
 		postData.append('uRole', this.user.role);
 		postData.append('uId', this.user.id);
 		postData.append('secteur', this.user.sector);
+			if(this._SYGALIN.isFVI())
+			{
+				postData.append('id_trans', this.formgroup.value['id_trans']);
+				postData.append('pay_option', this.formgroup.value['pay_option']);
+			}
 	
-		postData.append('id_trans', this.formgroup.value['id_trans']);
-		postData.append('pay_option', this.formgroup.value['pay_option']);
 		this._SYGALIN.query("newRenewal/", postData)
 			.then(res => {
 				//console.log(res);

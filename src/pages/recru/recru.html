@@ -159,14 +159,14 @@
 					 class="validator-error validation-summary-errors">
 					Le champ Kit est obligatoire
 				</div>
-				<ion-item *ngIf="_SYGALIN.isAAD()">
+				<ion-item>
 					<ion-label floating color="primary">Prestation technique</ion-label>
 					<ion-input type="text" formControlName="tech" clearInput  [ngClass]="{
 						'has-danger': invalidField('tech'),
 						'has-success': validField('tech')
 					      }"></ion-input>
 				</ion-item>
-				<div *ngIf="invalidField('kit' ) && _SYGALIN.isAAD()"
+				<div *ngIf="invalidField('kit')"
 					 class="validator-error validation-summary-errors">
 					Le champ Prestation technique est obligatoire
 				</div>
