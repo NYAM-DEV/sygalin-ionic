@@ -1,0 +1,112 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle *ngIf="!navCtrl.canGoBack()">
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>SOLDES CGA DES BOUTIQUES SUR LA PÉRIODE</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+
+  <form class="cent" [formGroup]="formgroup">
+
+    <ion-card center style=" padding-bottom: 0;">
+      
+			<ion-card-content style="padding: 7px">
+				<ion-item style="padding-left: 0" >
+					<!--<ion-input type="text" formControlName="search" placeholder="Fevrier"></ion-input>
+          <button ion-button item-right (click)="searchInfos()"><ion-icon name="search"></ion-icon></button>-->
+         
+          <ion-select formControlName="mois" clearInput (ionChange)="hideButton()"  [ngClass]="{
+						'has-danger': invalidField('mois'),
+						'has-success': validField('mois')
+					      }">
+						<ion-option selected value="01">JANVIER</ion-option>
+						<ion-option value="02">FEVRIER</ion-option>
+						<ion-option value="MARS">MARS</ion-option>
+						<ion-option value="AVRIL">AVRIL</ion-option>
+						<ion-option value="MAI">MAI</ion-option>
+						<ion-option value="JUIN">JUIN</ion-option>
+					</ion-select>
+
+        </ion-item>
+        <div *ngIf="invalidField('mois')" class="validator-error validation-summary-errors">
+					Le champ Mois est obligatoire
+				</div>
+
+        <ion-item style="padding-left: 0" >
+					         
+          <ion-select formControlName="annee" (ionChange)="hideButton()" [ngClass]="{
+						'has-danger': invalidField('mois'),
+						'has-success': validField('mois')
+					      }">
+						<ion-option value="{{curentyear}}">{{curentyear}}</ion-option>
+						<ion-option value="{{curentyear}}">{{lastyear}}</ion-option>
+					</ion-select>
+
+				</ion-item>
+        <div *ngIf="invalidField('annee')" class="validator-error validation-summary-errors">
+					Le champ Année est obligatoire
+        </div>
+        
+        <button ion-button item-right (click)="searchInfos()">AFFICHER LA SELECTION</button>
+			</ion-card-content>
+    </ion-card>
+</form>
+    <br>
+
+		<ion-card center>
+			<ion-card-content>
+			  <ion-card>
+         
+          <ion-card-content style="overflow-x: auto">
+            <table>
+              <caption colspan="2" rowspan="3"></caption>
+              <thead>
+              <!-- En-tête du tableau -->
+              <tr>
+                <th rowspan="2">Date</th>
+                <th rowspan="2">Solde d'entréé</th>
+                <th rowspan="2">Versement</th>
+                <th rowspan="2">Activation & Matériel</th>
+                <th rowspan="2">Solde sortie</th>
+              </tr>
+             
+              </thead>
+      
+                    
+              <tbody>
+              <!-- Corps du tableau -->
+              <ng-container  >
+               <!--*ngFor="let item of soldecga; let ind=index"-->
+                <tr>
+                  <td>1{{lastyear}}</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <!--<td>{{ item.date }}</td>
+                  <td>{{ item.objectifParc  | number :"1.0-0" }}</td>
+                  <td>{{ item.objectifreabo  | number :"1.0-0" }}</td>
+                  <td class="couleurreal">{{ item.nbrparc }}</td>
+                  <td class="couleurreal">{{ item.montant  | number :"1.0-0" }}</td>
+                  <td class="couleurreal">{{ item.arpu  | number :"1.0-0" }}</td>
+                  <td *ngIf="item.performanceReabo<100" class="text-red">{{ item.performanceReabo }} %</td>
+                  <td *ngIf="item.performanceReabo>=100" class="text-green">{{ item.performanceReabo }} %</td>-->
+                </tr>
+              </ng-container>
+      
+              </tbody>
+            </table>
+      
+          </ion-card-content>
+        </ion-card>
+				
+					
+			</ion-card-content>
+	
+    </ion-card>  
+  <br>
+
+</ion-content>

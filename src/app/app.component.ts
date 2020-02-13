@@ -1103,6 +1103,16 @@ export class MyApp {
 					
 				}
 			},
+
+			{
+				iconName: 'compass-outline',
+				displayText: 'Recap solde',
+				component: 'RecapSoldPage',
+				custom: {
+					allowed: [GlobalProvider.roleAAD()],
+					
+				}
+			},
 			
 		];
 

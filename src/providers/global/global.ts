@@ -145,6 +145,7 @@ export class GlobalProvider {
 	public prestations: any;
 	public notifications: any;
 	public grossiste: DTYPE;
+	public curYear:any;
 	// connexion en https ou http
 	public  isHttps:boolean=true;
 
@@ -433,6 +434,7 @@ export class GlobalProvider {
 				this.compte_bancaire=res.compte_bancaire;
 				this.sectors=res.secteurs;
 				this.prestations=res.type_intervention;
+				this.curYear=res.curYear;
 				console.log("all pay option",this.all_pay_options);
 			});
 	}
