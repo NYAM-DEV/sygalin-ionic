@@ -9,7 +9,7 @@ page-recap-sold {
 		//font-family: monospace;
 		//border: thin solid #6495ed;
 		font-weight: bold;
-		width: 50%;
+		width: 20px;
 		padding: 5px;
 		background-color: #D0E3FA;
 	}
@@ -58,10 +58,16 @@ page-recap-sold {
 		border-radius: 10px;
 		width: 100% !important;
 		margin: 0 !important;
+		margin-left: 5px;
+		margin-right: 5px;
 	}
 
 	ion-card-content{
 		padding: 0 !important;
+		margin: 5px auto;
+		margin-left: 5px;
+		margin-right: 5px;
+		border-radius: 10px;
 	}
 
 	ion-card-content table{

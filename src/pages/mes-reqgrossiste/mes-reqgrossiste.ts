@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams, TabHighlight, TabButton} from 'ionic-angular';
 import {GlobalProvider} from "../../providers/global/global";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 
@@ -25,11 +25,12 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
       ])
     ])
   ]
-})
+})           
 export class MesReqgrossistePage {
   reqs: Array<any>;
   page: string;
   title: string;
+  
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -41,11 +42,13 @@ export class MesReqgrossistePage {
   ionViewDidLoad() {
     this._SYGALIN.loadingPresent("Chargement de la liste");
     //console.log('Page: recrutements');
+    console.log("voivi ma page"+this.page)
     if (this.page === "forPDV") {
       this.title = "Mes Requettes";
       this.mesReq();
     } else if (this.page === "toTreat") {
       this.title = "Requettes à traiter";
+      console.log("to trait")
       this.reqToTreat();
     } else if (this.page === "treated") {
       this.title = "Requettes traités";
@@ -89,7 +92,8 @@ export class MesReqgrossistePage {
     postData.append('uId', cuser.id);
     let that = this;
     this._SYGALIN.query('typingErrorRequestList/', postData).then(res => {
-      //console.log(res);
+     
+     // console.log(res);
       that.reqs = res;
       if (event)
       {
@@ -112,7 +116,43 @@ export class MesReqgrossistePage {
     console.log("reqRejected");
   }
   validateReq(request: any){
-    console.log("validateReq");
+        
+		this._SYGALIN.loadingPresent("Enregistrement...");
+		let postData = new FormData();
+		var ctrlN = this.navCtrl;
+     
+
+			postData.append('uId', this._SYGALIN.user.id);
+			postData.append('sector', this._SYGALIN.user.sector);
+			postData.append('roleId', this._SYGALIN.user.role);
+			postData.append('shop', this._SYGALIN.user.shop);
+			postData.append('bType', this._SYGALIN.user.shopType);
+      postData.append('cuser', this._SYGALIN.user.cuser);
+      postData.append('type', request.type);
+      postData.append('id', request.id);
+     
+      let that = this;
+			this._SYGALIN.query("confirmReq/", postData).then(res => {
+        console.log("resources"+res);
+        let type = "success";
+        console.log(res['type']);
+        if (res['type'] === 'error') {
+          type = "danger";
+        }
+         else if (res['type'] === 'success') {
+          that.removeItem(request);
+          if (!that.reqs.length) {
+            this.reqToTreat();
+          }
+        }
+        that._SYGALIN.loadingDismiss();
+        that._SYGALIN.presentToast(res['message'], type, 4000);
+        
+      }).catch(error => {
+        console.log(error);
+        this._SYGALIN.loadingDismiss();
+        this._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
+      })
   }
   rejectReq(request: any, motivation: string){
     console.log('rejectReq');
@@ -195,5 +235,11 @@ export class MesReqgrossistePage {
     });
     alert.present();
   }
-
+  
+  removeItem(item) {
+		let pos = this.reqs.map(function (e) {
+			return e.ticket;
+		}).indexOf(item.ticket);
+		this.reqs.splice(pos, 1);
+	}
 }

@@ -1,0 +1,97 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Nouvelle récharge</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="cent">
+	<ion-grid>
+			<ion-row>
+				<ion-col>
+					<button ion-button block (click)="listReffilfinance()" class="rounded"><ion-icon name="list"></ion-icon>&nbsp;Liste</button>
+				</ion-col>
+			</ion-row>
+	</ion-grid>
+		
+	<div class="cent" [formGroup]="formgroup">
+		
+		<ion-card center>
+			<ion-card-header>
+				Informations sur le mode de paiement
+			</ion-card-header>
+			<ion-card-content>
+				<ion-item>
+					<ion-label floating color="primary" class="item item-input item-select">
+						<div class="input-label">
+							Opérateur<span>*</span>
+						</div>
+					</ion-label>
+					<ion-select formControlName="pay_option" (ionChange)="selectChangeMopay($event)" >
+					<!--	<ion-option [selected]="true" value="0">CASH </ion-option>-->
+						<ion-option *ngFor="let p of _SYGALIN.pay_options" value="{{p.id}}">{{p.label | uppercase}}</ion-option>
+					</ion-select>
+				</ion-item>
+
+					
+				
+			
+				<ion-item>
+					<ion-label floating color="primary">Montant<span>*</span></ion-label>
+					<ion-input type="number" formControlName="montant" [ngClass]="{
+						'has-danger': invalidField('montant'),
+						'has-success': validField('montant')
+						}"></ion-input>
+				
+				<div *ngIf="invalidField('montant')" class="validator-error validation-summary-errors">
+					Ce champ est obligatoire
+				</div>
+			</ion-item>		
+	
+			<ion-item>
+				<ion-label floating color="primary">Date de saisie <span>*</span></ion-label>
+				<ion-datetime displayFormat="DD-MMMM-YYYY" formControlName="today"  clearInput [ngClass]="{
+					'has-danger': invalidField('today'),
+					'has-success': validField('today')
+					  }">{{today}}</ion-datetime>
+
+				<div *ngIf="invalidField('today') " class="validator-error validation-summary-errors">
+				Ce champ est obligatoire
+				</div>	  
+			</ion-item>
+
+			<ion-item>
+				<ion-label floating color="primary">Date de saisie <span>*</span></ion-label>
+				<ion-datetime displayFormat="HH:mm:ss" formControlName="totime"  clearInput [ngClass]="{
+					'has-danger': invalidField('totime'),
+					'has-success': validField('totime')
+					  }">{{totime}}</ion-datetime>
+
+				<div *ngIf="invalidField('totime') " class="validator-error validation-summary-errors">
+				Ce champ est obligatoire
+				</div>	  
+			</ion-item>
+
+				<ion-item>
+					<ion-label floating color="primary">Commentaire<span>*</span></ion-label>
+					<ion-input formControlName="commentaire" [ngClass]="{
+						'has-danger': invalidField('commentaire'),
+						'has-success': validField('commentaire')
+						}"></ion-input>
+				
+				<div *ngIf="invalidField('commentaire')" class="validator-error validation-summary-errors">
+					Ce champ est obligatoire
+				</div>
+			</ion-item>	
+			</ion-card-content>
+ 		</ion-card>
+		
+		<div>
+			<button ion-button block (click)="sendform()" class="rounded"><ion-icon name="cloud-upload"></ion-icon>&nbsp;Enregistrer</button>
+		</div>
+	</div>
+
+	
+</ion-content>

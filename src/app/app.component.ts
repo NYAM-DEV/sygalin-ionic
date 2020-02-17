@@ -340,7 +340,7 @@ export class MyApp {
 			iconName: 'contact',
 			displayText: 'Dépt. réabo. & S.A.V',
 			custom: {
-				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleRFVI(), GlobalProvider.roleRAA()]
+				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleRFVI(), GlobalProvider.roleRAA(), GlobalProvider.roleCM()]
 			},
 			suboptions: []
 		};
@@ -461,7 +461,7 @@ export class MyApp {
 			iconName: 'eye',
 			displayText: 'Requêttes vers grossiste',
 			custom: {
-				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleRFVI(), GlobalProvider.roleRAA()]
+				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleRFVI(), GlobalProvider.roleRAA(), GlobalProvider.roleCM()]
 			},
 			suboptions: []
 		};
@@ -502,11 +502,20 @@ export class MyApp {
 			suboptions: []
 		};
 
+		let reqrefOption = {
+			iconName: 'logo-usd',
+			displayText: 'Requette pour reference',
+			custom: {
+				allowed: [GlobalProvider.roleDFIN()]
+			},
+			suboptions: []
+		};
+
 		let rfinOption = {
 			iconName: 'logo-usd',
 			displayText: 'Recharge compte financier',
 			custom: {
-				allowed: [GlobalProvider.roleDFIN(), GlobalProvider.roleRAA(),GlobalProvider.roleAAD(),]
+				allowed: [GlobalProvider.roleDFIN(), GlobalProvider.roleRAA(),GlobalProvider.roleAAD(),GlobalProvider.roleCM()]
 			},
 			suboptions: []
 		};
@@ -875,6 +884,17 @@ export class MyApp {
 				},
 			},
 			{
+				iconName: 'undo',
+				displayText: 'Requette d\' Erreur',
+				component: 'MesReqgrossistePage',
+				custom: {
+					allowed: [GlobalProvider.roleRAA(), GlobalProvider.roleRFVI(), GlobalProvider.roleCM()],
+					data: {
+						page: 'toTreat'
+					}
+				},
+			},
+			{
 				iconName: 'create',
 				displayText: 'Modification',
 				component: 'ReqgrossistePage',
@@ -1115,7 +1135,32 @@ export class MyApp {
 			},
 			
 		];
-
+		let refSub=[
+			{
+					iconName: 'radio-button-off',
+					displayText: 'À traiter',
+					component: 'MesReferencePage',
+					custom: {
+						allowed: [GlobalProvider.roleDFIN(),GlobalProvider.roleRAA()],
+						data: {
+							page: 'toTreat'
+						}
+					}
+				},
+	
+				{
+					iconName: 'checkmark-circle-outline',
+					displayText: 'Traités',
+					component: 'MesReferencePage',
+					custom: {
+						allowed: [GlobalProvider.roleDFIN(),GlobalProvider.roleRAA()],
+						data: {
+							page: 'myrequestsdfin'
+						}
+					}
+				},
+			];
+	
 		
 		let cgaSub = [
 			{
@@ -1123,7 +1168,7 @@ export class MyApp {
 				displayText: 'CGA Prépayé',
 				component: 'CgaprePage',
 				custom: {
-					allowed: [GlobalProvider.roleDFIN(),GlobalProvider.roleCM()],
+					allowed: [GlobalProvider.roleDFIN()],
 					data: {
 						page: 'toTreat'
 					}
@@ -1265,7 +1310,13 @@ export class MyApp {
 			}
 		});
 
-
+		refSub.forEach((option) => {
+			// console.log("allowed Migr: ", option.custom.allowed, "Role ID: "+this.roleId);
+			if (option.custom.allowed.indexOf(Number(this.roleId)) >= 0) {
+				// console.log('Allowed option: '+option.displayText);
+				reqrefOption.suboptions.push(option);
+			}
+		});
 		cashingSub.forEach((option) => {
 			// console.log("allowed Migr: ", option.custom.allowed, "Role ID: "+this.roleId);
 			if (option.custom.allowed.indexOf(Number(this.roleId)) >= 0) {
@@ -1347,7 +1398,19 @@ export class MyApp {
 				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleRFVI(), GlobalProvider.roleRAA()]
 			}
 		};
+		let reffinOption={
+			iconName: 'cash',
+			displayText: 'Requette ref.',
+			component: 'RefFinancialPage',
+			selected: false,
+			custom: {
+				allowed: [GlobalProvider.roleAAD()]
+			}
+		};
 	
+		if (reffinOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)
+			dfinDept.suboptions.push(reffinOption);
+			
 		if (remunOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)
 			dfinDept.suboptions.push(remunOption);
 		
@@ -1357,6 +1420,8 @@ export class MyApp {
 		if (rfinOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)
 			dfinDept.suboptions.push(rfinOption);
 
+		if (reqrefOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)
+			dfinDept.suboptions.push(reqrefOption);
 		if (memoOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)
 			dfinDept.suboptions.push(memoOption);
 

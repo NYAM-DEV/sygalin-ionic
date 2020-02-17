@@ -107,12 +107,16 @@ export class UpgradePage {
 		postData.append('sector', this.user.sector);
 
 		postData.append('option', this.formgroup.value['option']);
-		postData.append('pay_option', this.formgroup.value['pay_option']);
-		postData.append('id_trans', this.formgroup.value['id_trans']);
+		
 		postData.append('boutique', this.user.shop);
 		postData.append('bType', this.user.shopType);
 		postData.append('uRole', this.user.role);
 		postData.append('uId', this.user.id);
+		if(this._SYGALIN.isFVI())
+		{
+			postData.append('pay_option', this.formgroup.value['pay_option']);
+			postData.append('id_trans', this.formgroup.value['id_trans']);
+		}
 		this._SYGALIN.query("updateRenewal/", postData)
 			.then(res => {
 				//console.log(res);
