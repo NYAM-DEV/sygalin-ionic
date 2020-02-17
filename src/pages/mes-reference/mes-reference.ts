@@ -188,7 +188,7 @@ presentConfirm(request: any, type: string) {
     title = "validation";
     msg = 'valider';
   } else {
-    title = "rejet";
+    title = "reject";
     msg = 'rejeter';
   }
 

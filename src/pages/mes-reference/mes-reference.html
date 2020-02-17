@@ -54,11 +54,12 @@
 					<ion-col col-4 *ngIf="r.commentaire">Commentaire : </ion-col>
 					<ion-col col-8 *ngIf="r.commentaire">{{r.commentaire}}</ion-col>
 
-					<ion-col col-4 >En cours de traitement par : </ion-col>
+					<ion-col col-4 *ngIf="r.state=='0'">En cours de traitement par : </ion-col>
 					<ion-col col-8  *ngIf="r.state=='0'" ion-text color="primary">DIRECTEUR FINANCIER</ion-col>
 					</ion-row>
 			</ion-grid>
 		</ion-card-content>
+		<ion-col col-12 *ngIf="_SYGALIN.isDFIN() && r.state==0">
 			<ion-grid class="button-group">
 				<ion-row>
 					<ion-col>
@@ -69,6 +70,7 @@
 					</ion-col>
 				</ion-row>
 			</ion-grid>
+		</ion-col>
 	</ion-card>
 		
 
