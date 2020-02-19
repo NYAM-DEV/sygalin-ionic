@@ -340,7 +340,7 @@ export class MyApp {
 			iconName: 'contact',
 			displayText: 'Dépt. réabo. & S.A.V',
 			custom: {
-				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleRFVI(), GlobalProvider.roleRAA(), GlobalProvider.roleCM()]
+				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleRFVI(), GlobalProvider.roleRAA(), GlobalProvider.roleCM(), GlobalProvider.roleRESPO_AG()]
 			},
 			suboptions: []
 		};
@@ -435,6 +435,15 @@ export class MyApp {
 			displayText: 'Réabonnements Canal',
 			custom: {
 				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleRFVI(), GlobalProvider.roleRAA()]
+			},
+			suboptions: []
+		};
+
+		let refilprepedOption = {
+			iconName: 'refresh',
+			displayText: 'Recharge Prépayé',
+			custom: {
+				allowed: [GlobalProvider.roleRESPO_AG()]
 			},
 			suboptions: []
 		};
@@ -553,6 +562,52 @@ export class MyApp {
 		/**
 		 * SOUS-MENUS
 		 */
+
+		let refilperpedSub = [
+			{
+				iconName: 'add-circle',
+				displayText: 'Recharge Prépayé',
+				component: 'RefilprepedPage',
+				custom: {
+					allowed: [GlobalProvider.roleAAD()]
+				},
+			},
+			{
+				iconName: 'radio-button-off',
+				displayText: 'À traiter',
+				//badge: this._SYGALIN.unreadReaboObservable,
+				component: 'MesReaboPage',
+				custom: {
+					allowed: [GlobalProvider.roleRFVI(), GlobalProvider.roleRAA()],
+					data: {
+						page: 'toTreat'
+					}
+				},
+			},
+			/*{
+				iconName: 'checkmark-circle-outline',
+				displayText: 'Traités',
+				component: 'MesReaboPage',
+				custom: {
+					allowed: [GlobalProvider.roleRFVI(), GlobalProvider.roleRAA()],
+					data: {
+						page: 'treated'
+					}
+				},
+			},
+			{
+				iconName: 'remove-circle-outline',
+				displayText: 'Rejetés',
+				component: 'MesReaboPage',
+				custom: {
+					allowed: [GlobalProvider.roleRFVI(), GlobalProvider.roleRAA()],
+					data: {
+						page: 'rejected'
+					}
+				},
+			}*/
+		];
+
 
 		let reaboSub = [
 			{
@@ -1148,7 +1203,7 @@ export class MyApp {
 					}
 				},
 	
-				{
+				/*{
 					iconName: 'checkmark-circle-outline',
 					displayText: 'Traités',
 					component: 'MesReferencePage',
@@ -1158,7 +1213,7 @@ export class MyApp {
 							page: 'myrequestsdfin'
 						}
 					}
-				},
+				},*/
 			];
 	
 		
@@ -1243,6 +1298,14 @@ export class MyApp {
 			if (option.custom.allowed.indexOf(Number(this.roleId)) >= 0) {
 				// console.log('Allowed option: '+option.displayText);
 				reaboOption.suboptions.push(option);
+			}
+		});
+
+		refilperpedSub.forEach((option) => {
+			// console.log("allowed Reabos: ", option.custom.allowed, "Role ID: "+this.roleId);
+			if (option.custom.allowed.indexOf(Number(this.roleId)) >= 0) {
+				// console.log('Allowed option: '+option.displayText);
+				refilprepedOption.suboptions.push(option);
 			}
 		});
 
@@ -1366,6 +1429,8 @@ export class MyApp {
 
 		if (grossisteOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)
 			reaboDept.suboptions.push(grossisteOption);
+		if (refilprepedOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)
+			reaboDept.suboptions.push(refilprepedOption);
 		// dept commer
 
 		if (recruOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)

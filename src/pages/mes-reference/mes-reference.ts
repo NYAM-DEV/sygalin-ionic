@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams,AlertController } from 'ionic-angul
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import { CurrencyPipe, DeprecatedI18NPipesModule } from '@angular/common';
 
+
 @IonicPage()
 @Component({
   selector: 'page-mes-reference',
@@ -69,14 +70,14 @@ this._SYGALIN.loadingPresent("Chargement de la liste");
   console.log('Page: Liste recharge');
 
   if (this.page === "myrequests") {
-    this.title = "Mes requette pour reference";
+    this.title = "Mes requêttes pour reference";
           this.ListeRef();
   } else if (this.page === "toTreat") {
-    this.title = "Mes requette pour reference à traiter";
+    this.title = "Mes requêttes à traiter";
   this.ListeRef();
-  } else if (this.page === "rejected") {
-    //this.title = "Réabonnements rejetés";
-    //this.reaboRejected();
+  } else if (this.page === "toTreatmy") {
+    this.title = "Mes requêttes à traiter";
+    this.ListemyRef();
   }
 }
 doRefresh(event) {
@@ -86,8 +87,8 @@ doRefresh(event) {
     this.ListToTreatRef(event);
   } else if (this.page === "toTreat") {
     this.ListToTreatRef(event);
-  } else if (this.page === "rejected") {
-    //this.reaboRejected(event);
+  } else if (this.page === "toTreatmy") {
+    this.ListemyRef(event);
   }
 }
 ListeRef(event?: any) {
@@ -187,14 +188,16 @@ presentConfirm(request: any, type: string) {
   if (type === 'validate') {
     title = "validation";
     msg = 'valider';
-  } else {
-    title = "reject";
+  } else if(type === 'reject'){
+     title = "reject";
     msg = 'rejeter';
   }
+   
+  console.log("mon type"+type);
 
   let alert = this._ALERT.create({
     title: 'Confirmation de ' + title,
-    message: 'Voulez-vous vraiment ' + msg + ' ce recrutement? Cette opération est irréversible...',
+    message: 'Voulez-vous vraiment ' + msg + ' cette reference? Cette opération est irréversible...',
     buttons: [
       {
         text: 'Non',
@@ -208,8 +211,36 @@ presentConfirm(request: any, type: string) {
         handler: () => {
           if (type === 'validate') {
             this.presentPrompt(request);//validateRecru
-          } else {
+          } else if (type === 'reject'){
             this.presentPromptreject(request);
+          }
+        }
+      }
+    ]
+  });
+  alert.present();
+}
+presentConfirmVoir(request: any, type: string) {
+  let smg="", title = "";
+  smg=request.reference
+  title = "la référence";
+      console.log("request"+request.reference);
+  let alert = this._ALERT.create({
+    title: 'Confirmation de ' + title,
+    message: smg,
+    buttons: [
+      {
+        text: 'Non',
+        role: 'cancel',
+        handler: () => {
+          console.log('Opération annulée');
+        }
+      },
+      {
+        text: 'Oui',
+        handler: () => {
+           if (type === 'voir'){
+            this.ValideMyRef(request);
           }
         }
       }
@@ -358,5 +389,62 @@ removeItem(item) {
     return e.ticket;
   }).indexOf(item.ticket);
   this.listeref.splice(pos, 1);
+}
+
+ValideMyRef(request: any) {
+  let postData = new FormData();
+  let cuser = this._SYGALIN.getCurUser();
+  postData.append('idTick', request.ticket);
+  postData.append('uId', this._SYGALIN.user.id);
+  let that = this;
+  this._SYGALIN.loadingPresent("Validation de la requette");
+  this._SYGALIN.query('updateStateView/', postData).then(res => {
+    console.log(res);
+    let type = "success";
+    if (res['type'] === 'error') {
+      type = "danger";
+    } else if (res['type'] === 'success') {
+      that.removeItem(request);
+      if (!that.listeref.length) {
+        that.ListToTreatRef();
+      }
+    }
+    that._SYGALIN.loadingDismiss();
+    that._SYGALIN.presentToast(res['message'], type, 4000);
+    //that.listeref=res;
+  }).catch(error => {
+    console.log(error);
+    that._SYGALIN.loadingDismiss();
+    that._SYGALIN.presentToast("Une erreur s'est produite. Veuillez réessayer.", "danger", 4000);
+  });
+}
+
+ListemyRef(event?: any) {
+  console.log('Liste pour refrence');
+  let postData = new FormData();
+    postData.append('uId', this._SYGALIN.user.id);
+    postData.append('Tbtq', this._SYGALIN.user.shopType);
+    postData.append('role', this._SYGALIN.user.role);
+    postData.append('shop', this._SYGALIN.user.shop);
+    let that = this;
+    this._SYGALIN.query('myRefRequest/', postData).then(res => {
+      
+    that.listeref = res;
+    console.log("Liste pour reference");
+    console.log(this.listeref);
+    
+    if (event) {
+      event.complete();
+      
+    } else
+      that._SYGALIN.loadingDismiss();
+  }).catch(error => {
+    console.log(error);
+    if (event) {
+      event.complete();
+    } else
+      that._SYGALIN.loadingDismiss();
+    that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
+  });
 }
 }

@@ -18,7 +18,8 @@ import {GlobalProvider} from "../../providers/global/global";
 	templateUrl: 'popover.html',
 })
 export class PopoverPage {
-
+	stat:any;
+	end:any;
 	constructor(
 		public alertCtrl: AlertController,
 		public viewCtrl: ViewController,
@@ -109,4 +110,7 @@ export class PopoverPage {
 		this._EVENT.publish('user:openActionsheet');
 	}
 
+	transtionCGA() {
+		this.navCtrl.push("RecapSoldPage");
+	}
 }

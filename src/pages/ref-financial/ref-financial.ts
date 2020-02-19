@@ -65,7 +65,8 @@ export class RefFinancialPage {
       montant: new FormControl('', [Validators.required]),
       today: new FormControl('', [Validators.required]),
       totime: new FormControl('', [Validators.required]),
-      commentaire: new FormControl('', []),
+	  commentaire: new FormControl('', []),
+	  sim_marchande: new FormControl('', []),
 			});
 			
 	}
@@ -109,12 +110,7 @@ export class RefFinancialPage {
 		this._SYGALIN.loadingPresent("Traitement...");	
 			let postData = new FormData();
 			var ctrlN = this.navCtrl;
-			if (this.showRef){
 			
-				for (const file of this.file){
-					postData.append('files[]', file);
-				}
-			}	
 				postData.append('todate', this.formgroup.value['today']);
 				postData.append('totime', this.formgroup.value['totime']);
 				postData.append('montant', this.formgroup.value['montant']);
@@ -148,9 +144,30 @@ export class RefFinancialPage {
 			//this._SYGALIN.presentToast("Bien vouloir remplir tous les champs du formulaire", 'danger');
 		//}	
 }	
-			listReffilfinance() {
-				console.log('list recharge financiere ');
-				this.navCtrl.push("MesReferencePage", {page: 'myrequests'});
+	listReffilfinance() {
+		console.log('list recharge financiere ');
+		this.navCtrl.push("MesReferencePage", {page: 'myrequests'});
+	}
+	validateAllFormFields(formGroup: FormGroup) { //{1}
+		Object.keys(formGroup.controls).forEach(field => { //{2}
+			const control = formGroup.get(field); //{3}
+			if (control instanceof FormControl) { //{4}
+				control.markAsTouched({
+					onlySelf: true
+				});
+			} else if (control instanceof FormGroup) { //{5}
+				this.validateAllFormFields(control); //{6}
 			}
+		});
+	}
+
+	onSubmit() {
+		if (this.formgroup.valid) {
+			this.sendform();
+		} else {
+			this.validateAllFormFields(this.formgroup);
+			this._SYGALIN.presentToast('Bien vouloir remplir tous les champs du formulaire', 'danger');
+		}
+	}
 }
 

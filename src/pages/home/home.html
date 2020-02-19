@@ -123,8 +123,8 @@
 	</ion-grid>
 
 	<!--PANEL DES FVI/VAD/AAD -->
-	<ion-grid *ngIf="_SYGALIN.isFVI() || _SYGALIN.isAAD()">
-		<ion-item style="text-align: center; border-radius: 15px; color: dimgrey; font-weight: bold" *ngIf="_SYGALIN.isFVI() || _SYGALIN.isAAD()">
+	<ion-grid *ngIf="_SYGALIN.isFVI() || _SYGALIN.isAAD() || _SYGALIN.isRESPO_AG()">
+		<ion-item style="text-align: center; border-radius: 15px; color: dimgrey; font-weight: bold" *ngIf="_SYGALIN.isFVI() || _SYGALIN.isAAD()|| _SYGALIN.isRESPO_AG()">
 			TABLEAU DE BORD
 		</ion-item>
 
@@ -136,6 +136,8 @@
 					R&Eacute;ABOS
 				</ion-card>
 			</ion-col>
+
+			
 			<ion-col col-4>
 				<ion-card class="full-width bgreabosvod colorText"   *ngIf="_SYGALIN.isFVI() || _SYGALIN.isAAD()" (tap)="mesReabonnementsSvod()"  ion-button>
 					<ion-icon name="refresh" color="primary" item-start></ion-icon>
@@ -180,7 +182,17 @@
 					REMUN.
 				</ion-card>
 			</ion-col>
-
+			
+			<ion-col col-4 *ngIf="_SYGALIN.isAAD()">
+				<ion-card class="full-width blackText " (tap)="refrequesttotreat()"  ion-button style="color: #000000 !important">
+					<ion-badge style="position: fixed; margin-left: 44px; margin-top: -16px;" color="{{_SYGALIN.unreadRequestRefToTreatObservable==0?'secondary':'danger'}}" class="cbadge" item-end>{{_SYGALIN.unreadRequestRefToTreatObservable}}</ion-badge>
+					<ion-icon name="card"  item-start></ion-icon>
+					<br>
+					<!--R&Eacute;ABOS<br>-->
+					Requette pour <br>reference a traiter
+				</ion-card>
+			</ion-col>
+			
 			<!--<ion-col col-4>
 				<ion-card class="full-width  blackText "   (tap)="Cmdb()"  ion-button style="color: #000000">
 					<ion-badge style="position: fixed; margin-left: 46px; margin-top: -16px;" color="{{_SYGALIN.unreadMigrObservable==0?'secondary':'danger'}}" class="cbadge" item-end>{{_SYGALIN.unreadMigrObservable}}</ion-badge>
@@ -346,6 +358,14 @@
 				</ion-card>
 			</ion-col>
 
+			<ion-col col-4 *ngIf="_SYGALIN.isDFIN()">
+				<ion-card class="full-width blackText " (tap)="refrequest()"  ion-button style="color: #000000 !important">
+					<ion-badge style="position: fixed; margin-left: 44px; margin-top: -16px;" color="{{_SYGALIN.unreadRefRequestObservable==0?'secondary':'danger'}}" class="cbadge" item-end>{{_SYGALIN.unreadRefRequestObservable}}</ion-badge>
+					<ion-icon name="card"  item-start></ion-icon>
+					<br>
+					R&Eacute;ABOS <br> PR&Eacute;PAY&Eacute;
+				</ion-card>
+			</ion-col>
 			
 
 			<ion-col col-4 *ngIf="_SYGALIN.isDFIN() || _SYGALIN.isCM()">
@@ -395,6 +415,15 @@
 					<ion-icon name="help-circle"  item-start></ion-icon>
 					<br>
 					REQUETTE <br>DSI
+				</ion-card>
+			</ion-col>
+			<ion-col col-4 *ngIf="_SYGALIN.isDFIN()">
+				<ion-card class="full-width blackText " (tap)="refrequesttotretDFIN()"  ion-button style="color: #000000 !important">
+					<ion-badge style="position: fixed; margin-left: 44px; margin-top: -16px;" color="{{_SYGALIN.unreadRequestRefToTreatObservable==0?'secondary':'danger'}}" class="cbadge" item-end>{{_SYGALIN.unreadRequestRefToTreatObservable}}</ion-badge>
+					<ion-icon name="card"  item-start></ion-icon>
+					<br>
+				
+					Requette pour <br>reference a traiter
 				</ion-card>
 			</ion-col>
 		</ion-row>

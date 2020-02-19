@@ -130,7 +130,19 @@ export class HomePage {
 		console.log("load FinancialPage page");
 		this.navCtrl.push('FinancialPage');
 	}
+	refrequest(){
+		console.log("load FinancialPage page");
+		this.navCtrl.push('MesReferencePage',{page: 'toTreat'});
+	}
+	refrequesttotreat(){
+		console.log("load FinancialPage page");
+		this.navCtrl.push('MesReferencePage',{page: 'toTreat'});	
+	}
 
+	refrequesttotretDFIN(){
+		console.log("load FinancialPage page");
+		this.navCtrl.push('MesReferencePage',{page: 'toTreat'});	
+	}
 	loadMemo(){
 		console.log("load memo");
 		this.navCtrl.push('MemoPage');

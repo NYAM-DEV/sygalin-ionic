@@ -44,6 +44,11 @@
 		<ion-icon name="help-circle-outline" color="primary" item-start></ion-icon>&nbsp;À propos
 	</button>
 
+	<!--	TRANSACTION CGA-->
+	<button ion-item detail-none (click)="transtionCGA()" color="text-light" style="font-weight: bold;text-align: center; border-bottom: none !important">
+		<ion-icon name="transgender-outline" color="primary" item-start></ion-icon>&nbsp;transaction 
+	</button>
+
 	<!--	CHANGEMENT DE COMPTE-->
 	<button *ngIf="_SYGALIN._MultipleAccounts.length>1" ion-item detail-none (click)="showAcounts()" style="color: #3F51B5; font-weight: bold; border-bottom: none !important">
 		<ion-icon name="swap" item-start></ion-icon>&nbsp;Autres comptes

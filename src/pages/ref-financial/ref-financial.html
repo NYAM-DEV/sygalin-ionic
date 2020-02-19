@@ -3,7 +3,7 @@
 		<button ion-button menuToggle>
 			<ion-icon name="menu"></ion-icon>
 		</button>
-		<ion-title>Nouvelle récharge</ion-title>
+		<ion-title>Nouvelle requêtte pour reference</ion-title>
 	</ion-navbar>
 </ion-header>
 
@@ -20,7 +20,7 @@
 		
 		<ion-card center>
 			<ion-card-header>
-				Informations sur le mode de paiement
+				Informations sur la requête
 			</ion-card-header>
 			<ion-card-content>
 				<ion-item>
@@ -63,7 +63,7 @@
 			</ion-item>
 
 			<ion-item>
-				<ion-label floating color="primary">Date de saisie <span>*</span></ion-label>
+				<ion-label floating color="primary">Heure de saisie <span>*</span></ion-label>
 				<ion-datetime displayFormat="HH:mm:ss" formControlName="totime"  clearInput [ngClass]="{
 					'has-danger': invalidField('totime'),
 					'has-success': validField('totime')
@@ -75,22 +75,28 @@
 			</ion-item>
 
 				<ion-item>
-					<ion-label floating color="primary">Commentaire<span>*</span></ion-label>
-					<ion-input formControlName="commentaire" [ngClass]="{
-						'has-danger': invalidField('commentaire'),
-						'has-success': validField('commentaire')
-						}"></ion-input>
+					<ion-label floating color="primary">Commentaire</ion-label>
+					<ion-textarea formControlName="commentaire">
+						
+					</ion-textarea>
 				
-				<div *ngIf="invalidField('commentaire')" class="validator-error validation-summary-errors">
-					Ce champ est obligatoire
-				</div>
 			</ion-item>	
+			<ion-item>
+				<ion-label floating color="primary">SIM Marchande<span>*</span></ion-label>
+				<ion-input formControlName="sim_marchande" value="{{simMarchand}}" disabled>
+					
+				</ion-input>
+			
+		</ion-item>	
 			</ion-card-content>
  		</ion-card>
-		
-		<div>
-			<button ion-button block (click)="sendform()" class="rounded"><ion-icon name="cloud-upload"></ion-icon>&nbsp;Enregistrer</button>
-		</div>
+		 <ion-card center>
+			<ion-card-content>
+					<div>
+						<button ion-button block (click)="onSubmit()" class="rounded"><ion-icon name="cloud-upload"></ion-icon>&nbsp;Enregistrer</button>
+					</div>
+			</ion-card-content>
+		</ion-card> 
 	</div>
 
 	

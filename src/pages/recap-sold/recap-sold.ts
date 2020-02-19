@@ -78,9 +78,7 @@ export class RecapSoldPage {
 			that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
 		});
 	}
-  mesRecharges(){
-
-  }
+ 
 
   invalidField(field: string) {
 		return this.formgroup.controls[field].invalid && (this.formgroup.controls[field].dirty || this.formgroup.controls[field].touched);

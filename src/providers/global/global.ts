@@ -25,8 +25,8 @@ const DISTRIBUTORS: Array<DTYPE> =[
 	{
 		name: "DJABBAMA DOUNIA",
 		http: "https",
-		url: 'test-dsi.sygalin.com',
-		//url:'djabbama-aws.sygalin-tvsat.com',
+		//url: 'test-dsi.sygalin.com',
+		url:'djabbama-aws.sygalin-tvsat.com',
 		numdist: 707
 	},
 	{
@@ -63,6 +63,7 @@ const ROLES={
 	CONTROL:{value:14},
 	SUPER:{value:16},
 	DGEN:{value:47},
+	RESPO_AG:{value:21},
 };
 /*const FVI: number = 25;
 const RFVI: number = 28;
@@ -228,6 +229,8 @@ export class GlobalProvider {
 	public unreadCgapostObservable: any;
 	public unreadMemosObservable: any;
 	public unreadFinanceObservable: any;
+	public unreadRefRequestObservable: any;
+	public unreadRequestRefToTreatObservable: any;
 	public unreadVersementObservable: any;
 	public unreadOdmObservable: any;
 	public unreadReqDsiObservable: any;
@@ -321,9 +324,14 @@ export class GlobalProvider {
 				if (this.isPDG() || this.isDFIN()){
 					this.OdmToTreat();
 				}
+				if (this.isAAD()){
+					this.ReqToTreatRef();
+				}
 				if (this.isDFIN()){
 					this.FinanceToTreat();
 					this.VersementToTreat();
+					this.ListToTreatRef();
+					this.ReqToTreatRef();
 				}
 				if (this.isRDSI()|| this.isDEV() || this.isRT() || this.isPDG()){
 					this.reqdsiToTreat()
@@ -369,9 +377,14 @@ export class GlobalProvider {
 						if (this.isPDG() || this.isDFIN()){
 							this.OdmToTreat();
 						}
+						if (this.isAAD()){
+							this.ReqToTreatRef();
+						}
 						if (this.isDFIN()){
 							this.FinanceToTreat();
 							this.VersementToTreat();
+							this.ListToTreatRef();
+							this.ReqToTreatRef()
 						}
 						if (this.isRDSI()|| this.isDEV() || this.isRT()|| this.isPDG()){
 							this.reqdsiToTreat()
@@ -703,6 +716,10 @@ export class GlobalProvider {
 	isDG(): boolean {
 		return this.getCurUser()!==null?parseInt(this.getCurUser().role) == GlobalProvider.roleDG():false;
 	}
+	isRESPO_AG(): boolean {
+		return this.getCurUser()!==null?parseInt(this.getCurUser().role) == GlobalProvider.roleRESPO_AG():false;
+	}
+
 
 	isDGEN(): boolean {
 		return this.getCurUser()!==null?parseInt(this.getCurUser().role) == GlobalProvider.roleDGEN():false;
@@ -750,6 +767,9 @@ export class GlobalProvider {
 
 	static roleRFVI(): any {
 		return ROLES.RFVI.value;
+	}
+	static roleRESPO_AG(): any {
+		return ROLES.RESPO_AG.value;
 	}
 
 	static roleFVI(): any {
@@ -924,7 +944,26 @@ export class GlobalProvider {
 			this.unreadFinanceObservable=res.length;
 		});
 	}
+	ListToTreatRef() {
 
+		let postData = new FormData();  
+		postData.append('uId', this.user.id);
+		postData.append('Urole', this.user.role);
+		this.query('listRefRequestToTreat/', postData).then(res => {
+			this.unreadRefRequestObservable=res.length;
+		})
+	  }
+	  ReqToTreatRef() {
+
+		let postData = new FormData();  
+		postData.append('uId', this.user.id);
+		postData.append('Tbtq', this.user.shopType);
+		postData.append('role', this.user.role);
+		this.query('myRefRequest/', postData).then(res => {
+			console.log("valeur possible",res);
+			this.unreadRequestRefToTreatObservable=res.length;
+		})
+	  }
 	OdmToTreat() {
 
 		let postData = new FormData();
