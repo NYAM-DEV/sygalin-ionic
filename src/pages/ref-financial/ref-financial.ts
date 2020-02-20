@@ -58,7 +58,15 @@ export class RefFinancialPage {
   }
   ngOnInit() {
 		this.today = new Date().toTimeString();
-		this.simMarchand=this._SYGALIN.user.MercantSIM;
+		if(this._SYGALIN.user.MercantSIM=="")
+		{
+			this.simMarchand="";
+		}
+		else
+		{
+			this.simMarchand=this._SYGALIN.user.MercantSIM;
+		}
+		
 	
 	this.formgroup = new FormGroup({
       pay_option: new FormControl('', [Validators.required]),
@@ -66,7 +74,7 @@ export class RefFinancialPage {
       today: new FormControl('', [Validators.required]),
       totime: new FormControl('', [Validators.required]),
 	  commentaire: new FormControl('', []),
-	  sim_marchande: new FormControl('', []),
+	  sim_marchande: new FormControl('', [Validators.required]),
 			});
 			
 	}
@@ -120,7 +128,7 @@ export class RefFinancialPage {
 				postData.append('user', this._SYGALIN.user.id);
 				postData.append('sector', this._SYGALIN.user.sector);
 				postData.append('commentaire', this.formgroup.value['commentaire'])
-				postData.append('sim_marchand', this._SYGALIN.user.MercantSIM)
+				postData.append('sim_marchand',this.formgroup.value['sim_marchande'] )
 				postData.append('operateur', this.formgroup.value['pay_option']);
 				this._SYGALIN.query("saveRefRequest/", postData)
 					.then(res => {

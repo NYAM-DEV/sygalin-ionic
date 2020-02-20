@@ -24,11 +24,11 @@
                         Mois <span>*</span>
                       </div>
                     </ion-label>   
-                    <ion-select formControlName="mois" clearInput (ionChange)="hideButton()"  [ngClass]="{
+                    <ion-select formControlName="mois" clearInput  [ngClass]="{
                       'has-danger': invalidField('mois'),
                       'has-success': validField('mois')
                           }">
-                      <ion-option selected value="01">JANVIER</ion-option>
+                      <ion-option value="01">JANVIER</ion-option>
                       <ion-option value="02">FEVRIER</ion-option>
                       <ion-option value="03">MARS</ion-option>
                       <ion-option value="04">AVRIL</ion-option>
@@ -54,20 +54,15 @@
                       <div class="input-label">
                         Année <span>*</span>
                       </div>
-                    </ion-label>   
-                    <ion-select formControlName="annee" (ionChange)="hideButton()" [ngClass]="{
-                      'has-danger': invalidField('mois'),
-                      'has-success': validField('mois')
+                    </ion-label> 
+                    <ion-select  clearInput formControlName="annee" [ngClass]="{
+                      'has-danger': invalidField('annee'),
+                      'has-success': validField('annee')
                           }">
-                      <ion-option selected value="{{curentyear}}">{{curentyear}}</ion-option>
-                      <ion-option value="{{lastyear}}">{{lastyear}}</ion-option>
+                      <ion-option value="1">{{curentyear}}</ion-option>
+                      <ion-option value="2">{{lastyear}}</ion-option>
                     </ion-select>
-
-                
-                  <div *ngIf="invalidField('annee')" class="validator-error validation-summary-errors">
-                    Le champ Année est obligatoire
-                  </div>
-                    </ion-item>
+                  </ion-item>
                   </ion-col>
                 </ion-row>
               </ion-grid>

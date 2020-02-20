@@ -25,7 +25,6 @@ export class RecapSoldPage {
     public modalCtrl: ModalController) {
 
       this.formgroup = new FormGroup({
-      search: new FormControl('', [Validators.required]),
       mois: new FormControl('', [Validators.required]),
       annee: new FormControl('', [Validators.required]),  
      
@@ -36,8 +35,8 @@ export class RecapSoldPage {
     console.log('ionViewDidLoad RecapSoldPage');
     this._SYGALIN.getCities();
     this._SYGALIN.getInitialData();
-    this.curentyear= this._SYGALIN.curYear;
-    this.lastyear=Number.parseInt(this.curentyear)  -1
+    this.curentyear= this._SYGALIN.currentYear;
+    this.lastyear=Number.parseInt(this.curentyear)-1;
 
     
   }
@@ -50,8 +49,16 @@ export class RecapSoldPage {
 			
 			postData.append('uId', cuser.id);
 			postData.append('Urole', cuser.role);
-			postData.append('mois', this.formgroup.value['mois']);
-      postData.append('annee',this.formgroup.value['annee']);	
+      postData.append('mois', this.formgroup.value['mois']);
+      
+      if(this.formgroup.value['annee']==1)
+      {
+         postData.append('annee',this.curentyear);
+      }
+      else{
+         postData.append('annee',this.lastyear);
+      }
+     	
       postData.append('secteur', cuser.sector);
       postData.append('boutiqueId',cuser.shop);
       postData.append('user_role', cuser.role);

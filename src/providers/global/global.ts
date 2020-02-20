@@ -146,7 +146,7 @@ export class GlobalProvider {
 	public prestations: any;
 	public notifications: any;
 	public grossiste: DTYPE;
-	public curYear:any;
+	public currentYear:any;
 	// connexion en https ou http
 	public  isHttps:boolean=true;
 
@@ -447,7 +447,7 @@ export class GlobalProvider {
 				this.compte_bancaire=res.compte_bancaire;
 				this.sectors=res.secteurs;
 				this.prestations=res.type_intervention;
-				this.curYear=res.curYear;
+				this.currentYear=res.currentYear;
 				console.log("all pay option",this.all_pay_options);
 			});
 	}
@@ -949,6 +949,7 @@ export class GlobalProvider {
 		let postData = new FormData();  
 		postData.append('uId', this.user.id);
 		postData.append('Urole', this.user.role);
+		postData.append('Tbtq', this.user.shopType);
 		this.query('listRefRequestToTreat/', postData).then(res => {
 			this.unreadRefRequestObservable=res.length;
 		})

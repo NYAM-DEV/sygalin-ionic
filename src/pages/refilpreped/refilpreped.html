@@ -20,24 +20,12 @@
 		
 		<ion-card center>
 			<ion-card-header>
-				Informations sur le mode de paiement
+				Informations sur la recharge
 			</ion-card-header>
 			<ion-card-content>
-			
+										
 				<ion-item>
-					<ion-label floating color="primary">Référence<span>*</span></ion-label>
-					<ion-input type="text" formControlName="reference" [ngClass]="{
-						'has-danger': invalidField('reference'),
-						'has-success': validField('reference')
-						}"></ion-input>
-				
-					<div *ngIf="invalidField('reference')" class="validator-error validation-summary-errors">
-						Ce champ est obligatoire
-					</div>
-				</ion-item>
-			
-				<ion-item>
-						<ion-label floating color="primary">Montant<span>*</span></ion-label>
+						<ion-label floating color="primary">Montant voulu<span>*</span></ion-label>
 						<ion-input type="number" formControlName="montant" [ngClass]="{
 							'has-danger': invalidField('montant'),
 							'has-success': validField('montant')
@@ -47,7 +35,78 @@
 						Ce champ est obligatoire
 					</div>
 				</ion-item>	
-      
+				
+				<ion-item>
+                    <ion-label floating color="primary" class="item item-input item-select">
+                      <div class="input-label">
+                        Remboursement sur <span>*</span>
+                      </div>
+                    </ion-label>   
+                    <ion-select formControlName="date" clearInput (ionChange)="hideButton()"  [ngClass]="{
+                      'has-danger': invalidField('date'),
+                      'has-success': validField('date')
+                          }">
+                      <ion-option selected value="le mois">le mois actuel</ion-option>
+                      <ion-option value="2 mois">2 mois</ion-option>
+                      <ion-option value="3 mois">3 mois</ion-option>
+                      <ion-option value="4 mois">4 mois</ion-option>
+                    </ion-select>
+
+                  
+                  <div *ngIf="invalidField('date')" class="validator-error validation-summary-errors">
+                    Le champ Mois est obligatoire
+                  </div>
+                    </ion-item>
+
+			</ion-card-content>
+ 		</ion-card>
+		
+		 <!--
+			 Deuxieme block
+		 -->
+		 <ion-card center>
+			<ion-card-header>
+				Montant mensuel à payer
+			</ion-card-header>
+			<ion-card-content>
+				<ion-item>
+					<ion-label floating color="primary">1ere Date de paiement <span>*</span></ion-label>
+					<ion-datetime displayFormat="DD-MMMM-YYYY" formControlName="date"  clearInput [ngClass]="{
+						'has-danger': invalidField('date'),
+						'has-success': validField('date')
+						  }">{{today}}</ion-datetime>
+	
+					<div *ngIf="invalidField('date') " class="validator-error validation-summary-errors">
+					Ce champ est obligatoire
+					</div>	  
+				</ion-item>	
+				
+				<ion-item>
+					<ion-label floating color="primary">Motivation du memos<span>*</span></ion-label>
+					<ion-textarea formControlName="motivation" [ngClass]="{
+						'has-danger': invalidField('motivation'),
+						'has-success': validField('motivation')
+						  }">
+					</ion-textarea>
+				
+					<div *ngIf="invalidField('motivation') " class="validator-error validation-summary-errors">
+						Ce champ est obligatoire
+						</div>
+
+					</ion-item>	
+
+			</ion-card-content>
+		 </ion-card>
+		 
+		 <!--
+			 troisieme block
+		 -->
+		<ion-card center>
+			<ion-card-header>
+				Documents
+			</ion-card-header>
+			<ion-card-content>
+
 				<ion-item>
 					<ion-col col-12 >
 						<label for="file-upload"  class="custom-file-upload" [ngClass]="{ 'with-file': issetFile }">
@@ -76,11 +135,34 @@
 				</ion-item>	
 
 			</ion-card-content>
- 		</ion-card>
+		 </ion-card>
 
-		<div>
-			<button ion-button block (click)="sendform()" class="rounded"><ion-icon name="cloud-upload"></ion-icon>&nbsp;Enregistrer</button>
-		</div>
+		 <ion-card center>
+			<ion-row>
+				<ion-col>
+					<ion-item>
+						<ion-label>J'ai LU et APPROUVÉ le</ion-label>
+						<ion-checkbox (click)="addValue($event)" formControlName="checked"></ion-checkbox>
+					</ion-item>
+				</ion-col>
+				<ion-col>
+			<ion-card-content>
+				<ion-col col-8 *ngIf="r.fichier" (click)="getUrlFile()" > 
+					<button ion-button small round color="primary"> 
+						<ion-icon name="document" ></ion-icon> &nbsp; Contat</button>
+					</ion-col>
+			</ion-card-content>
+		</ion-col>
+	</ion-row>
+		</ion-card> 
+
+		<ion-card padding *ngIf="showItem">
+			<ion-card-content>
+					<div>
+							<button ion-button block (click)="sendform()" class="rounded"><ion-icon name="cloud-upload"></ion-icon>&nbsp;Enregistrer</button>
+					</div>
+			</ion-card-content>
+		</ion-card>
 	</div>
 
 	

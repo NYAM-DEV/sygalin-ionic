@@ -45,8 +45,15 @@ import { empty } from 'rxjs/Observer';
 	]
 })
 export class RefilprepedPage {
+	Data:[
+		{
 
-  formgroup: FormGroup;
+		},
+		{
+
+		}
+	];
+	formgroup: FormGroup;
 	img:any;
 	option: string;
 	showRef: any;
@@ -63,6 +70,9 @@ export class RefilprepedPage {
 	issetFile: boolean=false;
 	fileTypes: any;
   file:any;
+  today:any;
+  checked:boolean=false;
+ 
   
   constructor(
 		public _SYGALIN: GlobalProvider,
@@ -76,21 +86,21 @@ export class RefilprepedPage {
   
 	ngOnInit() {
 		this.user = this._SYGALIN.getCurUser();
+		this.today = new Date().toTimeString();
 		this.formgroup = new FormGroup({
-			option: new FormControl('', [Validators.required]),
+			
+			montant: new FormControl('', [Validators.required]),
+			Remboursement:new FormControl('', [Validators.required]),
+			date:new FormControl('', [Validators.required]),
+			motivation: new FormControl('',[Validators.required]),
 			file1: new FormControl({disabled: true, value: ''}, [Validators.required]),
-			pay_option: new FormControl('', [Validators.required]),
-			search: new FormControl('', []),
-			id_trans: new FormControl({disabled: true, value: ''}, [Validators.required]),
-			montant: new FormControl('',[Validators.required]),
-			reference: new FormControl('',[Validators.required])
 		});
 	}
 
 	ionViewDidLoad() {
 		this._SYGALIN.getCities();
 		this._SYGALIN.getInitialData();
-		this.formgroup.controls.option.setValue("0");
+		
 			this.labelJustif="Cliquer ici pour renseigner le fichier...";
 			this.fileTypes= {
 				'docx': 'word',
@@ -104,9 +114,6 @@ export class RefilprepedPage {
 			};
 			this.toJustif=null;
 	}
-
-
-
 
 	invalidField(field: string)
 	{
@@ -161,4 +168,52 @@ export class RefilprepedPage {
     console.log('list recharge financiere ');
     this.navCtrl.push("ListReffilfinancePage", {page: 'myrequests'});
   }
+  hideButton() {
+	this.showItem=false;
+}
+sendform() {
+	this.showItem=true;
+/*	this._SYGALIN.loadingPresent("Enregistrement...");
+	let postData = new FormData();
+	let ctrlN = this.navCtrl;
+	postData.append('nom', this.formgroup.value['nom']);
+	postData.append('tel', this.formgroup.value['tel']);
+	postData.append('decodeur', this.formgroup.value['decodeur']);
+	postData.append('formule', this.formgroup.value['formule']);
+	postData.append('option', this.formgroup.value['option']);
+	postData.append('vile', this.formgroup.value['ville']);
+	postData.append('quartier', this.formgroup.value['quartier']);
+	postData.append('boutique', this.user.shop);
+	postData.append('bType', this.user.shopType);
+	postData.append('duree', this.formgroup.value['duree']);
+	postData.append('kit', this.formgroup.value['kit']);
+	postData.append('uRole', this.user.role);
+	postData.append('uId', this.user.id);
+	postData.append('secteur', this._SYGALIN.user.sector);
+	postData.append('tech', this.formgroup.value['tech']);
+	
+	this._SYGALIN.query("newRecruitment/", postData)
+		.then(res => {
+			//console.log(res);
+			this.showItem=true;
+			this._SYGALIN.loadingDismiss();
+			if (res.type === 'success') {
+				this._SYGALIN.presentToast("Recrutement effectué avec succès!", 'success');
+				ctrlN.setRoot('RecruPage');
+			} else {
+				this._SYGALIN.presentToast(res.message, 'danger');
+			}
+		})
+		.catch(error => {
+			this._SYGALIN.loadingDismiss();
+			this._SYGALIN.presentToast("Une erreur interne est survenue. Veuillez réessayer (Code 104)", 'danger');
+		});
+	*/}
+
+	addValue(e): void {
+		var isChecked = e.currentTarget.checked;
+		console.log(e.currentTarget);//undefined
+		console.log(this.checked);//it is working !!!
+	
+	  }
 }

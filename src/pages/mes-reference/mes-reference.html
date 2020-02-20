@@ -22,7 +22,7 @@
 			<ion-grid>
 				<ion-row>
 					<ion-col col-4 >Initié le: </ion-col>
-					<ion-col col-8 >{{ r.open_date}}</ion-col>
+					<ion-col col-8 >{{ this._SYGALIN.momentjs(r.open_date).format("DD-MMMM-YYYY HH:mm:ss")}}</ion-col>
 
 					<ion-col col-4 >ticket: </ion-col>
 					<ion-col col-8 *ngIf="r.num" ion-text color="warning">N° {{r.num}} </ion-col>
@@ -48,14 +48,14 @@
 					<ion-col col-8  >{{r.label}}</ion-col>
 
 					<ion-col col-4 >Date de l'opération : </ion-col>
-					<ion-col col-8  >{{r.date_operation}}</ion-col>
+					<ion-col col-8  >{{this._SYGALIN.momentjs(r.date_operation).format("DD-MMMM-YYYY HH:mm:ss")}}</ion-col>
 
 
 					<ion-col col-4 *ngIf="r.commentaire">Commentaire : </ion-col>
 					<ion-col col-8 *ngIf="r.commentaire">{{r.commentaire}}</ion-col>
 
-					<ion-col col-4 *ngIf="r.reference">Référence: </ion-col>
-					<ion-col col-8  *ngIf="r.reference" ion-text color="primary" >{{r.reference}}</ion-col>
+					<ion-col col-4 *ngIf="r.state==1">Référence: </ion-col>
+					<ion-col col-8 *ngIf="r.state==1" ion-text color="primary" >{{r.reference}}</ion-col>
 
 					<ion-col col-4 *ngIf="r.state=='0'">En cours de traitement par : </ion-col>
 					<ion-col col-8  *ngIf="r.state=='0'" ion-text color="primary">DIRECTEUR FINANCIER</ion-col>
@@ -67,10 +67,10 @@
 				<ion-grid class="button-group">
 					<ion-row>
 						<ion-col>
-							<button ion-button block (click)="presentConfirm(r, 'validate')" color="secondary" class="large"><ion-icon name="thumbs-up" start>  </ion-icon> &nbsp; Valider </button>
+							<button ion-button block (click)="presentConfirm(r, 'validate')" color="secondary" class="large"><ion-icon name="thumbs-up" start>  </ion-icon> &nbsp; Repondre </button>
 						</ion-col>
 						<ion-col>
-							<button ion-button block (click)="presentConfirm(r, 'reject')" color="danger" class="large"> Rejeter &nbsp; <ion-icon name="thumbs-down" end></ion-icon></button>
+							<button ion-button block (click)="presentConfirm(r, 'reject')" color="danger" class="large"> Invalider &nbsp; <ion-icon name="thumbs-down" end></ion-icon></button>
 						</ion-col>
 					</ion-row>
 				</ion-grid>
@@ -78,7 +78,7 @@
 			<ion-col col-12 *ngIf="_SYGALIN.isAAD() && r.reference  && r.state==0">
 				<ion-grid class="button-group">
 					
-							<button ion-button block (click)="presentConfirmVoir(r, 'voir')" color="secondary" class="large"><ion-icon name="thumbs-up" start>  </ion-icon> &nbsp; Voir la référence</button>
+							<button ion-button block round (click)="presentConfirmVoir(r, 'voir')" color="secondary" class="rounded"><ion-icon name="thumbs-up" start>  </ion-icon> &nbsp; Voir la référence</button>
 						
 				</ion-grid>
 			</ion-col>

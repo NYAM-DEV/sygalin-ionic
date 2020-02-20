@@ -11,8 +11,8 @@ page-refillfinancial {
 	}
 	.card-ios{
 		border-radius: 20px;
+		padding-bottom: 30px;
 	}
-
 	.text-error-msg
 	{
 		font-weight: lighter;
@@ -102,7 +102,9 @@ page-refillfinancial {
 			}
 		}
 	}
-
+	ion-card-header{
+		border-bottom: 1px solid lightgray;
+	}
 }
 
 

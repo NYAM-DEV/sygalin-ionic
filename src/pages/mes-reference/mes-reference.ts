@@ -71,7 +71,7 @@ this._SYGALIN.loadingPresent("Chargement de la liste");
 
   if (this.page === "myrequests") {
     this.title = "Mes requêttes pour reference";
-          this.ListeRef();
+          this.ListeRefRequest();
   } else if (this.page === "toTreat") {
     this.title = "Mes requêttes à traiter";
   this.ListeRef();
@@ -84,9 +84,9 @@ doRefresh(event) {
   if (this.page === "myrequests") {
     this.ListeRef(event);
   } else if (this.page === "myrequestsdfin") {
-    this.ListToTreatRef(event);
+    this.ListeRef(event);
   } else if (this.page === "toTreat") {
-    this.ListToTreatRef(event);
+    this.ListeRef(event);
   } else if (this.page === "toTreatmy") {
     this.ListemyRef(event);
   }
@@ -99,11 +99,43 @@ ListeRef(event?: any) {
     
   postData.append('uId', cuser.id);
   postData.append('Urole', cuser.role);
-   
+  postData.append('Tbtq', cuser.shopType);
+    
+    let that = this;
+    //this._SYGALIN.query('listRefRequestToTreat/', postData).then(res => {
+    this._SYGALIN.query('myRefRequest/', postData).then(res => {
+    that.listeref = res;
+    console.log("Liste pour reference");
+    console.log(this.listeref);
+    
+    if (event) {
+      event.complete();
+      
+    } else
+      that._SYGALIN.loadingDismiss();
+  }).catch(error => {
+    console.log(error);
+    if (event) {
+      event.complete();
+    } else
+      that._SYGALIN.loadingDismiss();
+    that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
+  });
+}
+
+ListeRefRequest(event?: any) {
+  console.log('Liste pour refrence');
+  let postData = new FormData();
+  let cuser = this._SYGALIN.getCurUser();
+
+    
+  postData.append('uId', cuser.id);
+  postData.append('Urole', cuser.role);
+  postData.append('Tbtq', cuser.shopType);
     
     let that = this;
     this._SYGALIN.query('listRefRequestToTreat/', postData).then(res => {
-      
+    
     that.listeref = res;
     console.log("Liste pour reference");
     console.log(this.listeref);
@@ -187,17 +219,17 @@ presentConfirm(request: any, type: string) {
   let msg = "", title = "";
   if (type === 'validate') {
     title = "validation";
-    msg = 'valider';
+    msg = 'Veuillez renseiner un commentaire si necessaire';
   } else if(type === 'reject'){
      title = "reject";
-    msg = 'rejeter';
+    msg = 'voulez-bous rejeter cette reference';
   }
    
   console.log("mon type"+type);
 
   let alert = this._ALERT.create({
     title: 'Confirmation de ' + title,
-    message: 'Voulez-vous vraiment ' + msg + ' cette reference? Cette opération est irréversible...',
+    message: msg,
     buttons: [
       {
         text: 'Non',
@@ -230,17 +262,17 @@ presentConfirmVoir(request: any, type: string) {
     message: smg,
     buttons: [
       {
-        text: 'Non',
+        text: 'Annuler',
         role: 'cancel',
         handler: () => {
           console.log('Opération annulée');
         }
       },
       {
-        text: 'Oui',
+        text: 'Fermer',
         handler: () => {
            if (type === 'voir'){
-            this.ValideMyRef(request);
+            this.ShowMyRef(request);
           }
         }
       }
@@ -296,7 +328,7 @@ presentPromptreject(request: any) {
     inputs: [
       {
         name: 'motif',
-        placeholder: 'Redigez votre reference ici...'
+        placeholder: 'Redigez votre motif ici...'
       }
     ],
 
@@ -344,7 +376,7 @@ ValideRef(request: any, reference: string,commantaire:string) {
     } else if (res['type'] === 'success') {
       that.removeItem(request);
       if (!that.listeref.length) {
-        that.ListToTreatRef();
+        that.ListeRef();
       }
     }
     that._SYGALIN.loadingDismiss();
@@ -372,7 +404,7 @@ rejectRef(request: any, motif:any ) {
     } else if (res['type'] === 'success') {
       that.removeItem(request);
       if (!that.listeref.length) {
-        that.ListToTreatRef();
+        that.ListeRef();
       }
     }
     that._SYGALIN.loadingDismiss();
@@ -391,15 +423,16 @@ removeItem(item) {
   this.listeref.splice(pos, 1);
 }
 
-ValideMyRef(request: any) {
+ShowMyRef(request: any) {
   let postData = new FormData();
   let cuser = this._SYGALIN.getCurUser();
   postData.append('idTick', request.ticket);
   postData.append('uId', this._SYGALIN.user.id);
   let that = this;
   this._SYGALIN.loadingPresent("Validation de la requette");
-  this._SYGALIN.query('updateStateView/', postData).then(res => {
-    console.log(res);
+  //this._SYGALIN.query('updateStateView/', postData).then(res => {
+    this._SYGALIN.query('closeReqRef/', postData).then(res => {
+  console.log(res);
     let type = "success";
     if (res['type'] === 'error') {
       type = "danger";

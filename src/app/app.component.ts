@@ -512,16 +512,16 @@ export class MyApp {
 		};
 
 		let reqrefOption = {
-			iconName: 'logo-usd',
+			iconName: 'git-pull-request-outline',
 			displayText: 'Requette pour reference',
 			custom: {
-				allowed: [GlobalProvider.roleDFIN()]
+				allowed: [GlobalProvider.roleDFIN(),GlobalProvider.roleAAD()]
 			},
 			suboptions: []
 		};
 
 		let rfinOption = {
-			iconName: 'logo-usd',
+			iconName: 'refresh-circle',
 			displayText: 'Recharge compte financier',
 			custom: {
 				allowed: [GlobalProvider.roleDFIN(), GlobalProvider.roleRAA(),GlobalProvider.roleAAD(),GlobalProvider.roleCM()]
@@ -569,7 +569,7 @@ export class MyApp {
 				displayText: 'Recharge Prépayé',
 				component: 'RefilprepedPage',
 				custom: {
-					allowed: [GlobalProvider.roleAAD()]
+					allowed: [GlobalProvider.roleRESPO_AG()]
 				},
 			},
 			{
@@ -1170,19 +1170,9 @@ export class MyApp {
 			},
 
 			{
-				iconName: 'checkmark-circle-outline',
-				displayText: 'Demandere une recharge',
-				component: 'RefillfinancialPage',
-				custom: {
-					allowed: [GlobalProvider.roleAAD()],
-					
-				}
-			},
-
-			{
 				iconName: 'compass-outline',
-				displayText: 'Recap solde',
-				component: 'RecapSoldPage',
+				displayText: 'Demander recharge',
+				component: 'RefillfinancialPage',
 				custom: {
 					allowed: [GlobalProvider.roleAAD()],
 					
@@ -1196,24 +1186,22 @@ export class MyApp {
 					displayText: 'À traiter',
 					component: 'MesReferencePage',
 					custom: {
-						allowed: [GlobalProvider.roleDFIN(),GlobalProvider.roleRAA()],
+						allowed: [GlobalProvider.roleDFIN()],
 						data: {
 							page: 'toTreat'
 						}
 					}
 				},
 	
-				/*{
-					iconName: 'checkmark-circle-outline',
-					displayText: 'Traités',
-					component: 'MesReferencePage',
+				{
+					iconName: 'add-circle',
+					displayText: 'Nouvelle requette',
+					component: 'RefFinancialPage',
 					custom: {
-						allowed: [GlobalProvider.roleDFIN(),GlobalProvider.roleRAA()],
-						data: {
-							page: 'myrequestsdfin'
-						}
+						allowed: [GlobalProvider.roleAAD()],
+						
 					}
-				},*/
+				},
 			];
 	
 		
@@ -1463,18 +1451,7 @@ export class MyApp {
 				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleRFVI(), GlobalProvider.roleRAA()]
 			}
 		};
-		let reffinOption={
-			iconName: 'cash',
-			displayText: 'Requette ref.',
-			component: 'RefFinancialPage',
-			selected: false,
-			custom: {
-				allowed: [GlobalProvider.roleAAD()]
-			}
-		};
-	
-		if (reffinOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)
-			dfinDept.suboptions.push(reffinOption);
+		
 			
 		if (remunOption.custom.allowed.indexOf(Number(this.roleId)) >= 0)
 			dfinDept.suboptions.push(remunOption);
