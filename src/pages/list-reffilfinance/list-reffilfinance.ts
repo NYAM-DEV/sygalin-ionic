@@ -143,22 +143,23 @@ constructor(
 	
 	valeur_b(id)
 	{
-		if(id=="3")
+		if(id==this._SYGALIN.BANQUE)
 		{
 			return "Banque";
 		}
-		else{
+		else if(id==this._SYGALIN.MOBILE){
 			return "Service mobile";
 		}
+		
 	}
 	valeur_valid(id)
 	{
-		if(id=="0")
+		if(id==this._SYGALIN.ENCOURS)
 		{
 			return "En attente de validation";
 		}
 		else{
-			if(id=="1")
+			if(id==this._SYGALIN.ENCOURS)
 			{
 				return	"Demande céditée";
 			}
@@ -171,7 +172,7 @@ constructor(
 	}
 	valeur_resp(id)
 	{
-		if(id=="18")
+		if(id==GlobalProvider.roleDFIN)
 		{
 				return "DIRECTEUR FINANCIER";
 		}
@@ -181,18 +182,7 @@ constructor(
 			
 		}
 	}
-	valeur_valide(id)
-	{
-		if(this.valeur_resp(id)=="DIRECTEUR FINANCIER")
-		{
-				return "0/2";
-		}
-		else{
-			
-				return	"1/2";
-			
-		}
-	}
+	
 	getUrlFile(fileName){
 		console.log('load cga img');
 		console.log(fileName);
@@ -217,7 +207,6 @@ constructor(
 		this.navCtrl.push('ShowfilePage',{data: this.img})
 	}
 	
-
 	solde_valide()
 	{ 
 		
@@ -243,54 +232,14 @@ constructor(
 					console.log("Jour");
 					console.log(this.totalAJ);
 				}
-			//console.log(som,r.montant,Number.parseInt(r.montant),som+Number.parseInt(r.montant));
-			
-				
-				//return som;
 			}
 			else
 			{
 				this.totalR+=0;
 			}
 		}
-	//	return totalR;
 	}
-
-		
-
-	action_traitement(id)
-	{
-		//id=recharge
-		//id1=next_role
-		//let civil;
-		if(id=="1")
-		{
-			return "Á été traité par :";
-		}
-		else
-		{
-			return "En cours de traitement par";
-		}
-
-	/*	if(id1="ROLE_CONTROLEUR")
-		{
-			 civil = "VOTRE";
-		}
-		else
-		{
-			civil = "NON DEFINI";
-		}
-
-		$civil = "";
-        if($req->next_role == ROLE_CONTROLEUR)
-        $civil = "VOTRE";
-        elseif(empty($req->next_role))
-        $civil = "NON DEFINI";
-        ?>
-		<b class="text-success">
-		<?= $civil . ' ' . (isset($roles[$req->next_role]->role)?$roles[$req->next_role]->role:"NON DEFINI") ?></b>*/
-	}
-
+	
 	ListRechargFin(event?: any) {
 		console.log('ListRechargFin()');
 		let postData = new FormData();
@@ -321,37 +270,5 @@ constructor(
 				that._SYGALIN.loadingDismiss();
 			that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
 		});
-	}
-
-
-	memo(id)
-	{
-		if(id=="null")
-		{
-			return "Non disponible";
-		}
-		else
-		{
-			//return " <a target="_blank" href="<?= site_url('memos/consultingMemo/'.$req->mId) ?>">consulter</a><br>";
-			return "Non disponible";                                      
-		}
-		
-		/**
-		 * if($req->mCode == null){
-                                                    ?>
-                                                    MÉMO : <span class='bold'>Non disponible</span>
-                                                    <?php
-                                                }else{
-                                                    ?>
-                                                    MÉMO N° <?php echo $req->mCode; ?>
-                                                    <a target="_blank" href="<?= site_url('memos/consultingMemo/'.$req->mId) ?>">consulter</a><br>
-                                                    <?php
-		 */
-	}
-
-	nom_resp_RAA(id,id1)
-	{
-		return id + " " + id1
-
 	}
 }

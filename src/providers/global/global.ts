@@ -25,8 +25,8 @@ const DISTRIBUTORS: Array<DTYPE> =[
 	{
 		name: "DJABBAMA DOUNIA",
 		http: "https",
-		//url: 'test-dsi.sygalin.com',
-		url:'djabbama-aws.sygalin-tvsat.com',
+		url: 'test-dsi.sygalin.com',
+		//url:'djabbama-aws.sygalin-tvsat.com',
 		numdist: 707
 	},
 	{
@@ -81,7 +81,12 @@ export class GlobalProvider {
 	toast: any;
 	timer: any;
 	timer2: any;
-
+	BANQUE=3;
+	MOBILE=2;
+	ENCOURS=0;
+	FERMER=1;
+	REJETER=-1;
+	
 	// Final grosssiste
 	_FinalGrossiste:any;
 

@@ -93,6 +93,7 @@ export class RefilprepedPage {
 			Remboursement:new FormControl('', [Validators.required]),
 			date:new FormControl('', [Validators.required]),
 			motivation: new FormControl('',[Validators.required]),
+			checked: new FormControl('',[]),
 			file1: new FormControl({disabled: true, value: ''}, [Validators.required]),
 		});
 	}
@@ -215,5 +216,29 @@ sendform() {
 		console.log(e.currentTarget);//undefined
 		console.log(this.checked);//it is working !!!
 	
-	  }
+	  } 
+	// getUrlFile(fileName){
+	  getUrlFile(){
+		console.log('load cga img');
+		//console.log(fileName);
+		this._SYGALIN.loadingPresent("Chargement ...");
+		let postData = new FormData();
+		let cuser = this._SYGALIN.getCurUser();
+		postData.append('user_id', cuser.id);
+		//postData.append('file', fileName);
+		let that = this;
+		this._SYGALIN.query('imgT/', postData).then(res => {
+			console.log(res);
+			that.img = res.url;
+			that.openshowimg();
+			that._SYGALIN.loadingDismiss();
+		}).catch(error => {
+			//console.log(error);
+			that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
+		});
+	}
+
+	openshowimg(){
+		this.navCtrl.push('ShowfilePage',{data: this.img})
+	}
 }

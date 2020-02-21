@@ -40,7 +40,7 @@
 					<!-- Affichage RAA-->
 
 					<ion-col col-4 >MÉMO: </ion-col>
-					<ion-col col-8 > {{ memo(r.mCode)}} </ion-col>
+					<ion-col col-8 > Non disponible </ion-col>
 
 					<ion-col col-4 *ngIf="_SYGALIN.isRAA()">Nom: </ion-col>
 					<ion-col col-8 *ngIf="_SYGALIN.isRAA()"> {{ r.nom}} </ion-col>
@@ -82,7 +82,8 @@
 					<ion-col col-4>Etat du traitement : </ion-col>
 					<ion-col col-8 ><div style="color: #f7b731;">{{valeur_valid(r.valide)}} </div></ion-col>
 
-					<ion-col col-4>{{action_traitement(r.recharge)}} : </ion-col>
+					<ion-col col-4 *ngIf="r.state==1">Á été traité par :</ion-col>
+					<ion-col col-4 *ngIf="r.state==0">En cours de traitement par: </ion-col>
 					<ion-col col-8 ion-text color='secondary'> {{valeur_resp(r.next_role)}} </ion-col>	<!---->
 					
 					</ion-row>
