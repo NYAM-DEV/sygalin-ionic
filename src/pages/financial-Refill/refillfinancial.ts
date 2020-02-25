@@ -151,7 +151,7 @@ export class RefillfinancialPage {
 			if (this.showRef){
 			
 				for (const file of this.file){
-					postData.append('files[]', file);
+					postData.append('file[]', file);
 				}
 			}	
 				postData.append('reference', this.formgroup.value['reference']);
@@ -164,7 +164,18 @@ export class RefillfinancialPage {
 				postData.append('type_paie',this.type_paie);
 				postData.append('id_trans', this.formgroup.value['id_trans']);
 				postData.append('pay_option', this.formgroup.value['pay_option']);
-				this._SYGALIN.query("refillfinancial/", postData)
+				postData.append('shop', this.user.shop);
+
+				let url="";
+				if(this._SYGALIN.isAAD())
+				{
+					url="refillfinancial/";
+				}
+				else if(this._SYGALIN.isRESPO_AG())
+				{
+					url="refill/std";
+				}
+				this._SYGALIN.query(url, postData)
 					.then(res => {
 						
 						this._SYGALIN.loadingDismiss();

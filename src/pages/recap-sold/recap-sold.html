@@ -59,8 +59,9 @@
                       'has-danger': invalidField('annee'),
                       'has-success': validField('annee')
                           }">
-                      <ion-option value="1">{{curentyear}}</ion-option>
-                      <ion-option value="2">{{lastyear}}</ion-option>
+                      <!--<ion-option value="1">{{curentyear}}</ion-option>
+                      <ion-option value="2">{{lastyear}}</ion-option>-->
+                      <ion-option *ngFor="let item of items" value="{{item}}" >{{item}}</ion-option>
                     </ion-select>
                   </ion-item>
                   </ion-col>
@@ -71,7 +72,7 @@
             <ion-card>
               <ion-card-content>
                 <div>
-                <button ion-button block  (click)="searchInfos()" class="rounded">AFFICHER LA SELECTION</button>
+                <button ion-button block  (click)="onSubmit()" class="rounded">AFFICHER LA SELECTION</button>
               </div>
             </ion-card-content>
           </ion-card>

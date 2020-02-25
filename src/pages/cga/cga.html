@@ -23,6 +23,10 @@
 					<ion-col col-4>Ticket</ion-col>
 					<ion-col col-8 *ngIf="r.tkNum" >{{ r.tkNum}} </ion-col>
 					<ion-col col-8 *ngIf="r.num" >{{ r.num }} </ion-col>
+					<ion-col col-4 >Etat du ticket: </ion-col>
+					<ion-col col-8 *ngIf="r.state=='0'" ion-text color="warning">EN COURS.... </ion-col>
+					<ion-col col-8 *ngIf="r.state=='1'" ion-text color="primary">TRAITÉ </ion-col>
+					<ion-col col-8 *ngIf="r.state=='-1'" ion-text color='danger'> REJETÉ</ion-col>
 					<ion-col col-4>PDV</ion-col>
 					<ion-col col-8 >{{ r.nom }} </ion-col>
 					<ion-col col-4>Numdist</ion-col>
@@ -31,14 +35,28 @@
 					<ion-col col-8> {{r.bTel }} </ion-col>
 					<ion-col col-4 *ngIf="r.label">Service </ion-col>
 					<ion-col ion-text color='primary' col-8 *ngIf="r.label">{{r.label}} </ion-col>
+					
 					<ion-col col-4 *ngIf="r.n_versement">Reference</ion-col>
 					<ion-col col-8 *ngIf="r.n_versement">{{r.n_versement}}</ion-col>
+					
 					<ion-col col-4 *ngIf="r.fichier"> fichier</ion-col>
 					<ion-col col-8 *ngIf="r.fichier" > {{ r.fichier}}<ion-icon name="eye" (click)="getUrlFile(r.fichier)" ></ion-icon></ion-col>
+					
 					<ion-col col-4>Montant</ion-col>
 					<ion-col col-8 ion-text color='danger'>{{r.montant| number :"1.0-0"}} XAF </ion-col>
+					
 					<ion-col col-4>Ouverture</ion-col>
 					<ion-col col-8>{{ _SYGALIN.momentjs(r.open_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss")}} </ion-col>
+					
+					<ion-col col-4 *ngIf="r.recharge=='1'">Fermé le :</ion-col>
+					<ion-col col-8 *ngIf="r.recharge=='1'"> {{ _SYGALIN.momentjs(r.close_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss")}} </ion-col>
+					
+					<ion-col col-4 *ngIf="r.state=='-1'">Motif du rejet :</ion-col>
+					<ion-col col-8 *ngIf="r.state=='-1'"> {{ r.tkMotif}} </ion-col>
+					
+					<ion-col col-4>En Traitement par: </ion-col>
+					<ion-col col-8>{{TreatTictek(r.mNext_user)}}</ion-col>
+							
 					<button ion-button (click)="sayOK(r)" small >Memo details</button>
 					<ion-col col-12 *ngIf="(_SYGALIN.isDFIN() || _SYGALIN.isCONTROL() || _SYGALIN.isSUPER())  && r.tState==0">
 						<ion-grid class="button-group">

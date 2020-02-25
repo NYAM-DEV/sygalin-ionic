@@ -204,4 +204,18 @@ export class MemoPage {
 	doRefresh(event) {
 		this.memoToTreat(event)
 	}
+
+	TreatTictek(id)
+	{
+		
+		if(id==GlobalProvider.roleCONTROL())
+			{
+				return "CONTROLEUR";
+			}
+			else if(id==GlobalProvider.roleSUPER())
+			{return "SUPERVISEUR";}
+			else if(id==GlobalProvider.roleDFIN())
+			{return "DIRECTEUR FINANCIER";} 
+
+	}
 }

@@ -1,0 +1,110 @@
+page-cga-post-paye {
+    .cent{
+        text-align: center;
+        background: #d1e1f9 !important;
+    }
+    ion-refresher {
+        background-color: white;
+    }
+    ion-content{
+        background: rgb(225, 227, 248) !important;
+    }
+
+    .card-ios{
+		border-radius: 20px;
+		padding-bottom: 30px;
+	}
+
+    .text-error-msg
+    {
+        font-weight: lighter;
+        font-size: 1.8em;
+    }
+
+    .header-text{
+        font-size: 1.6em;
+    }
+
+    [col-4]{
+        font-weight: lighter;
+        text-transform: uppercase;
+    }
+
+    [col-8]{
+        text-transform: uppercase;
+    }
+
+    ion-input, ion-select, ion-textarea, ion-datetime {
+        width: 100%;
+        //height: 20pxc;
+        -moz-border-radius: 25px;
+        -webkit-border-radius: 25px;
+        border-radius: 11px;
+        border: 0.5px solid grey;
+        //margin-top: -10px;
+        padding-left: 10px;
+        -moz-box-shadow:    inset 0 0 3px #a7a7a7;
+        -webkit-box-shadow: inset 0 0 3px #a7a7a7;
+        box-shadow:         inset 0 0 3px #a7a7a7;
+        &:focus, &:focus-within{
+            border: 1.2px solid #7c94ee;
+            //box-shadow:  0px 0px 3px 6px #ccc;
+        }
+    }
+    ion-label{
+        font-size: 15px;
+        color: dimgrey! important;
+        padding-left: 10px;
+    }
+
+
+    .validator-error{
+        color: #ff1717;
+        //font-weight: bold;
+    }
+
+    .has-danger{
+        border: 1.2px solid #ff1717 !important;
+    }
+
+    .has-success{
+        border: 1.2px solid #13d006 !important;
+    }
+    input[type="file"] {
+        display: none;
+    }
+    .custom-file-upload {
+        text-align: center;
+        border: 0.5px solid lightgrey;
+        display: inline-block;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 12px;
+        width: 100%;
+    }
+
+    .with-file{
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+
+    .file-list{
+        border: 0.5px solid lightgrey;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+    #files{
+        ion-item {
+            border: none;
+            padding: 0;
+            &:last-child {
+                border-bottom-left-radius: 12px;
+                border-bottom-right-radius: 12px;
+                margin-bottom: 2px;
+            }
+        }
+    }
+    ion-card-header{
+		border-bottom: 1px solid lightgray;
+	}
+}

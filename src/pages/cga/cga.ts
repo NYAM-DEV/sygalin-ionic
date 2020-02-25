@@ -76,10 +76,19 @@ export class CgaPage {
 		console.log('load cga POST');
 		let postData = new FormData();
 		let cuser = this._SYGALIN.getCurUser();
-		postData.append('user_id', cuser.id);
+		/*postData.append('user_id', cuser.id);
 		postData.append('user_role', cuser.role);
+
 		let that = this;
-		this._SYGALIN.query('requestCgaPost/', postData).then(res => {
+		this._SYGALIN.query('requestCgaPost/', postData).then(res => {*/
+			
+		let that = this;
+			postData.append('shop', cuser.shop);
+			postData.append('shopType', cuser.shopType);
+			postData.append('uId', cuser.id);
+			postData.append('Urole', cuser.role);
+			postData.append('sector', cuser.sector);
+		this._SYGALIN.query('requestscgaprepaye/myrequests', postData).then(res => {
 			console.log(res);
 			that.reqCga = res;
 			if (event) {
@@ -447,5 +456,19 @@ export class CgaPage {
 
 	doRefresh(event) {
 		this.loadPost(event);
+	}
+
+	TreatTictek(id)
+	{
+		
+		if(id==GlobalProvider.roleCONTROL())
+			{
+				return "CONTROLEUR";
+			}
+			else if(id==GlobalProvider.roleSUPER())
+			{return "SUPERVISEUR";}
+			else if(id==GlobalProvider.roleDFIN())
+			{return "DIRECTEUR FINANCIER";} 
+
 	}
 }

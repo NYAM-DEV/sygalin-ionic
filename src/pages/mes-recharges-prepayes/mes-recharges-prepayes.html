@@ -37,26 +37,9 @@
 					<ion-col col-4 *ngIf="r.recharge=='1'">Fermé le :</ion-col>
 					<ion-col col-8 *ngIf="r.recharge=='1'"> {{ _SYGALIN.momentjs(r.close_date).add(1,'h').format("DD MMMM YYYY à HH:mm:ss")}} </ion-col>
 
-					<!-- Affichage RAA-->
-
-					<ion-col col-4 >MÉMO: </ion-col>
-					<ion-col col-8 > Non disponible </ion-col>
-
-					<ion-col col-4 *ngIf="_SYGALIN.isRAA()">Nom: </ion-col>
-					<ion-col col-8 *ngIf="_SYGALIN.isRAA()"> {{ r.nom}} </ion-col>
-
-					<ion-col col-4 *ngIf="_SYGALIN.isRAA()">Numdist: </ion-col>
-					<ion-col col-8 *ngIf="_SYGALIN.isRAA()"> {{ r.Numdist}} </ion-col>
-
-					<ion-col col-4 *ngIf="_SYGALIN.isRAA()">Tél: </ion-col>
-					<ion-col col-8 *ngIf="_SYGALIN.isRAA()"> {{ r.bTel}} </ion-col>
-
-					<!-- Affichage DFIN-->
-					
-					
 
 					<ion-col col-4>Demande: </ion-col>
-					<ion-col col-8 ion-text color='secondary'>PRÉPAYÉE</ion-col>
+					<ion-col col-8 ion-text color='secondary'>À CRÉDIT</ion-col>
 
 					<ion-col col-4 *ngIf="r.recharge=='1'">Date de recharge: </ion-col>
 					<ion-col col-8 *ngIf="r.recharge=='1'"> {{ r.date_recharge}} </ion-col>
@@ -64,46 +47,19 @@
 					<ion-col col-4>Montant : </ion-col>
 					<ion-col col-8 ion-text color='danger'>{{r.montant| number :"1.0-0"}} XAF </ion-col>
 					
-					<ion-col col-4>Service :</ion-col>
-					<ion-col col-8>{{ r.label}}</ion-col>
-					
-					<ion-col col-4>Type: </ion-col>
-					<ion-col col-8>{{valeur_b(r.type)}} </ion-col>
-			
-					<ion-col col-4 *ngIf="r.fichier"> fichier</ion-col>
-					<ion-col col-8 *ngIf="r.fichier" (click)="getUrlFile(r.fichier)" > 
-						<button ion-button small round color="primary"> 
-							<ion-icon name="document" ></ion-icon> &nbsp; Piece jointe</button>
-						</ion-col>
-
-					<ion-col col-4>Référence : </ion-col>
-					<ion-col col-8>{{ r.n_versement}}</ion-col>ionic Service
-							   
+											   
 					<ion-col col-4>Etat du traitement : </ion-col>
-					<ion-col col-8 ><div style="color: #f7b731;">{{valeur_valid(r.valide)}} </div></ion-col>
+					<ion-col col-8 ><div style="color: #f7b731;">VOTRE CONTROLEUR </div></ion-col>
 
 					<ion-col col-4 *ngIf="r.state==1">Á été traité par :</ion-col>
 					<ion-col col-4 *ngIf="r.state==0">En cours de traitement par: </ion-col>
-					<ion-col col-8 ion-text color='secondary'> {{valeur_resp(r.next_role)}} </ion-col>	<!---->
+					<ion-col col-8 ion-text color='secondary'> 1</ion-col>
 					
 					</ion-row>
 			</ion-grid>
 		</ion-card-content>
 	</ion-card>
 
-	<ion-card >
-		<ion-row>
-			<ion-col>
-					<ion-col col-4>Total du Jour : </ion-col>
-					<ion-col col-8 > {{totalAJ | number :"1.0-0"}}</ion-col> XAF
-			</ion-col> 
-			<ion-col>
-					<ion-col col-4>Total du Mois : </ion-col>
-					<ion-col col-8 > {{totalM | number :"1.0-0"}}  </ion-col>XAF
-			</ion-col>
-		</ion-row>
-	
-	</ion-card>
 	
 	<ion-card *ngIf="!(listerecharge && listerecharge.length)">
 		<ion-card-content class="text-error-msg">

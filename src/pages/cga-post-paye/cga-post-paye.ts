@@ -5,11 +5,12 @@ import {GlobalProvider} from '../../providers/global/global';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import { empty } from 'rxjs/Observer';
 
+
 @IonicPage()
 @Component({
-	selector: 'page-refilpreped',
-  	templateUrl: 'refilpreped.html',
-	animations: [
+  selector: 'page-cga-post-paye',
+  templateUrl: 'cga-post-paye.html',
+  animations: [
 		trigger('listItemState', [
 			state('in',
 				style({
@@ -44,15 +45,8 @@ import { empty } from 'rxjs/Observer';
 		])
 	]
 })
-export class RefilprepedPage {
-	Data:[
-		{
-
-		},
-		{
-
-		}
-	];
+export class CgaPostPayePage {
+	
 	formgroup: FormGroup;
 	img:any;
 	option: string;

@@ -17,6 +17,7 @@ export class RecapSoldPage {
   soldecga: Array<any>;
   mois:any;
   annee:any;
+  items=[];
 
   constructor(
     public navCtrl: NavController, 
@@ -29,6 +30,9 @@ export class RecapSoldPage {
       annee: new FormControl('', [Validators.required]),  
      
     });
+
+   
+    
   }
 
   ionViewDidLoad() {
@@ -38,11 +42,17 @@ export class RecapSoldPage {
     this.curentyear= this._SYGALIN.currentYear;
     this.lastyear=Number.parseInt(this.curentyear)-1;
 
+     for (let x = Number.parseInt(this.curentyear); x >=2018; x--) {
+      //console.log(this.curentyear-1+"valeur de x"+ x);
+      this.items.push(x);
+    }
+    
     
   }
 
   searchInfos(event?: any){
-		console.log('solde CGA');
+    this._SYGALIN.loadingPresent("Chargement de la liste");
+	
 		let postData = new FormData();
 		let cuser = this._SYGALIN.getCurUser();
 	
@@ -51,13 +61,9 @@ export class RecapSoldPage {
 			postData.append('Urole', cuser.role);
       postData.append('mois', this.formgroup.value['mois']);
       
-      if(this.formgroup.value['annee']==1)
-      {
-         postData.append('annee',this.curentyear);
-      }
-      else{
-         postData.append('annee',this.lastyear);
-      }
+     
+         postData.append('annee',this.formgroup.value['annee']);
+      
      	
       postData.append('secteur', cuser.sector);
       postData.append('boutiqueId',cuser.shop);
@@ -86,7 +92,6 @@ export class RecapSoldPage {
 		});
 	}
  
-
   invalidField(field: string) {
 		return this.formgroup.controls[field].invalid && (this.formgroup.controls[field].dirty || this.formgroup.controls[field].touched);
 	}
@@ -94,8 +99,32 @@ export class RecapSoldPage {
 	validField(field: string) {
 		return this.formgroup.controls[field].valid && (this.formgroup.controls[field].dirty || this.formgroup.controls[field].touched);
   }
+
   hideButton() {
 		this.showItem=false;
+  }
+  
+  onSubmit() {
+		if (this.formgroup.valid) {
+			this.searchInfos();
+		} else {
+			this.validateAllFormFields(this.formgroup);
+			this._SYGALIN.presentToast('Bien vouloir remplir tous les champs du formulaire', 'danger');
+		}
+  }
+  
+  validateAllFormFields(formGroup: FormGroup) {
+		Object.keys(formGroup.controls).forEach(field => {
+			const control = formGroup.get(field);
+			if (control instanceof FormControl) {
+				control.markAsTouched({
+					onlySelf: true
+				});
+			} else if (control instanceof FormGroup) {
+				this.validateAllFormFields(control);
+			}
+		});
 	}
+
   
 }

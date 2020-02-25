@@ -441,13 +441,21 @@ export class MyApp {
 
 		let refilprepedOption = {
 			iconName: 'refresh',
-			displayText: 'Recharge Prépayé',
+			displayText: 'Recharge post payée',
 			custom: {
 				allowed: [GlobalProvider.roleRESPO_AG()]
 			},
 			suboptions: []
 		};
 
+		let refilprepayeOption = {
+			iconName: 'refresh',
+			displayText: 'Recharge Prépayée',
+			custom: {
+				allowed: [GlobalProvider.roleRESPO_AG()]
+			},
+			suboptions: []
+		};
 		let migrOption = {
 			iconName: 'swap',
 			displayText: 'Migrations',
@@ -566,8 +574,8 @@ export class MyApp {
 		let refilperpedSub = [
 			{
 				iconName: 'add-circle',
-				displayText: 'Recharge Prépayé',
-				component: 'RefilprepedPage',
+				displayText: 'Recharge post payée',
+				component: 'CgaPostPayePage',
 				custom: {
 					allowed: [GlobalProvider.roleRESPO_AG()]
 				},
@@ -584,7 +592,17 @@ export class MyApp {
 					}
 				},
 			},
-			/*{
+/*
+			{
+				iconName: 'add-circle',
+				displayText: 'Recharge Prépayé',
+				component: 'RefillfinancialPage',
+				custom: {
+					allowed: [GlobalProvider.roleRESPO_AG()],
+					
+				}
+			},
+			{
 				iconName: 'checkmark-circle-outline',
 				displayText: 'Traités',
 				component: 'MesReaboPage',

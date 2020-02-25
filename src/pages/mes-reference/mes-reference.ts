@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {GlobalProvider} from '../../providers/global/global';
 import { IonicPage, NavController, NavParams,AlertController } from 'ionic-angular';
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import { CurrencyPipe, DeprecatedI18NPipesModule } from '@angular/common';
+
 
 
 @IonicPage()
@@ -42,16 +42,8 @@ export class MesReferencePage {
 	user: any;
 	orders: any;
 	val:any;
-	type_paie:any;
-	reqCga:any;
 	img:any;
-	som2:number;
 	unit:String="XAF";
-	totalR:number; 
-    totalAJ:number;
-	totalM:number;
-	etat_tick:String;
-	
 constructor(
 		public navCtrl: NavController,
 		public navParams: NavParams,
@@ -82,9 +74,7 @@ this._SYGALIN.loadingPresent("Chargement de la liste");
 }
 doRefresh(event) {
   if (this.page === "myrequests") {
-    this.ListeRef(event);
-  } else if (this.page === "myrequestsdfin") {
-    this.ListeRef(event);
+    this.ListeRefRequest(event);
   } else if (this.page === "toTreat") {
     this.ListeRef(event);
   } else if (this.page === "toTreatmy") {
@@ -242,7 +232,7 @@ presentConfirm(request: any, type: string) {
         text: 'Oui',
         handler: () => {
           if (type === 'validate') {
-            this.presentPrompt(request);//validateRecru
+            this.presentPrompt(request);
           } else if (type === 'reject'){
             this.presentPromptreject(request);
           }
@@ -262,14 +252,7 @@ presentConfirmVoir(request: any, type: string) {
     message: smg,
     buttons: [
       {
-        text: 'Annuler',
-        role: 'cancel',
-        handler: () => {
-          console.log('Opération annulée');
-        }
-      },
-      {
-        text: 'Fermer',
+        text: 'Copier la reference',
         handler: () => {
            if (type === 'voir'){
             this.ShowMyRef(request);
@@ -288,7 +271,7 @@ presentPrompt(request: any) {
     inputs: [
       {
         name: 'reference',
-        placeholder: 'Redigez votre reference ici...'
+        placeholder: 'Redigez la reference ici...'
       },
       {
         name: 'comment',
@@ -328,7 +311,7 @@ presentPromptreject(request: any) {
     inputs: [
       {
         name: 'motif',
-        placeholder: 'Redigez votre motif ici...'
+        placeholder: 'Redigez le motif du rejet'
       }
     ],
 
@@ -430,7 +413,6 @@ ShowMyRef(request: any) {
   postData.append('uId', this._SYGALIN.user.id);
   let that = this;
   this._SYGALIN.loadingPresent("Validation de la requette");
-  //this._SYGALIN.query('updateStateView/', postData).then(res => {
     this._SYGALIN.query('closeReqRef/', postData).then(res => {
   console.log(res);
     let type = "success";
@@ -452,32 +434,32 @@ ShowMyRef(request: any) {
   });
 }
 
-ListemyRef(event?: any) {
-  console.log('Liste pour refrence');
-  let postData = new FormData();
-    postData.append('uId', this._SYGALIN.user.id);
-    postData.append('Tbtq', this._SYGALIN.user.shopType);
-    postData.append('role', this._SYGALIN.user.role);
-    postData.append('shop', this._SYGALIN.user.shop);
-    let that = this;
-    this._SYGALIN.query('myRefRequest/', postData).then(res => {
-      
-    that.listeref = res;
-    console.log("Liste pour reference");
-    console.log(this.listeref);
-    
-    if (event) {
-      event.complete();
-      
-    } else
-      that._SYGALIN.loadingDismiss();
-  }).catch(error => {
-    console.log(error);
-    if (event) {
-      event.complete();
-    } else
-      that._SYGALIN.loadingDismiss();
-    that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
-  });
-}
+	ListemyRef(event?: any) {
+		  console.log('Liste pour refrence');
+		  let postData = new FormData();
+			postData.append('uId', this._SYGALIN.user.id);
+			postData.append('Tbtq', this._SYGALIN.user.shopType);
+			postData.append('role', this._SYGALIN.user.role);
+			postData.append('shop', this._SYGALIN.user.shop);
+			let that = this;
+			this._SYGALIN.query('myRefRequest/', postData).then(res => {
+
+			that.listeref = res;
+			console.log("Liste pour reference");
+			console.log(this.listeref);
+
+			if (event) {
+			  event.complete();
+
+			} else
+			  that._SYGALIN.loadingDismiss();
+		  }).catch(error => {
+			console.log(error);
+			if (event) {
+			  event.complete();
+			} else
+			  that._SYGALIN.loadingDismiss();
+			that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
+		  });
+	}
 }

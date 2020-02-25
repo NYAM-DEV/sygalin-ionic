@@ -34,16 +34,20 @@
 					<ion-col col-8 ion-text color='danger' *ngIf="r.montantCGA" >{{r.montantCGA | number :"1.0-0"}} XAF </ion-col>
 					<ion-col col-4 *ngIf="r.montantMat" >Montant MAT</ion-col>
 					<ion-col col-8 ion-text color='danger' *ngIf="r.montantMat" >{{r.montantMat | number :"1.0-0"}} XAF </ion-col>
-					<ion-col col-4 *ngIf="r.next_user">En Traitement par </ion-col>
+					<!--<ion-col col-4 *ngIf="r.next_user">En Traitement par </ion-col>
 					<ion-col col-8 *ngIf="r.next_user==14"> CONTROLEUR </ion-col>
 					<ion-col col-8 *ngIf="r.next_user==16"> SUPERVISEUR </ion-col>
-					<ion-col col-8 *ngIf="r.next_user==18"> DIRECTION FINANCIERE </ion-col>
+					<ion-col col-8 *ngIf="r.next_user==18"> DIRECTION FINANCIERE </ion-col>-->
 					<ion-col col-4 *ngIf="r.motivation"> Motivation</ion-col>
 					<ion-col col-8 *ngIf="r.motivation">{{ r.motivation }} </ion-col>
 					<ion-col col-4>Date Ouverture</ion-col>
 					<ion-col col-8>{{ _SYGALIN.momentjs(r.date).add(1,'h').format("DD MMMM YYYY ")}} </ion-col>
 					<ion-col col-4>Date Payement</ion-col>
 					<ion-col col-8 ion-text color='danger'>{{ _SYGALIN.momentjs(r.date_paiement).add(1,'h').format("DD MMMM YYYY ")}} </ion-col>
+					
+					<ion-col col-4>En Traitement par: </ion-col>
+					<ion-col col-8>{{TreatTictek(r.next_user)}}</ion-col>
+
 					<ion-col col-12 *ngIf="(_SYGALIN.isCONTROL() || _SYGALIN.isSUPER() || _SYGALIN.isDFIN()) && memo ">
 						<ion-grid class="button-group">
 							<ion-row>
