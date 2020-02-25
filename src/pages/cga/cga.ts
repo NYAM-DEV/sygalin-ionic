@@ -284,7 +284,7 @@ export class CgaPage {
 	validateRechargePost(re){
 
 		this._SYGALIN.loadingPresent("Traitement ");
-  	console.log(re.id);
+  		console.log(re.id);
 		let postData = new FormData();
 		let cuser = this._SYGALIN.getCurUser();
 		postData.append('user_id', cuser.id);
@@ -463,7 +463,7 @@ export class CgaPage {
 		
 		if(id==GlobalProvider.roleCONTROL())
 			{
-				return "CONTROLEUR";
+				return "VOTRE CONTROLEUR";
 			}
 			else if(id==GlobalProvider.roleSUPER())
 			{return "SUPERVISEUR";}

@@ -31,6 +31,8 @@ export class MemoPage {
 	mem:any;
 	data:any;
 	memo:boolean;
+	img:any;
+	bon_memo:Array<any>
 
 
   constructor(public navCtrl: NavController,
@@ -189,10 +191,12 @@ export class MemoPage {
 		postData.append('user_id', cuser.id);
 		postData.append('user_role', cuser.role);
 		let that = this;
-		this._SYGALIN.query('showMemo/'+id, postData).then(res => {
+		this._SYGALIN.query('consultingMemo/'+id, postData).then(res => {
+		//this._SYGALIN.query('showMemo/'+id, postData).then(res => {
 			console.log('ok');
-			console.log(res);
+			//console.log(res);
 			that.mem = res;
+			console.log(that.mem);
 			that._SYGALIN.loadingDismiss();
 		}).catch(error => {
 			console.log(error);
@@ -217,5 +221,27 @@ export class MemoPage {
 			else if(id==GlobalProvider.roleDFIN())
 			{return "DIRECTEUR FINANCIER";} 
 
+	}
+
+	getUrlFile(fileName){
+		console.log('load cga img');
+		console.log(fileName);
+		let postData = new FormData();
+		let cuser = this._SYGALIN.getCurUser();
+		postData.append('user_id', cuser.id);
+		postData.append('file', fileName);
+		postData.append('folder', 'cga-request');
+		let that = this;
+		this._SYGALIN.query('img/', postData).then(res => {
+			console.log(res);
+			that.img = res.url;
+			that.openshowimg();
+		}).catch(error => {
+			//console.log(error);
+			that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
+		});
+	}
+	openshowimg(){
+  		this.navCtrl.push('ShowfilePage',{data: this.img})
 	}
 }
