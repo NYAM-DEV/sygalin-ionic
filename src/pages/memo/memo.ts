@@ -28,12 +28,12 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 	]
 })
 export class MemoPage {
+	lememo: Array<any>;
 	mem:any;
 	data:any;
 	memo:boolean;
 	img:any;
-	bon_memo:Array<any>
-
+	file:Array<any>
 
   constructor(public navCtrl: NavController,
 			  public navParams: NavParams,
@@ -190,18 +190,18 @@ export class MemoPage {
 		let cuser = this._SYGALIN.getCurUser();
 		postData.append('user_id', cuser.id);
 		postData.append('user_role', cuser.role);
-		let that = this;
+		
 		this._SYGALIN.query('consultingMemo/'+id, postData).then(res => {
 		//this._SYGALIN.query('showMemo/'+id, postData).then(res => {
 			console.log('ok');
 			//console.log(res);
-			that.mem = res;
-			console.log(that.mem);
-			that._SYGALIN.loadingDismiss();
+			this.mem = res;
+			console.log("Le bon memo",this.lememo);
+			this._SYGALIN.loadingDismiss();
 		}).catch(error => {
 			console.log(error);
-			that._SYGALIN.loadingDismiss();
-			that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
+			this._SYGALIN.loadingDismiss();
+			this._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
 		})
 	}
 
@@ -227,12 +227,15 @@ export class MemoPage {
 		console.log('load cga img');
 		console.log(fileName);
 		let postData = new FormData();
+		this.file=fileName;
+			
+	this.file=fileName;
 		let cuser = this._SYGALIN.getCurUser();
 		postData.append('user_id', cuser.id);
-		postData.append('file', fileName);
+		postData.append('file', this.file.toString());
 		postData.append('folder', 'cga-request');
 		let that = this;
-		this._SYGALIN.query('img/', postData).then(res => {
+		this._SYGALIN.query('telecharger_memo/', postData).then(res => {
 			console.log(res);
 			that.img = res.url;
 			that.openshowimg();

@@ -24,7 +24,7 @@
 			<ion-grid>
 				<ion-row>
 					<ion-col col-4 >N° :</ion-col>
-	<!--			<ion-col col-8 >{{ r.code }} </ion-col>
+				<ion-col col-8 >{{ r.code }} </ion-col>
 
 					<ion-col col-4 >Type de mémo :</ion-col>
 					<ion-col col-8 >{{ r.objet }} </ion-col>
@@ -36,10 +36,10 @@
 					<ion-col col-8 ion-text color='danger' *ngIf="r.montantCGA" >{{r.montantCGA | number :"1.0-0"}} XAF </ion-col>
 
 					<ion-col col-4>Date Payement: le</ion-col>
-					<ion-col col-8 ion-text color='danger'>{{ _SYGALIN.momentjs(r.date_paiement).add(1,'h').format("DD MMMM YYYY ")}} </ion-col>
+					<ion-col col-8>{{ _SYGALIN.momentjs(r.date_paiement).add(1,'h').format("DD MMMM YYYY ")}} </ion-col>
 					
 					<ion-col col-4 *ngIf="r.fichier">Documents</ion-col>
-					<ion-col col-8 *ngIf="r.fichier" > {{ r.fichier}}<ion-icon name="eye" (click)="getUrlFile(r.fichier)" ></ion-icon></ion-col>
+					<ion-col col-8 *ngIf="r.fichier" > <ion-icon name="eye" (click)="getUrlFile(r.fichier)" >visualier</ion-icon></ion-col>
 					
 					<ion-col col-4>Motivation:</ion-col>
 					<ion-col col-8 >{{ r.motivation }} </ion-col>
@@ -49,7 +49,7 @@
 
 					<ion-col col-4  *ngIf="r.state==0">Décision:</ion-col>
 					<ion-col col-8  *ngIf="r.state==0">EN ATTENTE</ion-col> 
-					<ion-col col-8  *ngIf="r.state==1">TRAITE</ion-col> -->	
+					<ion-col col-8  *ngIf="r.state==1">TRAITE</ion-col>
 					
 					<!--<ion-col col-8 *ngIf="r.bNom">{{ r.objet }} </ion-col>
 					<ion-col col-8 *ngIf="r.bNom">{{ r.bNom }} </ion-col>
