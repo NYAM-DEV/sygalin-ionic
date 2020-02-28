@@ -450,9 +450,9 @@ export class CgaPage {
 	}
 
 	sayOK(r?:any){
-  		console.log(r.memo);
-  		this.navCtrl.push('MemoPage',{data: r.memo,});
-	}
+		console.log(r.memo);
+		this.navCtrl.push('MemoPage',{data: r.memo,page: 'voir_memo'});
+  }
 
 	doRefresh(event) {
 		this.loadPost(event);

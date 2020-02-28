@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {GlobalProvider} from '../../providers/global/global';
 import { IonicPage, NavController, NavParams,AlertController } from 'ionic-angular';
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import { Clipboard } from '@ionic-native/clipboard';
 
 
 
@@ -48,6 +49,7 @@ constructor(
 		public navCtrl: NavController,
 		public navParams: NavParams,
 		public _SYGALIN: GlobalProvider,
+		private clipboard: Clipboard,
 		public _ALERT: AlertController) {
 	this.page = this.navParams.get('page');
     }
@@ -62,23 +64,32 @@ this._SYGALIN.loadingPresent("Chargement de la liste");
   console.log('Page: Liste recharge');
 
   if (this.page === "myrequests") {
-    this.title = "Mes requêttes pour reference";
+    this.title = "Mes requêtes pour reference";
           this.ListeRefRequest();
   } else if (this.page === "toTreat") {
-    this.title = "Mes requêttes à traiter";
+    this.title = "Mes requêtes à traiter";
   this.ListeRef();
   } else if (this.page === "toTreatmy") {
-    this.title = "Mes requêttes à traiter";
+    this.title = "Mes requêtes à traiter";
     this.ListemyRef();
+  }
+  else if(this.page==="treated")
+  {
+    this.title = "Mes requêtes traitées";
+    this.listRefRequestTreaTed();
   }
 }
 doRefresh(event) {
   if (this.page === "myrequests") {
     this.ListeRefRequest(event);
+  } else if (this.page === "myrequestsdfin") {
+    this.ListeRef(event);
   } else if (this.page === "toTreat") {
     this.ListeRef(event);
   } else if (this.page === "toTreatmy") {
     this.ListemyRef(event);
+  }else if(this.page==="treated"){
+    this.listRefRequestTreaTed();
   }
 }
 ListeRef(event?: any) {
@@ -208,17 +219,16 @@ RefToTreat(event?: any) {
 presentConfirm(request: any, type: string) {
   let msg = "", title = "";
   if (type === 'validate') {
-    title = "validation";
+    title = "de validation de requête";
     msg = 'Veuillez renseiner un commentaire si necessaire';
   } else if(type === 'reject'){
-     title = "reject";
-    msg = 'voulez-bous rejeter cette reference';
+     title = "du rejet";
+    msg = 'voulez-vous rejeter cette reference';
   }
-   
-  console.log("mon type"+type);
+
 
   let alert = this._ALERT.create({
-    title: 'Confirmation de ' + title,
+    title: 'Confirmation ' + title,
     message: msg,
     buttons: [
       {
@@ -232,7 +242,7 @@ presentConfirm(request: any, type: string) {
         text: 'Oui',
         handler: () => {
           if (type === 'validate') {
-            this.presentPrompt(request);
+            this.presentPrompt(request);//validateRecru
           } else if (type === 'reject'){
             this.presentPromptreject(request);
           }
@@ -244,13 +254,19 @@ presentConfirm(request: any, type: string) {
 }
 presentConfirmVoir(request: any, type: string) {
   let smg="", title = "";
-  smg=request.reference
+  smg=request.reference;
   title = "la référence";
-      console.log("request"+request.reference);
   let alert = this._ALERT.create({
     title: 'Confirmation de ' + title,
     message: smg,
     buttons: [
+     /* {
+        text: 'Annuler',
+        role: 'cancel',
+        handler: () => {
+          console.log('Opération annulée');
+        }
+      },*/
       {
         text: 'Copier la reference',
         handler: () => {
@@ -267,7 +283,7 @@ presentConfirmVoir(request: any, type: string) {
 presentPrompt(request: any) {
   let options=null;
   options={
-    title: 'Reference et commantaire (Obligatoire)',
+    title: 'Reference et commentaire (Obligatoire)',
     inputs: [
       {
         name: 'reference',
@@ -275,7 +291,7 @@ presentPrompt(request: any) {
       },
       {
         name: 'comment',
-        placeholder: 'Redigez votre commentaire ici...'
+        placeholder: 'Redigez le commentaire ici...'
       }
     ],
 
@@ -311,7 +327,7 @@ presentPromptreject(request: any) {
     inputs: [
       {
         name: 'motif',
-        placeholder: 'Redigez le motif du rejet'
+        placeholder: 'Redigez le motif du rejet...'
       }
     ],
 
@@ -350,7 +366,7 @@ ValideRef(request: any, reference: string,commantaire:string) {
   postData.append('idTick', request.ticket);
     
   let that = this;
-  this._SYGALIN.loadingPresent("Validation de la requette");
+  this._SYGALIN.loadingPresent("Validation de la requête");
   this._SYGALIN.query('answerRefRequest/', postData).then(res => {
     console.log(res);
     let type = "success";
@@ -378,7 +394,7 @@ rejectRef(request: any, motif:any ) {
   postData.append('motif', motif);
   postData.append('ticket', request.ticket);
   let that = this;
-  this._SYGALIN.loadingPresent("Validation de la requette");
+  this._SYGALIN.loadingPresent("Validation de la requête");
   this._SYGALIN.query('rejectRefRequest/', postData).then(res => {
     console.log(res);
     let type = "success";
@@ -407,12 +423,14 @@ removeItem(item) {
 }
 
 ShowMyRef(request: any) {
+	this.clipboard.copy(request.reference);
   let postData = new FormData();
   let cuser = this._SYGALIN.getCurUser();
   postData.append('idTick', request.ticket);
   postData.append('uId', this._SYGALIN.user.id);
   let that = this;
-  this._SYGALIN.loadingPresent("Validation de la requette");
+  this._SYGALIN.loadingPresent("Validation de la requête");
+  //this._SYGALIN.query('updateStateView/', postData).then(res => {
     this._SYGALIN.query('closeReqRef/', postData).then(res => {
   console.log(res);
     let type = "success";
@@ -433,7 +451,6 @@ ShowMyRef(request: any) {
     that._SYGALIN.presentToast("Une erreur s'est produite. Veuillez réessayer.", "danger", 4000);
   });
 }
-
 	ListemyRef(event?: any) {
 		  console.log('Liste pour refrence');
 		  let postData = new FormData();
@@ -461,5 +478,32 @@ ShowMyRef(request: any) {
 			  that._SYGALIN.loadingDismiss();
 			that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
 		  });
-	}
+  }
+  listRefRequestTreaTed(event?: any) {
+		  console.log('Liste pour refrence');
+		  let postData = new FormData();
+			
+			postData.append('role', this._SYGALIN.user.role);
+			
+			let that = this;
+			this._SYGALIN.query('listRefRequestTreaTed/', postData).then(res => {
+
+			that.listeref = res;
+			console.log("Liste pour reference traitee");
+			console.log(this.listeref);
+
+			if (event) {
+			  event.complete();
+
+			} else
+			  that._SYGALIN.loadingDismiss();
+		  }).catch(error => {
+			console.log(error);
+			if (event) {
+			  event.complete();
+			} else
+			  that._SYGALIN.loadingDismiss();
+			that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
+		  });
+  }
 }

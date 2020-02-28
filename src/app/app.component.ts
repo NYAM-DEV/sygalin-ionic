@@ -367,7 +367,7 @@ export class MyApp {
 			iconName:'logo-usd',
 			displayText: 'Dépt. finances',
 			custom: {
-				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleDFIN(), GlobalProvider.roleRAA()],
+				allowed: [GlobalProvider.roleAAD(), GlobalProvider.roleFVI(), GlobalProvider.roleDFIN(),GlobalProvider.roleRAA(),GlobalProvider.roleSUPER(),GlobalProvider.roleCONTROL()],
 			},
 			suboptions: []
 		};
@@ -1162,8 +1162,9 @@ export class MyApp {
 			},
 		];
 
+	
 		let rfinSub=[
-		{
+			{
 				iconName: 'radio-button-off',
 				displayText: 'À traiter',
 				component: 'FinancialPage',
@@ -1188,39 +1189,72 @@ export class MyApp {
 			},
 
 			{
-				iconName: 'compass-outline',
-				displayText: 'Demander recharge',
+				iconName: 'add-circle',
+				displayText: 'Nouvelle recharge',
 				component: 'RefillfinancialPage',
 				custom: {
 					allowed: [GlobalProvider.roleAAD()],
-					
 				}
 			},
-			
+			{
+				iconName: 'list',
+				displayText: 'Mes recharges',
+				component: 'ListReffilfinancePage',
+				custom: {
+					allowed: [GlobalProvider.roleAAD()],
+					data:{
+						page:'myrequests',
+					}
+				}
+			},
+
 		];
 		let refSub=[
 			{
-					iconName: 'radio-button-off',
-					displayText: 'À traiter',
-					component: 'MesReferencePage',
-					custom: {
-						allowed: [GlobalProvider.roleDFIN()],
-						data: {
-							page: 'toTreat'
-						}
+				iconName: 'radio-button-off',
+				displayText: 'À traiter',
+				component: 'MesReferencePage',
+				custom: {
+					allowed: [GlobalProvider.roleDFIN()],
+					data: {
+						page: 'toTreat'
+					}
+				}
+			},
+			{
+				iconName: 'checkmark-circle-outline',
+				displayText: 'Traités',
+				component: 'MesReferencePage',
+				custom: {
+					allowed: [GlobalProvider.roleDFIN()],
+					data: {
+						page: 'treated'
 					}
 				},
-	
-				{
-					iconName: 'add-circle',
-					displayText: 'Nouvelle requette',
-					component: 'RefFinancialPage',
-					custom: {
-						allowed: [GlobalProvider.roleAAD()],
-						
+			},
+			{
+				iconName: 'add-circle',
+				displayText: 'Nouvelle requête',
+				component: 'RefFinancialPage',
+				custom: {
+					allowed: [GlobalProvider.roleAAD()],
+
+				}
+			},
+			{
+				iconName: 'list',
+				displayText: 'Mes requêtes',
+				component: 'MesReferencePage',
+				custom: {
+					allowed: [GlobalProvider.roleAAD()],
+					data:{
+						page:'myrequests'
 					}
-				},
-			];
+
+				}
+			},
+		];
+
 	
 		
 		let cgaSub = [
@@ -1273,6 +1307,17 @@ export class MyApp {
 						page: 'toTreat'
 					}
 				}
+			},
+			{
+				iconName: 'checkmark-circle-outline',
+				displayText: 'Traités',
+				component: 'MemoPage',
+				custom: {
+					allowed: [GlobalProvider.roleDFIN(),GlobalProvider.roleCONTROL(), GlobalProvider.roleSUPER()],
+					data: {
+						page: 'treated'
+					}
+				},
 			},
 		];
 

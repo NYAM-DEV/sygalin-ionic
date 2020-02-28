@@ -34,25 +34,42 @@ export class MemoPage {
 	memo:boolean;
 	img:any;
 	file:Array<any>
+	page:any;
+	title:any;
 
   constructor(public navCtrl: NavController,
 			  public navParams: NavParams,
 			  public _SYGALIN: GlobalProvider,
 			  public _ALERT: AlertController) {
   	this.memo=true;
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MemoPage');
-    this._SYGALIN.loadingPresent("Chargement de la liste ");
-
-     this.data=this.navParams.get('data');
-     if(this.data){
-		this.getOneMemo(this.data);
-	 }else {
-		 this.memoToTreat();
-	 }
-  }
+	  this.page = this.navParams.get('page');
+	}
+  
+	ionViewDidLoad() {
+	  console.log('ionViewDidLoad MemoPage');
+	  this._SYGALIN.loadingPresent("Chargement de la liste ");
+  
+	   this.data=this.navParams.get('data');
+	   
+	   if(this.page==="toTreat"){
+		  this.title = "Mes Mémos à traiter";
+		  //this.getOneMemo(this.data);
+		  this.memoToTreat();
+	   }
+	   else if(this.page==="treated")
+	   {
+		  this.title = "Mes Mémos traité";
+		  this.getMemoTreat();
+	   }
+	   else if(this.page==="voir_memo")
+	   {
+		   this.title = "Consulter Mémos";
+		  this.getOneMemo(this.data);
+	   }
+	   else {
+		   this.memoToTreat();
+	   }
+	}
   memoToTreat(event?:any){
 	  let postData = new FormData();
 	  let cuser = this._SYGALIN.getCurUser();
@@ -71,6 +88,26 @@ export class MemoPage {
 		  that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
 	  })
   }
+
+  getMemoTreat(){
+	this.memo=false;
+  let postData = new FormData();
+  let cuser = this._SYGALIN.getCurUser();
+
+  postData.append('role', cuser.role);
+  postData.append('user', cuser.id);
+  let that = this;
+  this._SYGALIN.query('memosValidated/', postData).then(res => {
+	  console.log('ok');
+	  console.log(res);
+	  that.mem = res;
+	  that._SYGALIN.loadingDismiss();
+  }).catch(error => {
+	  console.log(error);
+	  that._SYGALIN.loadingDismiss();
+	  that._SYGALIN.presentToast("Impossible de se connecter au serveur distant. Veuillez vérifier que vous êtes connecté.", "warning", 6000);
+  })
+}
 
   memoDetail(req:any){
   	console.log("loadMemo deatails");
