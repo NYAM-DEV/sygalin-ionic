@@ -22,7 +22,7 @@
 			<ion-grid>
 				<ion-row>
 					<ion-col col-4 >Initié le: </ion-col>
-					<ion-col col-8 >{{ this._SYGALIN.momentjs(r.open_date).format("DD-MMMM-YYYY HH:mm:ss")}}</ion-col>
+					<ion-col col-8 >{{ _SYGALIN.momentjs(r.open_date).format("DD-MMMM-YYYY HH:mm:ss")}}</ion-col>
 
 					<ion-col col-4 >ticket: </ion-col>
 					<ion-col col-8 *ngIf="r.num" ion-text color="warning">N° {{r.num}} </ion-col>
@@ -77,9 +77,7 @@
 			</ion-col>
 			<ion-col col-12 *ngIf="_SYGALIN.isAAD() && r.reference  && r.state==0">
 				<ion-grid class="button-group">
-					
-							<button ion-button block round (click)="presentConfirmVoir(r, 'voir')" color="secondary" class="rounded"><ion-icon name="thumbs-up" start>  </ion-icon> &nbsp; Voir la référence</button>
-						
+					<button ion-button block round (click)="presentConfirmVoir(r, 'voir')" color="secondary" ><ion-icon name="eye-outline" start>  </ion-icon> &nbsp; Voir la référence</button>
 				</ion-grid>
 			</ion-col>
 		</ion-card-content>
@@ -92,5 +90,3 @@
 		</ion-card-content>
 	</ion-card>
 </ion-content>
-
-

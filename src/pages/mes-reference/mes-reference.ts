@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {GlobalProvider} from '../../providers/global/global';
 import { IonicPage, NavController, NavParams,AlertController } from 'ionic-angular';
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import { Clipboard } from '@ionic-native/clipboard';
+//import { Clipboard } from '@ionic-native/clipboard';
 
 
 
@@ -49,7 +49,7 @@ constructor(
 		public navCtrl: NavController,
 		public navParams: NavParams,
 		public _SYGALIN: GlobalProvider,
-		private clipboard: Clipboard,
+	//	private clipboard: Clipboard,
 		public _ALERT: AlertController) {
 	this.page = this.navParams.get('page');
     }
@@ -423,7 +423,7 @@ removeItem(item) {
 }
 
 ShowMyRef(request: any) {
-	this.clipboard.copy(request.reference);
+	//this.clipboard.copy(request.reference);
   let postData = new FormData();
   let cuser = this._SYGALIN.getCurUser();
   postData.append('idTick', request.ticket);
