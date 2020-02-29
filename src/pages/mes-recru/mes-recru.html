@@ -56,16 +56,17 @@
 					</ion-col>
 					<ion-col col-4>Etat </ion-col>
 					<ion-col col-8 *ngIf="r.state==0" ion-text color="warning" class=" bold">EN COURS...</ion-col>
+					
+					<ion-col col-8 *ngIf="r.state==1" ion-text color="secondary" class="bold">
+						TRAIT&Eacute;
+					</ion-col>
 
 					<ion-col col-8 *ngIf="_SYGALIN.isFVI() && r.state==1" ion-text color="secondary" class="bold">
-						TRAIT&Eacute;  /
+								  /
 						<span *ngIf="r.paye=='0'" ion-text color="warning">  NON PAY&Eacute;</span>
 						<span *ngIf="r.paye=='1'" ion-text color="secondary">  PAY&Eacute;</span>
 					</ion-col>
-
-					<ion-col col-8 *ngIf="_SYGALIN.isAAD() && r.state==1" ion-text color="secondary" class="bold">
-						TRAIT&Eacute;
-					</ion-col>
+					
 					<ion-col col-8 *ngIf="r.state==-1" ion-text color="danger" class="bold">REJET&Eacute; </ion-col>
 					<ion-col col-4 color='danger' *ngIf="r.state==-1">Motif de rejet</ion-col>
 					<ion-col col-8 ion-text color='danger' *ngIf="r.state==-1">
