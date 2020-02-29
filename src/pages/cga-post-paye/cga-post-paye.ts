@@ -88,7 +88,7 @@ export class CgaPostPayePage {
 			date:new FormControl('', [Validators.required]),
 			motivation: new FormControl('',[Validators.required]),
 			checked: new FormControl('',[]),
-			file1: new FormControl({disabled: true, value: ''}, [Validators.required]),
+			file1: new FormControl({disabled: true, value: ''}, []),
 		});
 	}
 
@@ -183,11 +183,13 @@ export class CgaPostPayePage {
 	postData.append('mensualite', this.formgroup.value['mensualite']);
 	postData.append('date', this.formgroup.value['date'])
 	postData.append('motivation', this.formgroup.value['motivation']);
-	for (const file of this.file){
-		postData.append('file[]', file);
-	}
-		console.log("mon fichier"+this.file);
-	
+		console.log(this.formgroup.value['file1']);
+		if(this.formgroup.value['file1'])
+		{
+			for (const file of this.file){
+				postData.append('file[]', file);
+			}
+		}
 	
 	this._SYGALIN.query("refill/cdt", postData)
 		.then(res => {
